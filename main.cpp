@@ -1,4 +1,5 @@
-﻿#include <iostream>
+﻿#define _CRT_SECURE_NO_DEPRECATE
+#include <iostream>
 
 #include "render.h"
 
