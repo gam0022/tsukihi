@@ -121,6 +121,7 @@
     <ClInclude Include="radiance.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="ray.h" />
+    <ClInclude Include="raymarching_object.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="sphere.h" />
