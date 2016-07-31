@@ -8,21 +8,19 @@
 #include "material.h"
 #include "constant.h"
 #include "intersection.h"
+#include "object.h"
 
 namespace edupt {
 
-struct RaymarchingObject {
+struct RaymarchingObject : public Object {
+public:
 	static const int kREP = 64;
 
-	Color emission;
-	Color color;
-	ReflectionType reflection_type;
-
-	RaymarchingObject(const Color &emission, const Color &color, const ReflectionType reflection_type) :
-	  emission(emission), color(color), reflection_type(reflection_type) {}
+	RaymarchingObject(const Color &emission, const Color &color, const ReflectionType reflection_type) : Object(emission, color, reflection_type) {
+	}
 
 	float distanceFunction(const Vec &position) const {
-		return (position - Vec(65, 20, 20)).length() - 15.0;
+		return (position - Vec(65, 20, 20)).length() - 20.0;
 	}
 
 	Vec calcNormal(const Vec &position) const {
@@ -33,28 +31,31 @@ struct RaymarchingObject {
 		));
 	}
 
-	// 入力のrayに対する交差点までの距離を返す。交差しなかったら0を返す。
-	// rayとの交差判定を行う。交差したらtrue,さもなくばfalseを返す。
-	bool intersect(const Ray &ray, Hitpoint *hitpoint) const {
-		float dist;
-		float depth = 0.0;
-		Vec p = ray.org;
-		for (int i = 0; i < kREP; i++) {
-			dist = distanceFunction(p);
-			depth += dist;
-			p = ray.org + depth * ray.dir;
-			if (abs(dist) < kEPS) break;
-		}
-
-		if (abs(dist) < kEPS) {
-			hitpoint->position = p;
-			hitpoint->normal = calcNormal(p);
-			return true;
-		} else {
-			return false;
-		}
-	}
+	bool intersect(const Ray &ray, Hitpoint *hitpoint) const;
 };
+
+bool RaymarchingObject::intersect(const Ray &ray, Hitpoint *hitpoint) const {
+	//std:cout << "RaymarchingObject::intersect" << std::endl;
+
+	float d;
+	float distance = 0.0;
+	Vec p = ray.org;
+	for (int i = 0; i < kREP; i++) {
+		d = distanceFunction(p);
+		distance += d;
+		p = ray.org + distance * ray.dir;
+		if (abs(d) < kEPS) break;
+	}
+
+	if (abs(d) < kEPS) {
+		hitpoint->position = p;
+		hitpoint->normal = calcNormal(p);
+		hitpoint->distance = distance;
+		return true;
+	} else {
+		return false;
+	}
+}
 
 };
 

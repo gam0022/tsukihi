@@ -22,12 +22,12 @@ Color radiance(const Ray &ray, Random *rnd, const int depth) {
 	if (!intersect_scene(ray, &intersection))
 		return kBackgroundColor;
 
-	const Sphere &now_object = spheres[intersection.object_id];
+	const Object* now_object = objects[intersection.object_id];
 	const Hitpoint &hitpoint = intersection.hitpoint;
 	const Vec orienting_normal = dot(hitpoint.normal , ray.dir) < 0.0 ? hitpoint.normal: (-1.0 * hitpoint.normal); // 交差位置の法線（物体からのレイの入出を考慮）
 	// 色の反射率最大のものを得る。ロシアンルーレットで使う。
 	// ロシアンルーレットの閾値は任意だが色の反射率等を使うとより良い。
-	double russian_roulette_probability = std::max(now_object.color.x, std::max(now_object.color.y, now_object.color.z));
+	double russian_roulette_probability = std::max(now_object->color.x, std::max(now_object->color.y, now_object->color.z));
 
 	// 反射回数が一定以上になったらロシアンルーレットの確率を急上昇させる。（スタックオーバーフロー対策）
 	if (depth > kDpethLimit)
@@ -37,14 +37,14 @@ Color radiance(const Ray &ray, Random *rnd, const int depth) {
 	// ただしDepth回の追跡は保障する。
 	if (depth > kDepth) {
 		if (rnd->next01() >= russian_roulette_probability)
-			return now_object.emission;
+			return now_object->emission;
 	} else
 		russian_roulette_probability = 1.0; // ロシアンルーレット実行しなかった
 
 	Color incoming_radiance;
 	Color weight = 1.0;
 	
-	switch (now_object.reflection_type) {
+	switch (now_object->reflection_type) {
 	// 完全拡散面
 	case REFLECTION_TYPE_DIFFUSE: {
 		// orienting_normalの方向を基準とした正規直交基底(w, u, v)を作る。この基底に対する半球内で次のレイを飛ばす。
@@ -70,7 +70,7 @@ Color radiance(const Ray &ray, Random *rnd, const int depth) {
 		// Rはロシアンルーレットの確率。
 		// 今、コサイン項に比例した確率密度関数によるサンプリングを行っているため、pdf(ω) = cosθ/π
 		// よって、weight = ρ/ R。
-		weight = now_object.color / russian_roulette_probability;
+		weight = now_object->color / russian_roulette_probability;
 	} break;
 
 	// 完全鏡面
@@ -78,7 +78,7 @@ Color radiance(const Ray &ray, Random *rnd, const int depth) {
 		// 完全鏡面なのでレイの反射方向は決定的。
 		// ロシアンルーレットの確率で除算するのは上と同じ。
 		incoming_radiance = radiance(Ray(hitpoint.position, ray.dir - hitpoint.normal * 2.0 * dot(hitpoint.normal, ray.dir)), rnd, depth+1);
-		weight = now_object.color / russian_roulette_probability;
+		weight = now_object->color / russian_roulette_probability;
 	} break;
 
 	// 屈折率kIorのガラス
@@ -95,7 +95,7 @@ Color radiance(const Ray &ray, Random *rnd, const int depth) {
 		
 		if (cos2t < 0.0) { // 全反射
 			incoming_radiance = radiance(reflection_ray, rnd, depth+1);
-			weight = now_object.color / russian_roulette_probability;
+			weight = now_object->color / russian_roulette_probability;
 			break;
 		}
 		// 屈折の方向
@@ -117,22 +117,22 @@ Color radiance(const Ray &ray, Random *rnd, const int depth) {
 		if (depth > 2) {
 			if (rnd->next01() < probability) { // 反射
 				incoming_radiance = radiance(reflection_ray, rnd, depth+1) * Re;
-				weight = now_object.color / (probability * russian_roulette_probability);
+				weight = now_object->color / (probability * russian_roulette_probability);
 			} else { // 屈折
 				incoming_radiance = radiance(refraction_ray, rnd, depth+1) * Tr;
-				weight = now_object.color / ((1.0 - probability) * russian_roulette_probability);
+				weight = now_object->color / ((1.0 - probability) * russian_roulette_probability);
 			}
 		} else { // 屈折と反射の両方を追跡
 			incoming_radiance = 
 				radiance(reflection_ray, rnd, depth+1) * Re +
 				radiance(refraction_ray, rnd, depth+1) * Tr;
-			weight = now_object.color / (russian_roulette_probability);
+			weight = now_object->color / (russian_roulette_probability);
 		}
 	} break;
 
 	}
 
-	return now_object.emission + multiply(weight, incoming_radiance);
+	return now_object->emission + multiply(weight, incoming_radiance);
 }
 
 };

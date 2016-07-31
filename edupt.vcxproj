@@ -117,6 +117,7 @@
     <ClInclude Include="constant.h" />
     <ClInclude Include="intersection.h" />
     <ClInclude Include="material.h" />
+    <ClInclude Include="object.h" />
     <ClInclude Include="ppm.h" />
     <ClInclude Include="radiance.h" />
     <ClInclude Include="random.h" />
