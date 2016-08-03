@@ -7,5 +7,5 @@ int main(int argc, char **argv) {
 	std::cout << "Path tracing renderer: edupt" << std::endl << std::endl;
 
 	// 640x480の画像、(2x2) * 4 sample / pixel
-	edupt::render(640 / 5, 480 / 5, 400, 1);
+	edupt::render(640 / 2, 480 / 2, 1000, 1);
 }

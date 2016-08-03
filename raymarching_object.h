@@ -14,13 +14,13 @@ namespace edupt {
 
 struct RaymarchingObject : public Object {
 public:
-	static const int kREP = 64;
+	static const int kREP = 64 * 2;
 
 	RaymarchingObject(const Color &emission, const Color &color, const ReflectionType reflection_type) : Object(emission, color, reflection_type) {
 	}
 
-	float distanceFunction(const Vec &position) const {
-		return (position - Vec(65, 20, 20)).length() - 20.0;
+	double distanceFunction(const Vec &position) const {
+		return (position - Vec(77, 16.5, 78)).length() - 16.5;
 	}
 
 	Vec calcNormal(const Vec &position) const {
@@ -35,10 +35,8 @@ public:
 };
 
 bool RaymarchingObject::intersect(const Ray &ray, Hitpoint *hitpoint) const {
-	//std:cout << "RaymarchingObject::intersect" << std::endl;
-
-	float d;
-	float distance = 0.0;
+	double d;
+	double distance = 0.0;
 	Vec p = ray.org;
 	for (int i = 0; i < kREP; i++) {
 		d = distanceFunction(p);
@@ -48,8 +46,8 @@ bool RaymarchingObject::intersect(const Ray &ray, Hitpoint *hitpoint) const {
 	}
 
 	if (abs(d) < kEPS) {
-		hitpoint->position = p;
 		hitpoint->normal = calcNormal(p);
+		hitpoint->position = p + hitpoint->normal * kEPS * 100;
 		hitpoint->distance = distance;
 		return true;
 	} else {
