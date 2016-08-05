@@ -2,6 +2,9 @@
 #define	_VEC_H_
 
 #include <cmath>
+#include <algorithm>
+
+#include "vec2.h"
 
 namespace edupt {
 
@@ -26,6 +29,16 @@ struct Vec {
 	inline const double length() const { 
 		return sqrt(length_squared()); 
 	}
+
+	inline const Vec2 xy() const {
+		return Vec2(x, y);
+	}
+	inline const Vec2 yz() const {
+		return Vec2(y, z);
+	}
+	inline const Vec2 zx() const {
+		return Vec2(z, x);
+	}
 };
 inline Vec operator*(double f, const Vec &v) { 
 	return v * f; 
@@ -45,7 +58,15 @@ inline const Vec cross(const Vec &v1, const Vec &v2) {
 		(v1.z * v2.x) - (v1.x * v2.z),
 		(v1.x * v2.y) - (v1.y * v2.x));
 }
-
+inline const Vec abs(const Vec &v) {
+	return Vec(std::abs(v.x), std::abs(v.y), std::abs(v.z));
+}
+inline const Vec max(const Vec &v, double x) {
+	return Vec(std::max(v.x, x), std::max(v.y, x), std::max(v.z, x));
+}
+inline const Vec mod(const Vec &v, double x) {
+	return Vec(std::fmod(v.x, x), std::fmod(v.y, x), std::fmod(v.z, x));
+}
 };
 
 #endif
