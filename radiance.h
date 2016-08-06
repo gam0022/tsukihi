@@ -44,7 +44,15 @@ Color radiance(const Ray &ray, Random *rnd, const int depth) {
 	Color incoming_radiance;
 	Color weight = 1.0;
 	
-	switch (now_object->reflection_type) {
+	//switch (now_object->reflection_type) {
+	switch (REFLECTION_TYPE_DEBUG_DIFFUSE) {
+	case REFLECTION_TYPE_DEBUG_DIFFUSE: {
+		Vec light_direction = Vec(1.0, -2.0, 1.0);
+		light_direction = normalize(light_direction);
+		incoming_radiance = Vec(1.0, 1.0, 1.0);
+		weight = std::max(dot(orienting_normal, light_direction), 0.1) * now_object->color;
+	} break;
+
 	// 完全拡散面
 	case REFLECTION_TYPE_DIFFUSE: {
 		// orienting_normalの方向を基準とした正規直交基底(w, u, v)を作る。この基底に対する半球内で次のレイを飛ばす。

@@ -41,7 +41,7 @@ namespace edupt {
 
 		double distFunc(Vec p) const {
 			double ret = box(p, 0.3);
-			for (double c = 0.0; c < 4.0; c += 1.0){
+			for (int c = 0; c < 2; c++){
 				double pw = pow(3.0, c);
 				ret = std::max(ret, -crossBar(mod(p + 0.15 / pw, 0.6 / pw) - 0.15 / pw, 0.1 / pw));
 			}
@@ -50,7 +50,7 @@ namespace edupt {
 
 		double distanceFunction(const Vec &position) const {
 			double scale = 70.0;
-			auto center = Vec(50, 30, 78);
+			auto center = Vec(50, 30, 90);
 			return distFunc((position - center) / scale ) * scale;
 		}
 	};

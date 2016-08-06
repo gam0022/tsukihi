@@ -61,11 +61,11 @@ inline const Vec cross(const Vec &v1, const Vec &v2) {
 inline const Vec abs(const Vec &v) {
 	return Vec(std::abs(v.x), std::abs(v.y), std::abs(v.z));
 }
-inline const Vec max(const Vec &v, double x) {
-	return Vec(std::max(v.x, x), std::max(v.y, x), std::max(v.z, x));
+inline const Vec max(const Vec &v, double b) {
+	return Vec(std::max(v.x, b), std::max(v.y, b), std::max(v.z, b));
 }
-inline const Vec mod(const Vec &v, double x) {
-	return Vec(std::fmod(v.x, x), std::fmod(v.y, x), std::fmod(v.z, x));
+inline const Vec mod(const Vec &v, double b) {
+	return Vec(std::fmod(v.x, b), std::fmod(v.y, b), std::fmod(v.z, b));
 }
 };
 

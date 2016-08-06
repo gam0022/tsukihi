@@ -46,8 +46,8 @@ namespace edupt {
 	inline const Vec2 abs(const Vec2 &v) {
 		return Vec2(std::abs(v.x), std::abs(v.y));
 	}
-	inline const Vec2 max(const Vec2 &v, double x) {
-		return Vec2(std::max(v.x, x), std::max(v.y, x));
+	inline const Vec2 max(const Vec2 &v, double b) {
+		return Vec2(std::max(v.x, b), std::max(v.y, b));
 	}
 };
 
