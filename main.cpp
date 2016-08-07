@@ -5,6 +5,9 @@
 #include "render.h"
 
 int main(int argc, char **argv) {
+	//std::cout << fmod(-10.0, 3.0) << std::endl;
+	//return 0;
+
 	std::cout << "Path tracing renderer: edupt" << std::endl << std::endl;
 	clock_t start = clock();
 

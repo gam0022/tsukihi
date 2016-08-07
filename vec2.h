@@ -18,6 +18,12 @@ namespace edupt {
 		inline Vec2 operator*(const double b) const {
 			return Vec2(x * b, y * b);
 		}
+		inline Vec2 operator+(const double b) const {
+			return Vec2(x + b, y + b);
+		}
+		inline Vec2 operator-(const double b) const {
+			return Vec2(x - b, y - b);
+		}
 		inline Vec2 operator/(const double b) const {
 			return Vec2(x / b, y / b);
 		}

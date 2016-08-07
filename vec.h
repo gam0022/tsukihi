@@ -17,6 +17,12 @@ struct Vec {
 	inline Vec operator-(const Vec &b) const {
 		return Vec(x - b.x, y - b.y, z - b.z);
 	}
+	inline Vec operator+(const double b) const {
+		return Vec(x + b, y + b, z + b);
+	}
+	inline Vec operator-(const double b) const {
+		return Vec(x - b, y - b, z - b);
+	}
 	inline Vec operator*(const double b) const {
 		return Vec(x * b, y * b, z * b);
 	}
