@@ -5,14 +5,12 @@
 #include "render.h"
 
 int main(int argc, char **argv) {
-	//std::cout << fmod(-10.0, 3.0) << std::endl;
-	//return 0;
-
 	std::cout << "Path tracing renderer: edupt" << std::endl << std::endl;
 	clock_t start = clock();
 
 	// 640x480の画像、(2x2) * 4 sample / pixel
-	edupt::render(640 / 2, 480 / 2, 1, 1);
+	//edupt::render(640 / 1, 480 / 1, 1000, 1);
+	edupt::render(640 / 1, 480 / 1, 1, 1);
 
 	clock_t end = clock();
 	std::cout << "Total time: " << (double)(end - start) / CLOCKS_PER_SEC << "sec." << std::endl;
