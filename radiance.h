@@ -44,8 +44,8 @@ Color radiance(const Ray &ray, Random *rnd, const int depth) {
 	Color incoming_radiance;
 	Color weight = 1.0;
 	
-	//switch (now_object->reflection_type) {
-	switch (REFLECTION_TYPE_DEBUG_DIFFUSE) {
+	switch (now_object->reflection_type) {
+	//switch (REFLECTION_TYPE_DEBUG_DIFFUSE) {
 	case REFLECTION_TYPE_DEBUG_DIFFUSE: {
 		Vec light_direction = Vec(1.0, -2.0, 1.0);
 		light_direction = normalize(light_direction);

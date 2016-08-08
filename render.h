@@ -11,9 +11,9 @@ namespace edupt {
 
 int render(const int width, const int height, const int samples, const int supersamples) {
 	// カメラ位置
-	const Vec camera_position = Vec(90.0, 78.0, 150.0);
-	const Vec camera_dir      = normalize(Vec(-0.4, -0.5, -0.5));
-	const Vec camera_up       = Vec(0.0, 1.0, 0.0);
+	const Vec camera_position = Vec(50, 60, 100);
+	const Vec camera_dir      = normalize(Vec(-0.1, -1.0, -0.01));
+	const Vec camera_up       = Vec(0.0, -1.0, 0.0);
 
 	// ワールド座標系でのスクリーンの大きさ
 	const double screen_width = 30.0 * width / height;

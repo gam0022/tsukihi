@@ -43,12 +43,12 @@ bool RaymarchingObject::intersect(const Ray &ray, Hitpoint *hitpoint) const {
 		d = distanceFunction(p);
 		distance += d;
 		p = ray.org + distance * ray.dir;
-		if (std::abs(d) < kEPS) break;
+		if (std::abs(d) < kEPS * 1000) break;
 	}
 
-	if (std::abs(d) < kEPS) {
+	if (std::abs(d) < kEPS * 1000) {
 		hitpoint->normal = calcNormal(p);
-		hitpoint->position = p + hitpoint->normal * kEPS * 100;
+		hitpoint->position = p + hitpoint->normal * kEPS * 10000;
 		hitpoint->distance = distance;
 		return true;
 	} else {
