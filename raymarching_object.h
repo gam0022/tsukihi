@@ -14,7 +14,7 @@ namespace edupt {
 
 struct RaymarchingObject : public Object {
 public:
-	static const int kREP = 256;
+	static const int kREP = 64;
 
 	RaymarchingObject(const Color &emission, const Color &color, const ReflectionType reflection_type) : Object(emission, color, reflection_type) {
 	}
@@ -43,12 +43,12 @@ bool RaymarchingObject::intersect(const Ray &ray, Hitpoint *hitpoint) const {
 		d = distanceFunction(p);
 		distance += d;
 		p = ray.org + distance * ray.dir;
-		if (std::abs(d) < kEPS * 1000) break;
+		if (std::abs(d) < kEPS) break;
 	}
 
-	if (std::abs(d) < kEPS * 1000) {
+	if (std::abs(d) < kEPS) {
 		hitpoint->normal = calcNormal(p);
-		hitpoint->position = p + hitpoint->normal * kEPS * 10000;
+		hitpoint->position = p + hitpoint->normal * kEPS * 100;
 		hitpoint->distance = distance;
 		return true;
 	} else {
