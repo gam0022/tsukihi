@@ -1,11 +1,11 @@
 ﻿#ifndef _MATERIAL_H_
 #define _MATERIAL_H_
 
-#include "vec.h"
+#include "vec3.h"
 
 namespace edupt {
 
-typedef Vec Color;
+typedef Vec3 Color;
 
 enum ReflectionType {
 	REFLECTION_TYPE_DIFFUSE,	// 完全拡散面。いわゆるLambertian面。

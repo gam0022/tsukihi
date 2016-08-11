@@ -24,7 +24,7 @@ Color radiance(const Ray &ray, Random *rnd, const int depth) {
 
 	const Object* now_object = objects[intersection.object_id];
 	const Hitpoint &hitpoint = intersection.hitpoint;
-	const Vec orienting_normal = dot(hitpoint.normal , ray.dir) < 0.0 ? hitpoint.normal: (-1.0 * hitpoint.normal); // 交差位置の法線（物体からのレイの入出を考慮）
+	const Vec3 orienting_normal = dot(hitpoint.normal , ray.dir) < 0.0 ? hitpoint.normal: (-1.0 * hitpoint.normal); // 交差位置の法線（物体からのレイの入出を考慮）
 	// 色の反射率最大のものを得る。ロシアンルーレットで使う。
 	// ロシアンルーレットの閾値は任意だが色の反射率等を使うとより良い。
 	double russian_roulette_probability = std::max(now_object->color.x, std::max(now_object->color.y, now_object->color.z));
@@ -47,26 +47,26 @@ Color radiance(const Ray &ray, Random *rnd, const int depth) {
 	//switch (now_object->reflection_type) {
 	switch (REFLECTION_TYPE_DEBUG_DIFFUSE) {
 	case REFLECTION_TYPE_DEBUG_DIFFUSE: {
-		Vec light_direction = Vec(1.0, -2.0, 1.0);
+		Vec3 light_direction = Vec3(1.0, -2.0, 1.0);
 		light_direction = normalize(light_direction);
-		incoming_radiance = Vec(1.0, 1.0, 1.0);
+		incoming_radiance = Vec3(1.0, 1.0, 1.0);
 		weight = std::max(dot(orienting_normal, light_direction), 0.1) * now_object->color;
 	} break;
 
 	// 完全拡散面
 	case REFLECTION_TYPE_DIFFUSE: {
 		// orienting_normalの方向を基準とした正規直交基底(w, u, v)を作る。この基底に対する半球内で次のレイを飛ばす。
-		Vec w, u, v;
+		Vec3 w, u, v;
 		w = orienting_normal;
 		if (fabs(w.x) > kEPS) // ベクトルwと直交するベクトルを作る。w.xが0に近い場合とそうでない場合とで使うベクトルを変える。
-			u = normalize(cross(Vec(0.0, 1.0, 0.0), w));
+			u = normalize(cross(Vec3(0.0, 1.0, 0.0), w));
 		else
-			u = normalize(cross(Vec(1.0, 0.0, 0.0), w));
+			u = normalize(cross(Vec3(1.0, 0.0, 0.0), w));
 		v = cross(w, u);
 		// コサイン項を使った重点的サンプリング
 		const double r1 = 2 * kPI * rnd->next01();
 		const double r2 = rnd->next01(), r2s = sqrt(r2);
-		Vec dir = normalize((
+		Vec3 dir = normalize((
 			u * cos(r1) * r2s +
 			v * sin(r1) * r2s +
 			w * sqrt(1.0 - r2)));

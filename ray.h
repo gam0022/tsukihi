@@ -1,13 +1,13 @@
 #ifndef _RAY_H_
 #define _RAY_H_
 
-#include "vec.h"
+#include "vec3.h"
 
 namespace edupt {
 
 struct Ray {
-	Vec org, dir;
-	Ray(const Vec &org, const Vec &dir) : org(org), dir(dir) {}
+	Vec3 org, dir;
+	Ray(const Vec3 &org, const Vec3 &dir) : org(org), dir(dir) {}
 };
 
 };

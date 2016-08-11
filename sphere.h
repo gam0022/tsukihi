@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-#include "vec.h"
+#include "vec3.h"
 #include "ray.h"
 #include "material.h"
 #include "constant.h"
@@ -15,9 +15,9 @@ namespace edupt {
 struct Sphere : public Object {
 public:
 	double radius;
-	Vec position;
+	Vec3 position;
 
-	Sphere(const double radius, const Vec &position, const Color &emission, const Color &color, const ReflectionType reflection_type) : 
+	Sphere(const double radius, const Vec3 &position, const Color &emission, const Color &color, const ReflectionType reflection_type) : 
 			Object(emission, color, reflection_type) {
 		this->radius = radius;
 		this->position = position;
@@ -33,7 +33,7 @@ public:
 bool Sphere::intersect(const Ray &ray, Hitpoint *hitpoint) const {
 	//std::cout << "Sphere::intersect" << std::endl;
 
-	const Vec p_o = position - ray.org;
+	const Vec3 p_o = position - ray.org;
 	const double b = dot(p_o, ray.dir);
 	const double D4 = b * b - dot(p_o, p_o) + radius * radius;
 

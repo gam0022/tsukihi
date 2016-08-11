@@ -50,9 +50,6 @@
     <ClInclude Include="scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="vec.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="raymarching_object.h">
       <Filter>Header Files\object</Filter>
     </ClInclude>
@@ -78,6 +75,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vec3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

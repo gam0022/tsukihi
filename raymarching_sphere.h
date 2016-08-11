@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-#include "vec.h"
+#include "vec3.h"
 #include "material.h"
 #include "constant.h"
 #include "intersection.h"
@@ -16,8 +16,8 @@ public:
 	RaymarchingSphere(const Color &emission, const Color &color, const ReflectionType reflection_type) : RaymarchingObject(emission, color, reflection_type) {
 	}
 
-	double distanceFunction(const Vec &position) const {
-		return (position - Vec(77, 16.5, 78)).length() - 16.5;
+	double distanceFunction(const Vec3 &position) const {
+		return (position - Vec3(77, 16.5, 78)).length() - 16.5;
 	}
 };
 }

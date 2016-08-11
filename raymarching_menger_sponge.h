@@ -4,7 +4,7 @@
 #include <cmath>
 #include <algorithm>
 
-#include "vec.h"
+#include "vec3.h"
 #include "vec2.h"
 #include "material.h"
 #include "constant.h"
@@ -18,7 +18,7 @@ namespace edupt {
 		RaymarchingMengerSponge(const Color &emission, const Color &color, const ReflectionType reflection_type) : RaymarchingObject(emission, color, reflection_type) {
 		}
 
-		inline double box(Vec p, double b) const{
+		inline double box(Vec3 p, double b) const{
 			//Vec d = abs(p) - b;
 			//return std::min(std::max(d.x, std::max(d.y, d.z)), 0.0) + max(d, 0.0).length();
 			return max(abs(p) - b, 0.0).length();
@@ -30,18 +30,18 @@ namespace edupt {
 			//return max(abs(p) - b, 0.0).length();
 		}
 
-		inline double crossBar(Vec p, double b) const {
+		inline double crossBar(Vec3 p, double b) const {
 			double da = bar(p.xy(), b),
 				db = bar(p.yz(), b),
 				dc = bar(p.zx(), b);
 			return std::min(da, std::min(db, dc));
 		}
 
-		inline Vec opRep(Vec p, double interval) const {
+		inline Vec3 opRep(Vec3 p, double interval) const {
 			return mod(p, interval) - interval * 0.5;
 		}
 
-		inline double distFunc(Vec p) const {
+		inline double distFunc(Vec3 p) const {
 			double ret = box(p, 0.3);
 			for (int c = 0; c < 4; c++){
 				double pw = pow(3.0, c);
@@ -50,9 +50,9 @@ namespace edupt {
 			return ret;
 		}
 
-		double distanceFunction(const Vec &position) const {
+		double distanceFunction(const Vec3 &position) const {
 			double scale = 50.0;
-			auto center = Vec(50, 30, 100);
+			auto center = Vec3(50, 30, 100);
 			return distFunc((position - center) / scale ) * scale;
 		}
 	};

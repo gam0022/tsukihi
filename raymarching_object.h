@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-#include "vec.h"
+#include "vec3.h"
 #include "ray.h"
 #include "material.h"
 #include "constant.h"
@@ -19,26 +19,26 @@ public:
 	RaymarchingObject(const Color &emission, const Color &color, const ReflectionType reflection_type) : Object(emission, color, reflection_type) {
 	}
 
-	virtual double distanceFunction(const Vec &position) const {
+	virtual double distanceFunction(const Vec3 &position) const {
 		return 0.0;
 	}
 
-	Vec calcNormal(const Vec &position) const;
+	Vec3 calcNormal(const Vec3 &position) const;
 	bool intersect(const Ray &ray, Hitpoint *hitpoint) const;
 };
 
-Vec RaymarchingObject::calcNormal(const Vec &position) const {
-	return normalize(Vec(
-		distanceFunction(position + Vec(kEPS, 0.0, 0.0)) - distanceFunction(position + Vec(-kEPS, 0.0, 0.0)),
-		distanceFunction(position + Vec(0.0, kEPS, 0.0)) - distanceFunction(position + Vec(0.0, -kEPS, 0.0)),
-		distanceFunction(position + Vec(0.0, 0.0, kEPS)) - distanceFunction(position + Vec(0.0, 0.0, -kEPS))
+Vec3 RaymarchingObject::calcNormal(const Vec3 &position) const {
+	return normalize(Vec3(
+		distanceFunction(position + Vec3(kEPS, 0.0, 0.0)) - distanceFunction(position + Vec3(-kEPS, 0.0, 0.0)),
+		distanceFunction(position + Vec3(0.0, kEPS, 0.0)) - distanceFunction(position + Vec3(0.0, -kEPS, 0.0)),
+		distanceFunction(position + Vec3(0.0, 0.0, kEPS)) - distanceFunction(position + Vec3(0.0, 0.0, -kEPS))
 	));
 }
 
 bool RaymarchingObject::intersect(const Ray &ray, Hitpoint *hitpoint) const {
 	double d;
 	double distance = 0.0;
-	Vec p = ray.org;
+	Vec3 p = ray.org;
 	for (int i = 0; i < kREP; i++) {
 		d = distanceFunction(p);
 		distance += d;

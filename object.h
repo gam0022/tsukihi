@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-#include "vec.h"
+#include "vec3.h"
 #include "ray.h"
 #include "material.h"
 #include "constant.h"
