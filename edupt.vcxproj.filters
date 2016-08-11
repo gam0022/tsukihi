@@ -71,5 +71,11 @@
     <ClInclude Include="raymarching_menger_sponge.h">
       <Filter>Header Files\object</Filter>
     </ClInclude>
+    <ClInclude Include="stb_image_write.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
