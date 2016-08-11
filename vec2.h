@@ -4,6 +4,8 @@
 #include <cmath>
 #include <algorithm>
 
+#include "math.h"
+
 namespace edupt {
 
 	struct Vec2 {
@@ -54,6 +56,9 @@ namespace edupt {
 	}
 	inline const Vec2 max(const Vec2 &v, double b) {
 		return Vec2(std::max(v.x, b), std::max(v.y, b));
+	}
+	inline const Vec2 mod(const Vec2 &v, double b) {
+		return Vec2(mod(v.x, b), mod(v.y, b));
 	}
 };
 

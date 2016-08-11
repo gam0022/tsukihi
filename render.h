@@ -68,7 +68,6 @@ int render(const int width, const int height, const int samples, const int super
 	}
 	
 	// 出力
-	save_ppm_file(std::string("image.ppm"), image, width, height);
 	save_png_file(std::string("image.png"), image, width, height);
 	return 0;
 }

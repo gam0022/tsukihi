@@ -4,6 +4,7 @@
 #include <cmath>
 #include <algorithm>
 
+#include "math.h"
 #include "vec2.h"
 
 namespace edupt {
@@ -71,7 +72,7 @@ inline const Vec max(const Vec &v, double b) {
 	return Vec(std::max(v.x, b), std::max(v.y, b), std::max(v.z, b));
 }
 inline const Vec mod(const Vec &v, double b) {
-	return Vec(std::fmod(v.x, b), std::fmod(v.y, b), std::fmod(v.z, b));
+	return Vec(mod(v.x, b), mod(v.y, b), mod(v.z, b));
 }
 };
 
