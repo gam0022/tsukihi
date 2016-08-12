@@ -5,6 +5,8 @@
 #include "render.h"
 
 int main(int argc, char **argv) {
+	freopen("output.txt", "w", stdout);
+
 	std::cout << "Path tracing renderer: edupt" << std::endl << std::endl;
 	clock_t start = clock();
 
