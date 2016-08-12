@@ -1,4 +1,0 @@
-Fake raytracing and raymarching renderer: tukihi
-
-640x480 4 spp
-Total time: 18.903sec.

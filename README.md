@@ -1,15 +1,11 @@
-edupt
-=====
+# tukihi
+レイマーチングとレイトレーシングをハイブリッドに組み合わせてレンダリングするレンダラーです（予定）。
 
-eduptはC++で書かれたパストレーシングによるシンプルでコンパクトな物理ベースレンダラです。 ソースコードはGithubで公開されており、日本語によるコメントが付けられています。  
-さらに、パストレーシング・物理ベースレンダリング・eduptのソースコード、の解説スライドも公開しています。 
+[レイトレ合宿4](https://sites.google.com/site/raytracingcamp4/)参加用です。
 
-http://kagamin.net/hole/edupt/index.htm
+## License
+Copyright (c) 2016 gam0022
 
-=====
-以下ライセンス
+This software is released under the MIT License (http://opensource.org/licenses/mit-license.php).
 
-Copyright (c) 2014 hole
-This software is released under the MIT License (http://kagamin.net/hole/license.txt).
-A part of this software is based on smallpt (http://www.kevinbeason.com/smallpt/) and
-released under the MIT License (http://kagamin.net/hole/smallpt-license.txt).
+A part of this software is based on edupt (https://github.com/githole/edupt) and smallpt (http://www.kevinbeason.com/smallpt/)
