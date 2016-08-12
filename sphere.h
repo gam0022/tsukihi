@@ -31,8 +31,6 @@ public:
 };
 
 bool Sphere::intersect(const Ray &ray, Hitpoint *hitpoint) const {
-	//std::cout << "Sphere::intersect" << std::endl;
-
 	const Vec3 p_o = position - ray.org;
 	const double b = dot(p_o, ray.dir);
 	const double D4 = b * b - dot(p_o, p_o) + radius * radius;
