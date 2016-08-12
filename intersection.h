@@ -4,7 +4,7 @@
 #include "vec3.h"
 #include "constant.h"
 
-namespace edupt {
+namespace tukihi {
 
 struct Hitpoint {
 	double distance;

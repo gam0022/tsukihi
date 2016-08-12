@@ -13,7 +13,7 @@
 #include "raymarching_menger_sponge.h"
 #include "point_light.h"
 
-namespace edupt {
+namespace tukihi {
 
 // レンダリングするシーンデータ
 Object* objects[] = {

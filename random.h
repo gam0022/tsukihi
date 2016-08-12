@@ -3,7 +3,7 @@
 
 #include <climits>
 
-namespace edupt {
+namespace tukihi {
 
 // Xor-Shiftによる乱数ジェネレータ
 class XorShift {

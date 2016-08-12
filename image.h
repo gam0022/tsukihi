@@ -12,7 +12,7 @@
 #include "math.h"
 #include "material.h"
 
-namespace edupt {
+namespace tukihi {
 
 inline int to_int(double x) {
 	return int(pow(clamp(x, 0.0, 1.0), 1/2.2) * 255 + 0.5);

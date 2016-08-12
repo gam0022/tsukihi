@@ -9,7 +9,7 @@
 #include "intersection.h"
 #include "random.h"
 
-namespace edupt {
+namespace tukihi {
 
 const Color kBackgroundColor = Color(0.0, 0.0, 0.0);
 const int kDepth = 5; // ロシアンルーレットで打ち切らない最大深度

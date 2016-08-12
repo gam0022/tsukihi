@@ -7,7 +7,7 @@
 #include "image.h"
 #include "random.h"
 
-namespace edupt {
+namespace tukihi {
 
 int render(const int width, const int height, const int samples, const int supersamples) {
 	setup();

@@ -9,7 +9,7 @@
 #include "intersection.h"
 #include "raymarching_object.h"
 
-namespace edupt {
+namespace tukihi {
 
 struct RaymarchingSphere : public RaymarchingObject {
 public:

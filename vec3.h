@@ -7,7 +7,7 @@
 #include "math.h"
 #include "vec2.h"
 
-namespace edupt {
+namespace tukihi {
 
 struct Vec3 {
 	double x, y, z;

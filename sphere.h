@@ -10,7 +10,7 @@
 #include "intersection.h"
 #include "object.h"
 
-namespace edupt {
+namespace tukihi {
 
 struct Sphere : public Object {
 public:

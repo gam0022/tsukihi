@@ -4,7 +4,7 @@
 #include <cmath>
 #include <algorithm>
 
-namespace edupt {
+namespace tukihi {
 	template<class T>
 	inline const T mod(T x, T y) {
 		double a = std::fmod(x, y);

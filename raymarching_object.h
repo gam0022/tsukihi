@@ -10,7 +10,7 @@
 #include "intersection.h"
 #include "object.h"
 
-namespace edupt {
+namespace tukihi {
 
 struct RaymarchingObject : public Object {
 public:
