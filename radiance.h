@@ -18,7 +18,18 @@ const int kDpethLimit = 64;
 const double shadowIntensity = 0.3;
 const double shadowSharpness = 8.0;
 
-inline double softShadow(Vec3 ro, Vec3 rd) {
+inline double calcAO(Vec3 pos, Vec3 normal) {
+	double sca = 1.5, occ = 0.0;
+	for (int i = 0; i < 5; i++) {
+		double hr = 0.01 + i / 8.0;
+		double dd = map(normal * hr + pos);
+		occ += (hr - dd) * sca;
+		sca *= 0.7;
+	}
+	return clamp(1.0 - occ, 0.0, 1.0);
+}
+
+inline double calcSoftShadow(Vec3 ro, Vec3 rd) {
 	double dist;
 	double depth = 0.5;
 	double bright = 1.0;
@@ -72,8 +83,7 @@ Color radiance(const Ray &ray, Random *rnd, const int depth) {
 
 	const Object* now_object = objects[intersection.object_id];
 	const Hitpoint &hitpoint = intersection.hitpoint;
-	//const Vec3 orienting_normal = dot(hitpoint.normal, ray.dir) < 0.0 ? hitpoint.normal : (-1.0 * hitpoint.normal); // 交差位置の法線（物体からのレイの入出を考慮）
-	const Vec3 orienting_normal = hitpoint.normal; // 交差位置の法線（物体からのレイの入出を考慮）
+	const Vec3 orienting_normal = dot(hitpoint.normal, ray.dir) < 0.0 ? hitpoint.normal : (-1.0 * hitpoint.normal); // 交差位置の法線（物体からのレイの入出を考慮）
 	// 色の反射率最大のものを得る。ロシアンルーレットで使う。
 	// ロシアンルーレットの閾値は任意だが色の反射率等を使うとより良い。
 	double russian_roulette_probability = std::max(now_object->color.x, std::max(now_object->color.y, now_object->color.z));
@@ -102,13 +112,13 @@ Color radiance(const Ray &ray, Random *rnd, const int depth) {
 		double specular = 0.0;
 
 		for (auto light : lights) {
-			Vec3 light_direction = hitpoint.position - light->position;
+			Vec3 light_direction = light->position - hitpoint.position;
 			double length_squared = light_direction.length_squared();
 
 			light_direction = normalize(light_direction);
-			incoming_radiance += (light->emission / length_squared) * softShadow(hitpoint.position, -light_direction);
+			incoming_radiance += light->emission * calcSoftShadow(hitpoint.position,light_direction) * calcAO(hitpoint.position, orienting_normal) / length_squared;
 			
-			diffuse += std::max(dot(orienting_normal, light_direction), 0.1);
+			diffuse += std::max(dot(orienting_normal, light_direction), 0.0);
 			specular += pow(clamp(dot(reflect(light_direction, orienting_normal), ray.dir), 0.0, 1.0), 10.0);
 		}
 		weight = diffuse * now_object->color + specular;
