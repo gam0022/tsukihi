@@ -29,7 +29,7 @@ void hdr_correction(Color *image, const int width, const int height) {
 
 	double w = max - min;
 	for (int i = 0; i < width * height; i++) {
-		image[i] = (image[i] - min) / w;
+		image[i] = (image[i] - min) / w * 0.95 + 0.05;
 	}
 }
 

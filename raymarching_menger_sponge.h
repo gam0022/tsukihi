@@ -51,8 +51,8 @@ namespace edupt {
 		}
 
 		double distanceFunction(const Vec3 &position) const {
-			double scale = 50.0;
-			auto center = Vec3(50, 30, 80);
+			double scale = 70.0;
+			auto center = Vec3(50, scale * 0.3, 70);
 			return distFunc((position - center) / scale ) * scale;
 		}
 	};

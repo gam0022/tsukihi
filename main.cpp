@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
 
 	// 640x480の画像、(2x2) * 4 sample / pixel
 	//edupt::render(640 / 1, 480 / 1, 1000, 1);
-	edupt::render(640 / 1, 480 / 1, 1, 1);
+	edupt::render(640 / 1, 480 / 1, 1, 2);
 
 	clock_t end = clock();
 	std::cout << "Total time: " << (double)(end - start) / CLOCKS_PER_SEC << "sec." << std::endl;

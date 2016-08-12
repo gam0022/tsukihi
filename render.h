@@ -18,7 +18,7 @@ int render(const int width, const int height, const int samples, const int super
 	const Vec3 camera_position = Vec3(50.0, 52.0, 220.0);
 	const Vec3 camera_dir = normalize(Vec3(0.0, -0.04, -1.0));
 	const Vec3 camera_up = Vec3(0.0, 1.0, 0.0);
-	
+
 	// 中身
 	//const Vec3 camera_position = Vec3(50, 60, 80);
 	//const Vec3 camera_dir      = normalize(Vec3(-0.1, -1.0, -0.01));

@@ -24,7 +24,8 @@ Object* objects[] = {
 	new Sphere(1e5, Vec3(50, 1e5, 81.6),      Color(),      Color(0.75, 0.75, 0.75), REFLECTION_TYPE_DIFFUSE), // 床
 	new Sphere(1e5, Vec3(50, -1e5+81.6, 81.6),Color(),      Color(0.75, 0.75, 0.75), REFLECTION_TYPE_DIFFUSE), // 天井
 
-	new Sphere(1.0,Vec3(50.0, 90.0 - 40, 81.6),   Color(36,36,36), Color(),              REFLECTION_TYPE_SPECULAR), //照明
+	new Sphere(1.0,Vec3(50.0, 90.0 - 10, 81.6),   Color(36,36,36), Color(),              REFLECTION_TYPE_SPECULAR), //照明
+	new Sphere(1.0,Vec3(50.0, 20, 120),   Color(36,36,36), Color(),              REFLECTION_TYPE_SPECULAR), //照明
 
 	//new Sphere(20,Vec(65, 20, 20),           Color(),       Color(0.99, 0.99, 0.99), REFLECTION_TYPE_SPECULAR), // 鏡
 	//new Sphere(16.5,Vec(47, 16.5, 117),       Color(),      Color(0.99, 0.199, 0.99), REFLECTION_TYPE_REFRACTION), // ガラス
@@ -43,7 +44,8 @@ RaymarchingObject* raymarching_objects[] = {
 std::vector<PointLight*> lights;
 
 void setup() {
-	lights.push_back(new PointLight(1.0, Vec3(50.0, 90.0 - 40, 81.6), Color(255, 255, 255)));
+	lights.push_back(new PointLight(1.0, Vec3(50.0, 90.0 - 10, 81.6), Color(255, 255, 255)));
+	lights.push_back(new PointLight(1.0, Vec3(50.0, 20, 120.0), Color(255, 255, 255)));
 }
 
 // シーンとの交差判定関数
