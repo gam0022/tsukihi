@@ -21,10 +21,6 @@ public:
 			Object(emission, color, reflection_type) {
 		this->radius = radius;
 		this->position = position;
-
-		this->emission = emission;
-		this->color = color;
-		this->reflection_type = reflection_type;
 	}
 
 	bool intersect(const Ray &ray, Hitpoint *hitpoint) const;

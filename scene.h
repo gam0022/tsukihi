@@ -2,11 +2,14 @@
 #define	_SCENE_H_
 
 #include "constant.h"
+#include "intersection.h"
+
 #include "object.h"
 #include "sphere.h"
 #include "raymarching_sphere.h"
 #include "raymarching_menger_sponge.h"
-#include "intersection.h"
+
+#include "point_light.h"
 
 namespace edupt {
 
@@ -26,6 +29,11 @@ const Object* objects[] = {
 
 	//new RaymarchingSphere(Color(), Color(0.75, 0.25, 0.25), REFLECTION_TYPE_SPECULAR),
 	new RaymarchingMengerSponge(Color(), Color(0.5, 0.5, 0.5), REFLECTION_TYPE_DIFFUSE),
+	nullptr
+};
+
+const PointLight* lights[] = {
+	new PointLight(Color(255, 255, 255), Vec3(50.0, 90.0, 81.6)),
 	nullptr
 };
 

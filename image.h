@@ -1,5 +1,5 @@
-#ifndef _PPM_H_
-#define _PPM_H_
+#ifndef _IMAGE_H_
+#define _IMAGE_H_
 
 #include <string>
 #include <cstdlib>
@@ -23,6 +23,21 @@ inline double clamp(double x){
 
 inline int to_int(double x){
 	return int(pow(clamp(x), 1/2.2) * 255 + 0.5);
+}
+
+void hdr_correction(Color *image, const int width, const int height) {
+	double min = std::numeric_limits<double>::max();
+	double max = std::numeric_limits<double>::min();
+
+	for (int i = 0; i < width * height; i++) {
+		min = std::min({ min, image[i].x, image[i].y, image[i].z });
+		max = std::max({ max, image[i].x, image[i].y, image[i].z });
+	}
+
+	double w = max - min;
+	for (int i = 0; i < width * height; i++) {
+		image[i] = (image[i] - min) / w;
+	}
 }
 
 void save_ppm_file(const std::string &filename, const Color *image, const int width, const int height) {

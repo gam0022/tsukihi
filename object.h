@@ -18,7 +18,9 @@ public:
 	ReflectionType reflection_type;
 
 	Object(const Color &emission, const Color &color, const ReflectionType reflection_type) :
-	  emission(emission), color(color), reflection_type(reflection_type) {}
+	  emission(emission), color(color), reflection_type(reflection_type) {
+		this->reflection_type = REFLECTION_TYPE_DEBUG_DIFFUSE;
+	}
 
 	// 入力のrayに対する交差点までの距離を返す。交差しなかったら0を返す。
 	// rayとの交差判定を行う。交差したらtrue,さもなくばfalseを返す。

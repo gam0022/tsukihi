@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "radiance.h"
-#include "ppm.h"
+#include "image.h"
 #include "random.h"
 
 namespace edupt {
@@ -68,6 +68,7 @@ int render(const int width, const int height, const int samples, const int super
 	}
 	
 	// 出力
+	hdr_correction(image, width, height);
 	save_png_file(std::string("image.png"), image, width, height);
 	return 0;
 }

@@ -44,13 +44,21 @@ Color radiance(const Ray &ray, Random *rnd, const int depth) {
 	Color incoming_radiance;
 	Color weight = 1.0;
 	
-	//switch (now_object->reflection_type) {
-	switch (REFLECTION_TYPE_DEBUG_DIFFUSE) {
+	switch (now_object->reflection_type) {
 	case REFLECTION_TYPE_DEBUG_DIFFUSE: {
-		Vec3 light_direction = Vec3(1.0, -2.0, 1.0);
-		light_direction = normalize(light_direction);
-		incoming_radiance = Vec3(1.0, 1.0, 1.0);
-		weight = std::max(dot(orienting_normal, light_direction), 0.1) * now_object->color;
+		incoming_radiance = Vec3(0, 0, 0);
+		double diffuse = 0.0;
+
+		for (int i = 0; lights[i] != nullptr; i++) {
+			Vec3 light_direction = hitpoint.position - lights[i]->position;
+
+			double length_squared = light_direction.length_squared();
+			incoming_radiance += lights[i]->emission / length_squared;
+
+			light_direction = normalize(light_direction);
+			diffuse += std::max(dot(orienting_normal, light_direction), 0.1);
+		}
+		weight = diffuse * now_object->color;
 	} break;
 
 	// 完全拡散面

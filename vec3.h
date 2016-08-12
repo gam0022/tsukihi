@@ -15,6 +15,12 @@ struct Vec3 {
 	inline Vec3 operator+(const Vec3 &b) const {
 		return Vec3(x + b.x, y + b.y, z + b.z);
 	}
+	inline Vec3 operator+=(const Vec3 &b) {
+		x += b.x;
+		y += b.y;
+		z += b.z;
+		return *this;
+	}
 	inline Vec3 operator-(const Vec3 &b) const {
 		return Vec3(x - b.x, y - b.y, z - b.z);
 	}
