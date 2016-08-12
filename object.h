@@ -19,7 +19,7 @@ public:
 
 	Object(const Color &emission, const Color &color, const ReflectionType reflection_type) :
 	  emission(emission), color(color), reflection_type(reflection_type) {
-		this->reflection_type = REFLECTION_TYPE_DEBUG_DIFFUSE;
+		this->reflection_type = REFLECTION_TYPE_FAKE;
 	}
 
 	// 入力のrayに対する交差点までの距離を返す。交差しなかったら0を返す。

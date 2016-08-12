@@ -9,20 +9,13 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 
+#include "math.h"
 #include "material.h"
 
 namespace edupt {
 
-inline double clamp(double x){ 
-	if (x < 0.0)
-		return 0.0;
-	if (x > 1.0)
-		return 1.0;
-	return x;
-} 
-
-inline int to_int(double x){
-	return int(pow(clamp(x), 1/2.2) * 255 + 0.5);
+inline int to_int(double x) {
+	return int(pow(clamp(x, 0.0, 1.0), 1/2.2) * 255 + 0.5);
 }
 
 void hdr_correction(Color *image, const int width, const int height) {

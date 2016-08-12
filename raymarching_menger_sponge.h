@@ -52,7 +52,7 @@ namespace edupt {
 
 		double distanceFunction(const Vec3 &position) const {
 			double scale = 50.0;
-			auto center = Vec3(50, 30, 100);
+			auto center = Vec3(50, 30, 80);
 			return distFunc((position - center) / scale ) * scale;
 		}
 	};

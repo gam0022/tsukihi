@@ -11,13 +11,21 @@ namespace edupt {
 
 int render(const int width, const int height, const int samples, const int supersamples) {
 	// カメラ位置
-	//const Vec camera_position = Vec(50, 60, 100);
-	//const Vec camera_dir      = normalize(Vec(-0.1, -1.0, -0.01));
-	//const Vec camera_up       = Vec(0.0, -1.0, 0.0);
 
-	const Vec3 camera_position = Vec3(90.0, 78.0, 150.0);
-	const Vec3 camera_dir = normalize(Vec3(-0.4, -0.5, -0.5));
+	// 全体像
+	const Vec3 camera_position = Vec3(50.0, 52.0, 220.0);
+	const Vec3 camera_dir = normalize(Vec3(0.0, -0.04, -1.0));
 	const Vec3 camera_up = Vec3(0.0, 1.0, 0.0);
+	
+	// 中身
+	//const Vec3 camera_position = Vec3(50, 60, 80);
+	//const Vec3 camera_dir      = normalize(Vec3(-0.1, -1.0, -0.01));
+	//const Vec3 camera_up       = Vec3(0.0, -1.0, 0.0);
+
+	// 斜め視点
+	//const Vec3 camera_position = Vec3(90.0, 78.0, 130.0);
+	//const Vec3 camera_dir = normalize(Vec3(-0.4, -0.5, -0.5));
+	//const Vec3 camera_up = Vec3(0.0, 1.0, 0.0);
 
 	// ワールド座標系でのスクリーンの大きさ
 	const double screen_width = 30.0 * width / height;
@@ -68,7 +76,7 @@ int render(const int width, const int height, const int samples, const int super
 	}
 	
 	// 出力
-	hdr_correction(image, width, height);
+	//hdr_correction(image, width, height);
 	save_png_file(std::string("image.png"), image, width, height);
 	return 0;
 }

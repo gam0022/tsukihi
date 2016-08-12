@@ -15,6 +15,54 @@ const Color kBackgroundColor = Color(0.0, 0.0, 0.0);
 const int kDepth = 5; // ロシアンルーレットで打ち切らない最大深度
 const int kDpethLimit = 64;
 
+const double shadowIntensity = 0.3;
+const double shadowSharpness = 8.0;
+
+inline double softShadow(Vec3 ro, Vec3 rd) {
+	double dist;
+	double depth = 0.5;
+	double bright = 1.0;
+	for (int i = 0; i < 30; i++) {
+		dist = map(ro + rd * depth);
+		if (dist < kEPS) return shadowIntensity;
+		bright = std::min(bright, shadowSharpness * dist / depth);
+		depth += dist;
+	}
+	return shadowIntensity + (1.0 - shadowIntensity) * bright;
+}
+
+/*inline double softShadow(Vec3 ro, Vec3 lp, double k) {
+
+	// More would be nicer. More is always nicer, but not really affordable... Not on my slow test machine, anyway.
+	const int maxIterationsShad = 16;
+
+	Vec3 rd = (lp - ro); // Unnormalized direction ray.
+
+	double shade = 1.0;
+	double dist = 0.05;
+	double end = std::max(length(rd), 0.001);
+	double stepDist = end / double(maxIterationsShad);
+
+	rd /= end;
+
+	// Max shadow iterations - More iterations make nicer shadows, but slow things down. Obviously, the lowest 
+	// number to give a decent shadow is the best one to choose. 
+	for (int i = 0; i<maxIterationsShad; i++) {
+
+		double h = map(ro + rd * dist);
+		//shade = min(shade, k*h/dist);
+		shade = std::min(shade, smoothstep(0.0, 1.0, k * h / dist)); // Subtle difference. Thanks to IQ for this tidbit.
+															  //dist += min( h, stepDist ); // So many options here: dist += clamp( h, 0.0005, 0.2 ), etc.
+		dist += clamp(h, 0.02, 0.25);
+
+		// Early exits from accumulative distance function calls tend to be a good thing.
+		if (h<0.001 || dist > end) break;
+	}
+
+	// I've added 0.5 to the final shade value, which lightens the shadow a bit. It's a preference thing.
+	return std::min(std::max(shade, 0.0) + 0.25, 1.0);
+}*/
+
 // ray方向からの放射輝度を求める
 Color radiance(const Ray &ray, Random *rnd, const int depth) {
 	Intersection intersection;
@@ -24,7 +72,8 @@ Color radiance(const Ray &ray, Random *rnd, const int depth) {
 
 	const Object* now_object = objects[intersection.object_id];
 	const Hitpoint &hitpoint = intersection.hitpoint;
-	const Vec3 orienting_normal = dot(hitpoint.normal , ray.dir) < 0.0 ? hitpoint.normal: (-1.0 * hitpoint.normal); // 交差位置の法線（物体からのレイの入出を考慮）
+	//const Vec3 orienting_normal = dot(hitpoint.normal, ray.dir) < 0.0 ? hitpoint.normal : (-1.0 * hitpoint.normal); // 交差位置の法線（物体からのレイの入出を考慮）
+	const Vec3 orienting_normal = hitpoint.normal; // 交差位置の法線（物体からのレイの入出を考慮）
 	// 色の反射率最大のものを得る。ロシアンルーレットで使う。
 	// ロシアンルーレットの閾値は任意だが色の反射率等を使うとより良い。
 	double russian_roulette_probability = std::max(now_object->color.x, std::max(now_object->color.y, now_object->color.z));
@@ -45,20 +94,24 @@ Color radiance(const Ray &ray, Random *rnd, const int depth) {
 	Color weight = 1.0;
 	
 	switch (now_object->reflection_type) {
-	case REFLECTION_TYPE_DEBUG_DIFFUSE: {
+
+	// FAKE
+	case REFLECTION_TYPE_FAKE: {
 		incoming_radiance = Vec3(0, 0, 0);
 		double diffuse = 0.0;
+		double specular = 0.0;
 
 		for (int i = 0; lights[i] != nullptr; i++) {
 			Vec3 light_direction = hitpoint.position - lights[i]->position;
-
 			double length_squared = light_direction.length_squared();
-			incoming_radiance += lights[i]->emission / length_squared;
 
 			light_direction = normalize(light_direction);
+			incoming_radiance += (lights[i]->emission / length_squared) * softShadow(hitpoint.position, -light_direction);
+			
 			diffuse += std::max(dot(orienting_normal, light_direction), 0.1);
+			specular += pow(clamp(dot(reflect(light_direction, orienting_normal), ray.dir), 0.0, 1.0), 10.0);
 		}
-		weight = diffuse * now_object->color;
+		weight = diffuse * now_object->color + specular;
 	} break;
 
 	// 完全拡散面

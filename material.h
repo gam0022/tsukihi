@@ -12,7 +12,7 @@ enum ReflectionType {
 	REFLECTION_TYPE_SPECULAR,	// 理想的な鏡面。
 	REFLECTION_TYPE_REFRACTION,	// 理想的なガラス的物質。
 
-	REFLECTION_TYPE_DEBUG_DIFFUSE,
+	REFLECTION_TYPE_FAKE,
 };
 
 const double kIor = 1.5; // 屈折率(Index of refraction)
