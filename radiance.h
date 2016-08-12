@@ -101,12 +101,12 @@ Color radiance(const Ray &ray, Random *rnd, const int depth) {
 		double diffuse = 0.0;
 		double specular = 0.0;
 
-		for (int i = 0; lights[i] != nullptr; i++) {
-			Vec3 light_direction = hitpoint.position - lights[i]->position;
+		for (auto light : lights) {
+			Vec3 light_direction = hitpoint.position - light->position;
 			double length_squared = light_direction.length_squared();
 
 			light_direction = normalize(light_direction);
-			incoming_radiance += (lights[i]->emission / length_squared) * softShadow(hitpoint.position, -light_direction);
+			incoming_radiance += (light->emission / length_squared) * softShadow(hitpoint.position, -light_direction);
 			
 			diffuse += std::max(dot(orienting_normal, light_direction), 0.1);
 			specular += pow(clamp(dot(reflect(light_direction, orienting_normal), ray.dir), 0.0, 1.0), 10.0);

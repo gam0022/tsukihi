@@ -1,4 +1,4 @@
 Path tracing renderer: edupt
 
 640x480 1 spp
-Total time: 3.479sec.
+Total time: 3.535sec.

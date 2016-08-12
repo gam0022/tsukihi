@@ -24,6 +24,7 @@ public:
 	}
 
 	bool intersect(const Ray &ray, Hitpoint *hitpoint) const;
+	double distanceFunction(const Vec3 &position) const;
 };
 
 bool Sphere::intersect(const Ray &ray, Hitpoint *hitpoint) const {
@@ -50,6 +51,10 @@ bool Sphere::intersect(const Ray &ray, Hitpoint *hitpoint) const {
 	hitpoint->position = ray.org + hitpoint->distance * ray.dir;
 	hitpoint->normal = normalize(hitpoint->position - position);
 	return true;
+}
+
+double Sphere::distanceFunction(const Vec3 &position) const {
+	return length(position - this->position) - radius;
 }
 
 };

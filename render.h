@@ -10,6 +10,8 @@
 namespace edupt {
 
 int render(const int width, const int height, const int samples, const int supersamples) {
+	setup();
+
 	// カメラ位置
 
 	// 全体像

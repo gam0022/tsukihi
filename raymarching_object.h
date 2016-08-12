@@ -19,10 +19,6 @@ public:
 	RaymarchingObject(const Color &emission, const Color &color, const ReflectionType reflection_type) : Object(emission, color, reflection_type) {
 	}
 
-	virtual double distanceFunction(const Vec3 &position) const {
-		return 0.0;
-	}
-
 	Vec3 calcNormal(const Vec3 &position) const;
 	bool intersect(const Ray &ray, Hitpoint *hitpoint) const;
 };

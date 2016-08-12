@@ -1,6 +1,9 @@
 ﻿#ifndef	_SCENE_H_
 #define	_SCENE_H_
 
+#include <vector>
+#include <typeinfo>
+
 #include "constant.h"
 #include "intersection.h"
 
@@ -8,13 +11,12 @@
 #include "sphere.h"
 #include "raymarching_sphere.h"
 #include "raymarching_menger_sponge.h"
-
 #include "point_light.h"
 
 namespace edupt {
 
 // レンダリングするシーンデータ
-const Object* objects[] = {
+Object* objects[] = {
 	new Sphere(1e5, Vec3( 1e5+1, 40.8, 81.6), Color(),      Color(0.75, 0.25, 0.25), REFLECTION_TYPE_DIFFUSE), // 左
 	new Sphere(1e5, Vec3(-1e5+99, 40.8, 81.6),Color(),      Color(0.25, 0.25, 0.75), REFLECTION_TYPE_DIFFUSE), // 右
 	new Sphere(1e5, Vec3(50, 40.8, 1e5),      Color(),      Color(0.75, 0.75, 0.75), REFLECTION_TYPE_DIFFUSE), // 奥
@@ -22,7 +24,7 @@ const Object* objects[] = {
 	new Sphere(1e5, Vec3(50, 1e5, 81.6),      Color(),      Color(0.75, 0.75, 0.75), REFLECTION_TYPE_DIFFUSE), // 床
 	new Sphere(1e5, Vec3(50, -1e5+81.6, 81.6),Color(),      Color(0.75, 0.75, 0.75), REFLECTION_TYPE_DIFFUSE), // 天井
 
-	new Sphere(1.0,Vec3(50.0, 90.0 - 40, 81.6),   Color(36,36,36), Color(),              REFLECTION_TYPE_SPECULAR), //照明
+	//new Sphere(1.0,Vec3(50.0, 90.0 - 40, 81.6),   Color(36,36,36), Color(),              REFLECTION_TYPE_SPECULAR), //照明
 
 	//new Sphere(20,Vec(65, 20, 20),           Color(),       Color(0.99, 0.99, 0.99), REFLECTION_TYPE_SPECULAR), // 鏡
 	//new Sphere(16.5,Vec(47, 16.5, 117),       Color(),      Color(0.99, 0.199, 0.99), REFLECTION_TYPE_REFRACTION), // ガラス
@@ -33,21 +35,22 @@ const Object* objects[] = {
 	nullptr
 };
 
-const RaymarchingObject* raymarching_objects[] = {
+RaymarchingObject* raymarching_objects[] = {
 	new RaymarchingMengerSponge(Color(), Color(0.5, 0.5, 0.5), REFLECTION_TYPE_DIFFUSE),
 	nullptr
 };
 
-const PointLight* lights[] = {
-	new PointLight(Color(255, 255, 255), Vec3(50.0, 90.0 - 40, 81.6)),
-	nullptr
-};
+std::vector<PointLight*> lights;
+
+void setup() {
+	lights.push_back(new PointLight(1.0, Vec3(50.0, 90.0 - 40, 81.6), Color(255, 255, 255)));
+}
 
 // シーンとの交差判定関数
 inline bool intersect_scene(const Ray &ray, Intersection *intersection) {
 	// 初期化
 	intersection->hitpoint.distance = kINF;
-	intersection->object_id  = -1;
+	intersection->object_id = -1;
 	
 	// 線形探索
 	for (int i = 0; objects[i] != nullptr; i++) {
