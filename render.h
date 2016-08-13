@@ -2,6 +2,7 @@
 #define _RENDER_H_
 
 #include <iostream>
+#include <omp.h>
 
 #include "radiance.h"
 #include "image.h"
@@ -44,8 +45,11 @@ int render(const int width, const int height, const int samples, const int super
 	std::cout << width << "x" << height << " " << samples * (supersamples * supersamples) << " spp" << std::endl;
 
 	// OpenMP
-	#pragma omp parallel for schedule(dynamic, 1) num_threads(8)
+	#pragma omp parallel for schedule(dynamic, 1)// num_threads(8)
 	for (int y = 0; y < height; y ++) {
+		if (y == 0) {
+			std::cout << "threads: " << omp_get_num_threads() << std::endl;
+		}
 		std::cerr << "Rendering (y = " << y << ") " << (100.0 * y / (height - 1)) << "%" << std::endl;
 
 		Random rnd(y + 1);
