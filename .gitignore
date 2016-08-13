@@ -253,6 +253,6 @@ paket-files/
 *.sln.iml
 
 # Ohter
-image.ppm
-image.png
+*.ppm
+*.png
 output.txt
