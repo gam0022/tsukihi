@@ -32,7 +32,7 @@ Object* objects[] = {
 	//new Sphere(15,Vec(73, 15, 100),       Color(),      Color(0.99, 0.99, 0.99), REFLECTION_TYPE_REFRACTION), //ガラス
 
 	//new RaymarchingSphere(Color(), Color(0.75, 0.25, 0.25), REFLECTION_TYPE_SPECULAR),
-	new RaymarchingMengerSponge(Color(), Color(0.5, 0.5, 0.5), REFLECTION_TYPE_DIFFUSE),
+	new RaymarchingMengerSponge(Color(), Color(0.25, 0.75, 0.25), REFLECTION_TYPE_DIFFUSE),
 	nullptr
 };
 

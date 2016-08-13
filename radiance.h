@@ -108,6 +108,7 @@ Color radiance(const Ray &ray, Random *rnd, const int depth) {
 	// FAKE
 	case REFLECTION_TYPE_FAKE: {
 		incoming_radiance = Vec3(0, 0, 0);
+		double ambient = calcAO(hitpoint.position, orienting_normal) + 0.5;
 		double diffuse = 0.0;
 		double specular = 0.0;
 
@@ -116,12 +117,12 @@ Color radiance(const Ray &ray, Random *rnd, const int depth) {
 			double length_squared = light_direction.length_squared();
 
 			light_direction = normalize(light_direction);
-			incoming_radiance += light->emission * calcSoftShadow(hitpoint.position,light_direction) * calcAO(hitpoint.position, orienting_normal) / length_squared;
+			incoming_radiance += light->emission * calcSoftShadow(hitpoint.position,light_direction) / length_squared;
 			
 			diffuse += std::max(dot(orienting_normal, light_direction), 0.0);
 			specular += pow(clamp(dot(reflect(light_direction, orienting_normal), ray.dir), 0.0, 1.0), 10.0);
 		}
-		weight = diffuse * now_object->color + specular;
+		weight = (ambient + diffuse) * now_object->color + specular;
 	} break;
 
 	// 完全拡散面
