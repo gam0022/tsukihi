@@ -14,7 +14,7 @@ namespace tukihi {
 
 struct RaymarchingObject : public Object {
 public:
-	static const int kREP = 64;
+	static const int kREP = 256;
 
 	RaymarchingObject(const Color &emission, const Color &color, const ReflectionType reflection_type) : Object(emission, color, reflection_type) {
 	}
