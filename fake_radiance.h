@@ -10,7 +10,6 @@
 #include "random.h"
 
 namespace tukihi {
-
 	const double shadowIntensity = 0.3;
 	const double shadowSharpness = 8.0;
 
@@ -185,7 +184,6 @@ namespace tukihi {
 
 		return now_object->emission + multiply(weight, incoming_radiance);
 	}
-
 };
 
 #endif

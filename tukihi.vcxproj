@@ -137,7 +137,7 @@
     <ClInclude Include="raymarching_menger_sponge.h" />
     <ClInclude Include="raymarching_object.h" />
     <ClInclude Include="raymarching_sphere.h" />
-    <ClInclude Include="render.h" />
+    <ClInclude Include="renderer.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="sphere.h" />
     <ClInclude Include="stb_image.h" />

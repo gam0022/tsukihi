@@ -33,15 +33,19 @@ void hdr_correction(Color *image, const int width, const int height) {
 	}
 }
 
-void save_ppm_file(const std::string &filename, const Color *image, const int width, const int height) {
-	FILE *f = fopen(filename.c_str(), "wb");
+int save_ppm_file(const std::string &filename, const Color *image, const int width, const int height) {
+	FILE *f;
+	if (auto error = fopen_s(&f, filename.c_str(), "wb")) {
+		return 0;
+	}
 	fprintf(f, "P3\n%d %d\n%d\n", width, height, 255);
 	for (int i = 0; i < width * height; i++)
-		fprintf(f,"%d %d %d ", to_int(image[i].x), to_int(image[i].y), to_int(image[i].z));
+		fprintf(f, "%d %d %d ", to_int(image[i].x), to_int(image[i].y), to_int(image[i].z));
 	fclose(f);
+	return 1;
 }
 
-void save_png_file(const std::string &filename, const Color *image, const int width, const int height) {
+int save_png_file(const std::string &filename, const Color *image, const int width, const int height) {
 	int bpp = 3;
 	unsigned char* pixels = new unsigned char[width * height * bpp];
 	for (int i = 0; i < width * height; i++) {
@@ -49,8 +53,9 @@ void save_png_file(const std::string &filename, const Color *image, const int wi
 		pixels[i * 3 + 1] = to_int(image[i].y);
 		pixels[i * 3 + 2] = to_int(image[i].z);
 	}
-	stbi_write_png(filename.c_str(), width, height, bpp, pixels, width * bpp);
+	int ret = stbi_write_png(filename.c_str(), width, height, bpp, pixels, width * bpp);
 	delete pixels;
+	return ret;
 }
 
 };
