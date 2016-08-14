@@ -12,6 +12,17 @@
 namespace tukihi {
 
 const int KProgressImageInterval = 100;
+int progres_image_count = 0;
+inline bool saveProgressImage(Color *image, int width, int height, int y) {
+
+	if (y % KProgressImageInterval == 0) {
+		char buffer[100];
+		sprintf(buffer, "%03d.png", progres_image_count);
+		std::string filename(buffer);
+		save_png_file(filename, image, width, height);
+		++progres_image_count;
+	}
+}
 
 int render(const int width, const int height, const int samples, const int supersamples) {
 	setup();
@@ -53,15 +64,9 @@ int render(const int width, const int height, const int samples, const int super
 		if (y == 0) {
 			std::cout << "threads: " << omp_get_num_threads() << std::endl;
 		}
-
-		if (y % KProgressImageInterval == 0) {
-			char buffer[100];
-			sprintf(buffer, "progress_%d.png", y);
-			std::string filename(buffer);
-			save_png_file(filename, image, width, height);
-		}
-
 		std::cerr << "Rendering (y = " << y << ") " << (100.0 * y / (height - 1)) << "%" << std::endl;
+
+		saveProgressImage(image, width, height, y);
 
 		Random rnd(y + 1);
 		for (int x = 0; x < width; x ++) {
