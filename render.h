@@ -11,6 +11,8 @@
 
 namespace tukihi {
 
+const int KProgressImageInterval = 100;
+
 int render(const int width, const int height, const int samples, const int supersamples) {
 	setup();
 
@@ -51,6 +53,14 @@ int render(const int width, const int height, const int samples, const int super
 		if (y == 0) {
 			std::cout << "threads: " << omp_get_num_threads() << std::endl;
 		}
+
+		if (y % KProgressImageInterval == 0) {
+			char buffer[100];
+			sprintf(buffer, "progress_%d.png", y);
+			std::string filename(buffer);
+			save_png_file(filename, image, width, height);
+		}
+
 		std::cerr << "Rendering (y = " << y << ") " << (100.0 * y / (height - 1)) << "%" << std::endl;
 
 		Random rnd(y + 1);
