@@ -10,11 +10,16 @@
 #include "random.h"
 
 namespace tukihi {
+	enum RenderMode {
+		RENDER_MODE_FAKE,
+		RENDER_MODE_PATHTRACING,
+	};
+
 	class Renderer {
 	public:
 		Renderer() {}
 		const int KProgressImageInterval = 100;
-		int render(const int width, const int height, const int samples, const int supersamples);
+		int render(const int width, const int height, const RenderMode render_mode, int samples, const int supersamples);
 
 	private:
 		int progres_image_count = 0;
@@ -31,25 +36,12 @@ namespace tukihi {
 		}
 	}
 
-	int Renderer::render(const int width, const int height, const int samples, const int supersamples) {
+	int Renderer::render(const int width, const int height, const RenderMode render_mode, int samples, const int supersamples) {
+		if (render_mode == RENDER_MODE_FAKE) {
+			samples = 1;
+		}
+
 		setup();
-
-		// カメラ位置
-
-		// 全体像
-		const Vec3 camera_position = Vec3(50.0, 52.0, 220.0);
-		const Vec3 camera_dir = normalize(Vec3(0.0, -0.04, -1.0));
-		const Vec3 camera_up = Vec3(0.0, 1.0, 0.0);
-
-		// 中身
-		//const Vec3 camera_position = Vec3(50, 60, 80);
-		//const Vec3 camera_dir      = normalize(Vec3(-0.1, -1.0, -0.01));
-		//const Vec3 camera_up       = Vec3(0.0, -1.0, 0.0);
-
-		// 斜め視点
-		//const Vec3 camera_position = Vec3(90.0, 78.0, 130.0);
-		//const Vec3 camera_dir = normalize(Vec3(-0.4, -0.5, -0.5));
-		//const Vec3 camera_up = Vec3(0.0, 1.0, 0.0);
 
 		// ワールド座標系でのスクリーンの大きさ
 		const double screen_width = 30.0 * width / height;
@@ -95,8 +87,16 @@ namespace tukihi {
 							// レイを飛ばす方向
 							const Vec3 dir = normalize(screen_position - camera_position);
 
-							accumulated_radiance = accumulated_radiance +
-								radiance_by_fake(Ray(camera_position, dir), &rnd, 0) / samples / (supersamples * supersamples);
+							switch (render_mode) {
+							case RENDER_MODE_FAKE:{
+								accumulated_radiance = radiance_by_fake(Ray(camera_position, dir), &rnd, 0) / (supersamples * supersamples);
+							} break;
+
+							case RENDER_MODE_PATHTRACING: {
+								accumulated_radiance +=
+									radiance_by_pathtracing(Ray(camera_position, dir), &rnd, 0) / samples / (supersamples * supersamples);
+							} break;
+							}
 						}
 						image[image_index] = image[image_index] + accumulated_radiance;
 					}
@@ -107,7 +107,7 @@ namespace tukihi {
 		// 出力
 		//hdr_correction(image, width, height);
 		save_png_file(std::string("image.png"), image, width, height);
-		save_ppm_file(std::string("image.ppm"), image, width, height);
+		//save_ppm_file(std::string("image.ppm"), image, width, height);
 		return 0;
 	}
 };

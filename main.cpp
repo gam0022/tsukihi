@@ -12,9 +12,8 @@ int main(int argc, char **argv) {
 	std::cout << "Raytracing and Raymarching hybrid 'fake' renderer: tukihi" << std::endl << std::endl;
 	clock_t start = clock();
 
-	// 640x480の画像、(2x2) * 4 sample / pixel
 	auto renderer = new tukihi::Renderer();
-	renderer->render(640, 480, 1, 1);
+	renderer->render(640, 480, tukihi::RENDER_MODE_FAKE, 1, 1);
 	delete renderer;
 
 	clock_t end = clock();

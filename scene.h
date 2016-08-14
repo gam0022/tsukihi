@@ -15,6 +15,23 @@
 
 namespace tukihi {
 
+// カメラ位置
+
+// 全体像
+const Vec3 camera_position = Vec3(50.0, 52.0, 220.0);
+const Vec3 camera_dir = normalize(Vec3(0.0, -0.04, -1.0));
+const Vec3 camera_up = Vec3(0.0, 1.0, 0.0);
+
+// 中身
+//const Vec3 camera_position = Vec3(50, 60, 80);
+//const Vec3 camera_dir      = normalize(Vec3(-0.1, -1.0, -0.01));
+//const Vec3 camera_up       = Vec3(0.0, -1.0, 0.0);
+
+// 斜め視点
+//const Vec3 camera_position = Vec3(90.0, 78.0, 130.0);
+//const Vec3 camera_dir = normalize(Vec3(-0.4, -0.5, -0.5));
+//const Vec3 camera_up = Vec3(0.0, 1.0, 0.0);
+
 // レンダリングするシーンデータ
 Object* objects[] = {
 	new Sphere(1e5, Vec3( 1e5+1, 40.8, 81.6), Color(),      Color(0.75, 0.25, 0.25), REFLECTION_TYPE_DIFFUSE), // 左
