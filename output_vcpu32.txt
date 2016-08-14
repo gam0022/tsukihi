@@ -1,5 +1,0 @@
-Raytracing and Raymarching hybrid 'fake' renderer: tukihi (vCPU: 32)
-
-Number of Threads: 1
-640x480 4 spp
-Total time: 13.359sec.

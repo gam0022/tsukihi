@@ -1,4 +1,0 @@
-Raytracing and Raymarching hybrid 'fake' renderer: tukihi (vCPU: 8)
-
-640x480 4 spp
-Total time: 13.239sec.
