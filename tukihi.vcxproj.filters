@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="constant.h" />
+    <ClInclude Include="intersection.h" />
+    <ClInclude Include="material.h" />
+    <ClInclude Include="math.h" />
+    <ClInclude Include="object.h" />
+    <ClInclude Include="point_light.h" />
+    <ClInclude Include="image.h" />
+    <ClInclude Include="random.h" />
+    <ClInclude Include="ray.h" />
+    <ClInclude Include="raymarching_menger_sponge.h" />
+    <ClInclude Include="raymarching_object.h" />
+    <ClInclude Include="raymarching_sphere.h" />
+    <ClInclude Include="render.h" />
+    <ClInclude Include="scene.h" />
+    <ClInclude Include="sphere.h" />
+    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="stb_image_write.h" />
+    <ClInclude Include="vec3.h" />
+    <ClInclude Include="vec2.h" />
+    <ClInclude Include="pathtracing_radiance.h">
+      <Filter>radiance</Filter>
+    </ClInclude>
+    <ClInclude Include="fake_radiance.h">
+      <Filter>radiance</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="radiance">
+      <UniqueIdentifier>{c574d642-3dcd-43f9-94e5-ab35bfbf9d2c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

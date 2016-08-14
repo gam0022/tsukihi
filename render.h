@@ -4,7 +4,8 @@
 #include <iostream>
 #include <omp.h>
 
-#include "radiance.h"
+#include "pathtracing_radiance.h"
+#include "fake_radiance.h"
 #include "image.h"
 #include "random.h"
 
@@ -73,7 +74,7 @@ int render(const int width, const int height, const int samples, const int super
 						const Vec3 dir = normalize(screen_position - camera_position);
 
 						accumulated_radiance = accumulated_radiance + 
-							radiance(Ray(camera_position, dir), &rnd, 0) / samples / (supersamples * supersamples);
+							radiance_by_fake(Ray(camera_position, dir), &rnd, 0) / samples / (supersamples * supersamples);
 					}
 					image[image_index] = image[image_index] + accumulated_radiance;
 				}
