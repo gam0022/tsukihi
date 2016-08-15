@@ -33,16 +33,16 @@ const Vec3 camera_up = Vec3(0.0, 1.0, 0.0);
 //const Vec3 camera_up = Vec3(0.0, 1.0, 0.0);
 
 std::vector<Object*> objects;
-std::vector<RaymarchingObject*> raymarching_objects;
+std::vector<RaymarchingObject*> cast_shadow_objects;
 std::vector<PointLight*> lights;
 
 void setup() {
-	objects.push_back(new Sphere(1e5, Vec3(1e5 + 1, 40.8, 81.6), Color(), Color(0.75, 0.25, 0.25), REFLECTION_TYPE_DIFFUSE)); // 左
-	objects.push_back(new Sphere(1e5, Vec3(-1e5 + 99, 40.8, 81.6), Color(), Color(0.25, 0.25, 0.75), REFLECTION_TYPE_DIFFUSE)); // 右
-	objects.push_back(new Sphere(1e5, Vec3(50, 40.8, 1e5), Color(), Color(0.75, 0.75, 0.75), REFLECTION_TYPE_DIFFUSE));// 奥
-	objects.push_back(new Sphere(1e5, Vec3(50, 40.8, -1e5 + 250), Color(), Color(), REFLECTION_TYPE_DIFFUSE));// 手前
-	objects.push_back(new Sphere(1e5, Vec3(50, 1e5, 81.6), Color(), Color(0.75, 0.75, 0.75), REFLECTION_TYPE_DIFFUSE)); // 床
-	objects.push_back(new Sphere(1e5, Vec3(50, -1e5 + 81.6, 81.6), Color(), Color(0.75, 0.75, 0.75), REFLECTION_TYPE_DIFFUSE)); // 天井
+	objects.push_back(new Sphere(1e5, Vec3(-1e5 + 1, 40.8, 81.6), Color(), Color(0.75, 0.25, 0.25), REFLECTION_TYPE_DIFFUSE)); // 左
+	objects.push_back(new Sphere(1e5, Vec3(1e5 + 99, 40.8, 81.6), Color(), Color(0.25, 0.25, 0.75), REFLECTION_TYPE_DIFFUSE)); // 右
+	objects.push_back(new Sphere(1e5, Vec3(50, 40.8, -1e5), Color(), Color(0.75, 0.75, 0.75), REFLECTION_TYPE_DIFFUSE));// 奥
+	objects.push_back(new Sphere(1e5, Vec3(50, 40.8, 1e5 + 250), Color(), Color(), REFLECTION_TYPE_DIFFUSE));// 手前
+	objects.push_back(new Sphere(1e5, Vec3(50, -1e5, 81.6), Color(), Color(0.75, 0.75, 0.75), REFLECTION_TYPE_DIFFUSE)); // 床
+	objects.push_back(new Sphere(1e5, Vec3(50, 1e5 + 81.6, 81.6), Color(), Color(0.75, 0.75, 0.75), REFLECTION_TYPE_DIFFUSE)); // 天井
 	
 	//objects.push_back(new Sphere(1.0, Vec3(50.0, 90.0 - 10, 81.6), Color(36, 36, 36), Color(), REFLECTION_TYPE_SPECULAR)); //照明
 	//objects.push_back(new Sphere(1.0, Vec3(50.0, 20, 120), Color(36, 36, 36), Color(), REFLECTION_TYPE_SPECULAR)); //照明
@@ -52,7 +52,7 @@ void setup() {
 	//objects.push_back(new Sphere(15,Vec(73, 15, 100),       Color(),      Color(0.99, 0.99, 0.99), REFLECTION_TYPE_REFRACTION)); //ガラス
 	//objects.push_back(new RaymarchingSphere(Color(), Color(0.75, 0.25, 0.25), REFLECTION_TYPE_SPECULAR));
 	objects.push_back(new RaymarchingMengerSponge(Color(), Color(0.25, 0.75, 0.25), REFLECTION_TYPE_DIFFUSE));
-	raymarching_objects.push_back(new RaymarchingMengerSponge(Color(), Color(0.25, 0.75, 0.25), REFLECTION_TYPE_DIFFUSE));
+	cast_shadow_objects.push_back(new RaymarchingMengerSponge(Color(), Color(0.25, 0.75, 0.25), REFLECTION_TYPE_DIFFUSE));
 	
 	lights.push_back(new PointLight(1.0, Vec3(50.0, 90.0 - 10, 81.6), Color(255, 255, 255)));
 	lights.push_back(new PointLight(1.0, Vec3(50.0, 20, 120.0), Color(255, 255, 255)));
@@ -87,15 +87,6 @@ inline bool intersect_scene(const Ray &ray, Intersection *intersection) {
 
 	return (intersection->object != nullptr);
 }
-
-inline double map(const Vec3 &position) {
-	double min = std::numeric_limits<double>::max();
-	for (auto raymarching_object : raymarching_objects) {
-		min = std::min(min, raymarching_object->distanceFunction(position));
-	}
-	return min;
-}
-
 };
 
 #endif

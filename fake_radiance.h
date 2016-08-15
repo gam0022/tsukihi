@@ -13,61 +13,45 @@ namespace tukihi {
 	const double shadowIntensity = 0.3;
 	const double shadowSharpness = 8.0;
 
-	inline double calcAO(Vec3 pos, Vec3 normal) {
-		double sca = 1.5, occ = 0.0;
-		for (int i = 0; i < 5; i++) {
-			double hr = 0.01 + i / 8.0;
-			double dd = map(normal * hr + pos);
-			occ += (hr - dd) * sca;
-			sca *= 0.7;
+	inline double map(const Vec3 &position) {
+		double min = std::numeric_limits<double>::max();
+		for (auto raymarching_object : objects) {
+			min = std::min(min, std::abs(raymarching_object->distanceFunction(position)));
 		}
-		return clamp(1.0 - occ, 0.0, 1.0);
+		return min;
 	}
 
-	inline double calcSoftShadow(Vec3 ro, Vec3 rd) {
+	inline double cast_shadow_map(const Vec3 &position) {
+		double min = std::numeric_limits<double>::max();
+		for (auto raymarching_object : cast_shadow_objects) {
+			min = std::min(min, std::abs(raymarching_object->distanceFunction(position)));
+		}
+		return min;
+	}
+
+	inline double calcAO(Vec3 pos, Vec3 normal) {
+		double k = 1.0, occluded = 0.0;
+		for (int i = 0; i < 5; i++) {
+			double length = 2.0 * i;
+			double distance = map(normal * length + pos);
+			occluded += (length - distance) * k;
+			k *= 0.3;
+		}
+		return clamp(1.0 - occluded, 0.0, 1.0);
+	}
+
+	inline double calcSoftShadow(Vec3 origin, Vec3 dir) {
 		double dist;
 		double depth = 0.5;
 		double bright = 1.0;
 		for (int i = 0; i < 30; i++) {
-			dist = map(ro + rd * depth);
+			dist = cast_shadow_map(origin + dir * depth);
 			if (dist < kEPS) return shadowIntensity;
 			bright = std::min(bright, shadowSharpness * dist / depth);
 			depth += dist;
 		}
 		return shadowIntensity + (1.0 - shadowIntensity) * bright;
 	}
-
-	/*inline double softShadow(Vec3 ro, Vec3 lp, double k) {
-
-	// More would be nicer. More is always nicer, but not really affordable... Not on my slow test machine, anyway.
-	const int maxIterationsShad = 16;
-
-	Vec3 rd = (lp - ro); // Unnormalized direction ray.
-
-	double shade = 1.0;
-	double dist = 0.05;
-	double end = std::max(length(rd), 0.001);
-	double stepDist = end / double(maxIterationsShad);
-
-	rd /= end;
-
-	// Max shadow iterations - More iterations make nicer shadows, but slow things down. Obviously, the lowest
-	// number to give a decent shadow is the best one to choose.
-	for (int i = 0; i<maxIterationsShad; i++) {
-
-	double h = map(ro + rd * dist);
-	//shade = min(shade, k*h/dist);
-	shade = std::min(shade, smoothstep(0.0, 1.0, k * h / dist)); // Subtle difference. Thanks to IQ for this tidbit.
-	//dist += min( h, stepDist ); // So many options here: dist += clamp( h, 0.0005, 0.2 ), etc.
-	dist += clamp(h, 0.02, 0.25);
-
-	// Early exits from accumulative distance function calls tend to be a good thing.
-	if (h<0.001 || dist > end) break;
-	}
-
-	// I've added 0.5 to the final shade value, which lightens the shadow a bit. It's a preference thing.
-	return std::min(std::max(shade, 0.0) + 0.25, 1.0);
-	}*/
 
 	// ray•ûŒü‚©‚ç‚Ì•úË‹P“x‚ğ‹‚ß‚é
 	Color radiance_by_fake(const Ray &ray, Random *rnd, const int depth) {
