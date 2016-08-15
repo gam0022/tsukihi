@@ -68,7 +68,7 @@ void setup() {
 inline bool intersect_scene(const Ray &ray, Intersection *intersection) {
 	// 初期化
 	intersection->hitpoint.distance = kINF;
-	intersection->object_id = -1;
+	intersection->object = nullptr;
 	
 	// 線形探索
 	int i = 0;
@@ -77,13 +77,13 @@ inline bool intersect_scene(const Ray &ray, Intersection *intersection) {
 		if (object->intersect(ray, &hitpoint)) {
 			if (hitpoint.distance < intersection->hitpoint.distance) {
 				intersection->hitpoint = hitpoint;
-				intersection->object_id = i;
+				intersection->object = object;
 			}
 		}
 		i++;
 	}
 
-	return (intersection->object_id != -1);
+	return (intersection->object != nullptr);
 }
 
 inline double map(const Vec3 &position) {

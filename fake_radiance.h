@@ -76,7 +76,7 @@ namespace tukihi {
 		if (!intersect_scene(ray, &intersection))
 			return kBackgroundColor;
 
-		const Object* now_object = objects[intersection.object_id];
+		const Object* now_object = intersection.object;
 		const Hitpoint &hitpoint = intersection.hitpoint;
 		const Vec3 orienting_normal = dot(hitpoint.normal, ray.dir) < 0.0 ? hitpoint.normal : (-1.0 * hitpoint.normal); // 交差位置の法線（物体からのレイの入出を考慮）
 																														// 色の反射率最大のものを得る。ロシアンルーレットで使う。
