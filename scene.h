@@ -50,7 +50,6 @@ Object* objects[] = {
 
 	//new RaymarchingSphere(Color(), Color(0.75, 0.25, 0.25), REFLECTION_TYPE_SPECULAR),
 	new RaymarchingMengerSponge(Color(), Color(0.25, 0.75, 0.25), REFLECTION_TYPE_DIFFUSE),
-	nullptr
 };
 
 RaymarchingObject* raymarching_objects[] = {
@@ -72,14 +71,16 @@ inline bool intersect_scene(const Ray &ray, Intersection *intersection) {
 	intersection->object_id = -1;
 	
 	// 線形探索
-	for (int i = 0; objects[i] != nullptr; i++) {
+	int i = 0;
+	for (auto object : objects) {
 		Hitpoint hitpoint;
-		if (objects[i]->intersect(ray, &hitpoint)) {
+		if (object->intersect(ray, &hitpoint)) {
 			if (hitpoint.distance < intersection->hitpoint.distance) {
 				intersection->hitpoint = hitpoint;
 				intersection->object_id = i;
 			}
 		}
+		i++;
 	}
 
 	return (intersection->object_id != -1);
