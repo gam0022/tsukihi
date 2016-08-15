@@ -2,11 +2,9 @@
 #define _CONSTANT_H_
 
 namespace tukihi {
-
-const double kPI = 3.14159265358979323846;
-const double kINF = 1e128;
-const double kEPS = 1e-6;
-
+	const double kPI = 3.14159265358979323846;
+	const double kINF = 1e128;
+	const double kEPS = 1e-6;
 };
 
 #endif
