@@ -17,10 +17,10 @@ namespace tukihi {
 	public:
 		RaymarchingMbox(const Color &emission, const Color &color, const ReflectionType reflection_type) : RaymarchingObject(emission, color, reflection_type) {
 			kREP = 512;
-			kREPS = 1e-1;
+			kREPS = 11e-3;
 		}
 
-		double mboxScale = 2.2;
+		double mboxScale = 3.0;
 
 		inline double distFunc(Vec3 p) const {
 			const int n = 12;
@@ -34,8 +34,8 @@ namespace tukihi {
 		}
 
 		double distanceFunction(const Vec3 &position) const {
-			double scale = 5.0;
-			auto center = Vec3(50, 30, 70);
+			double scale = 1.0;
+			auto center = Vec3(0, 0, 0);
 			return distFunc((position - center) / scale) * scale;
 		}
 	};

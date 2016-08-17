@@ -15,29 +15,30 @@
 #include "point_light.h"
 
 namespace tukihi {
+	Vec3 camera_position;
+	Vec3 camera_dir;
+	Vec3 camera_up;
 
-// カメラ位置
+	std::vector<Object*> objects;
+	std::vector<RaymarchingObject*> cast_shadow_objects;
+	std::vector<PointLight*> lights;
 
-// 全体像
-const Vec3 camera_position = Vec3(50.0, 52.0, 220.0);
-const Vec3 camera_dir = normalize(Vec3(0.0, -0.04, -1.0));
-const Vec3 camera_up = Vec3(0.0, 1.0, 0.0);
+void setup_sponge() {
+	// 全体像
+	camera_position = Vec3(50.0, 52.0, 220.0);
+	camera_dir = normalize(Vec3(0.0, -0.04, -1.0));
+	camera_up = Vec3(0.0, 1.0, 0.0);
 
-// 中身
-//const Vec3 camera_position = Vec3(50, 60, 80);
-//const Vec3 camera_dir      = normalize(Vec3(-0.1, -1.0, -0.01));
-//const Vec3 camera_up       = Vec3(0.0, -1.0, 0.0);
+	// 中身
+	//camera_position = Vec3(50, 60, 80);
+	//camera_dir      = normalize(Vec3(-0.1, -1.0, -0.01));
+	//camera_up       = Vec3(0.0, -1.0, 0.0);
 
-// 斜め視点
-//const Vec3 camera_position = Vec3(90.0, 78.0, 130.0);
-//const Vec3 camera_dir = normalize(Vec3(-0.4, -0.5, -0.5));
-//const Vec3 camera_up = Vec3(0.0, 1.0, 0.0);
+	// 斜め視点
+	//camera_position = Vec3(90.0, 78.0, 130.0);
+	//camera_dir = normalize(Vec3(-0.4, -0.5, -0.5));
+	//camera_up = Vec3(0.0, 1.0, 0.0);
 
-std::vector<Object*> objects;
-std::vector<RaymarchingObject*> cast_shadow_objects;
-std::vector<PointLight*> lights;
-
-void setup() {
 	objects.push_back(new Sphere(1e5, Vec3(-1e5 + 1, 40.8, 81.6), Color(), Color(0.75, 0.25, 0.25), REFLECTION_TYPE_DIFFUSE)); // 左
 	objects.push_back(new Sphere(1e5, Vec3(1e5 + 99, 40.8, 81.6), Color(), Color(0.25, 0.25, 0.75), REFLECTION_TYPE_DIFFUSE)); // 右
 	objects.push_back(new Sphere(1e5, Vec3(50, 40.8, -1e5), Color(), Color(0.75, 0.75, 0.75), REFLECTION_TYPE_DIFFUSE));// 奥
@@ -53,16 +54,25 @@ void setup() {
 	//objects.push_back(new Sphere(15,Vec(73, 15, 100),       Color(),      Color(0.99, 0.99, 0.99), REFLECTION_TYPE_REFRACTION)); //ガラス
 	//objects.push_back(new RaymarchingSphere(Color(), Color(0.75, 0.25, 0.25), REFLECTION_TYPE_SPECULAR));
 
-	//auto sponge = new RaymarchingMengerSponge(Color(), Color(0.25, 0.75, 0.25), REFLECTION_TYPE_DIFFUSE);
-	//objects.push_back(sponge);
-	//cast_shadow_objects.push_back(sponge);
+	auto sponge = new RaymarchingMengerSponge(Color(), Color(0.25, 0.75, 0.25), REFLECTION_TYPE_DIFFUSE);
+	objects.push_back(sponge);
+	cast_shadow_objects.push_back(sponge);
+	
+	lights.push_back(new PointLight(1.0, Vec3(50.0, 90.0 - 10, 81.6), Color(255, 255, 255)));
+	lights.push_back(new PointLight(1.0, Vec3(50.0, 20, 120.0), Color(255, 255, 255)));
+}
+
+void setup_mbox() {
+	camera_position = Vec3(1.373, 2.741, 0.026);
+	camera_dir = normalize(Vec3(-0.8, -0.5, 0.001));
+	camera_up = Vec3(0.0, 1.0, 0.0);
 
 	auto mbox = new RaymarchingMbox(Color(), Color(0.25, 0.75, 0.25), REFLECTION_TYPE_DIFFUSE);
 	objects.push_back(mbox);
 	cast_shadow_objects.push_back(mbox);
-	
-	lights.push_back(new PointLight(1.0, Vec3(50.0, 90.0 - 10, 81.6), Color(255, 255, 255)));
-	lights.push_back(new PointLight(1.0, Vec3(50.0, 20, 120.0), Color(255, 255, 255)));
+
+	lights.push_back(new PointLight(1.0, camera_position - camera_dir * 1 + Vec3(0, -2.0, 0), Color(5, 5, 5)));
+	//lights.push_back(new PointLight(1.0, Vec3(50.0, 20, 120.0), Color(255, 255, 255)));
 }
 
 // シーンとの交差判定関数

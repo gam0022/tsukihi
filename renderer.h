@@ -41,13 +41,13 @@ namespace tukihi {
 			samples = 1;
 		}
 
-		setup();
+		setup_mbox();
 
 		// ワールド座標系でのスクリーンの大きさ
 		const double screen_width = 30.0 * width / height;
 		const double screen_height = 30.0;
 		// スクリーンまでの距離
-		const double screen_dist = 40.0;
+		const double screen_dist = 40.0 * 0.3;
 		// スクリーンを張るベクトル
 		const Vec3 screen_x = normalize(cross(camera_dir, camera_up)) * screen_width;
 		const Vec3 screen_y = normalize(cross(screen_x, camera_dir)) * screen_height;
