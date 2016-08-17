@@ -67,6 +67,9 @@
     <ClInclude Include="vec4.h">
       <Filter>Header Files\math</Filter>
     </ClInclude>
+    <ClInclude Include="raymarching_mbox.h">
+      <Filter>Header Files\object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

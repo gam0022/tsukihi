@@ -14,7 +14,8 @@ namespace tukihi {
 
 struct RaymarchingObject : public Object {
 public:
-	static const int kREP = 256;
+	int kREP = 256;
+	double kREPS = 1e-4;
 
 	RaymarchingObject(const Color &emission, const Color &color, const ReflectionType reflection_type) : Object(emission, color, reflection_type) {
 	}
@@ -39,12 +40,12 @@ bool RaymarchingObject::intersect(const Ray &ray, Hitpoint *hitpoint) const {
 		d = distanceFunction(p);
 		distance += d;
 		p = ray.org + distance * ray.dir;
-		if (std::abs(d) < kEPS) break;
+		if (std::abs(d) < kREPS) break;
 	}
 
-	if (std::abs(d) < kEPS) {
+	if (std::abs(d) < kREPS) {
 		hitpoint->normal = calcNormal(p);
-		hitpoint->position = p + hitpoint->normal * kEPS * 100;
+		hitpoint->position = p + hitpoint->normal * kREPS * 100;
 		hitpoint->distance = distance;
 		return true;
 	} else {

@@ -13,7 +13,7 @@ int main(int argc, char **argv) {
 	clock_t start = clock();
 
 	auto renderer = new tukihi::Renderer();
-	renderer->render(640, 480, tukihi::RENDER_MODE_FAKE, 1, 2);
+	renderer->render(640, 480, tukihi::RENDER_MODE_FAKE, 1, 1);
 	delete renderer;
 
 	clock_t end = clock();
