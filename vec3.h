@@ -123,6 +123,9 @@ inline const Vec3 max(const Vec3 &v, double b) {
 inline const Vec3 mod(const Vec3 &v, double b) {
 	return Vec3(mod(v.x, b), mod(v.y, b), mod(v.z, b));
 }
+inline const Vec3 clamp(const Vec3 &v, double a, double b) {
+	return Vec3(clamp(v.x, a, b), clamp(v.y, a, b), clamp(v.z, a, b));
+}
 inline double length(const Vec3 &v) {
 	return v.length();
 }
