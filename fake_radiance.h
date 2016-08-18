@@ -15,16 +15,16 @@ namespace tukihi {
 
 	inline double map(const Vec3 &position) {
 		double min = std::numeric_limits<double>::max();
-		for (auto raymarching_object : objects) {
-			min = std::min(min, std::abs(raymarching_object->distanceFunction(position)));
+		for (auto object : objects) {
+			min = std::min(min, std::abs(object->distanceFunction(position)));
 		}
 		return min;
 	}
 
 	inline double cast_shadow_map(const Vec3 &position) {
 		double min = std::numeric_limits<double>::max();
-		for (auto raymarching_object : cast_shadow_objects) {
-			min = std::min(min, std::abs(raymarching_object->distanceFunction(position)));
+		for (auto object : cast_shadow_objects) {
+			min = std::min(min, std::abs(object->distanceFunction(position)));
 		}
 		return min;
 	}
@@ -63,29 +63,15 @@ namespace tukihi {
 		const Object* now_object = intersection.object;
 		const Hitpoint &hitpoint = intersection.hitpoint;
 		const Vec3 orienting_normal = dot(hitpoint.normal, ray.dir) < 0.0 ? hitpoint.normal : (-1.0 * hitpoint.normal); // 交差位置の法線（物体からのレイの入出を考慮）
-																														// 色の反射率最大のものを得る。ロシアンルーレットで使う。
-																														// ロシアンルーレットの閾値は任意だが色の反射率等を使うとより良い。
-		double russian_roulette_probability = std::max(now_object->color.x, std::max(now_object->color.y, now_object->color.z));
 
-		// 反射回数が一定以上になったらロシアンルーレットの確率を急上昇させる。（スタックオーバーフロー対策）
-		if (depth > kDpethLimit)
-			russian_roulette_probability *= pow(0.5, depth - kDpethLimit);
-
-		// ロシアンルーレットを実行し追跡を打ち切るかどうかを判断する。
-		// ただしDepth回の追跡は保障する。
-		if (depth > kDepth) {
-			if (rnd->next01() >= russian_roulette_probability)
-				return now_object->emission;
-		}
-		else
-			russian_roulette_probability = 1.0; // ロシアンルーレット実行しなかった
+		if (depth > 5) return now_object->emission;
 
 		Color incoming_radiance;
 		Color weight = 1.0;
 
 		switch (now_object->reflection_type) {
 
-			// 完全拡散麺ではない
+			// 古典的なPhongの反射モデル
 		case REFLECTION_TYPE_DIFFUSE: {
 			incoming_radiance = Vec3(0, 0, 0);
 			double ambient = calcAO(hitpoint.position, orienting_normal) + 0.5;
@@ -110,7 +96,7 @@ namespace tukihi {
 			// 完全鏡面なのでレイの反射方向は決定的。
 			// ロシアンルーレットの確率で除算するのは上と同じ。
 			incoming_radiance = radiance_by_fake(Ray(hitpoint.position, ray.dir - hitpoint.normal * 2.0 * dot(hitpoint.normal, ray.dir)), rnd, depth + 1);
-			weight = now_object->color / russian_roulette_probability;
+			weight = now_object->color;
 		} break;
 
 			// 屈折率kIorのガラス
@@ -127,7 +113,7 @@ namespace tukihi {
 
 			if (cos2t < 0.0) { // 全反射
 				incoming_radiance = radiance_by_fake(reflection_ray, rnd, depth + 1);
-				weight = now_object->color / russian_roulette_probability;
+				weight = now_object->color;
 				break;
 			}
 			// 屈折の方向
@@ -143,29 +129,13 @@ namespace tukihi {
 			const double nnt2 = pow(into ? nc / nt : nt / nc, 2.0); // レイの運ぶ放射輝度は屈折率の異なる物体間を移動するとき、屈折率の比の二乗の分だけ変化する。
 			const double Tr = (1.0 - Re) * nnt2; // 屈折方向の光が屈折してray.dirの方向に運ぶ割合
 
-												 // 一定以上レイを追跡したら屈折と反射のどちらか一方を追跡する。（さもないと指数的にレイが増える）
-												 // ロシアンルーレットで決定する。
-			const double probability = 0.25 + 0.5 * Re;
-			if (depth > 2) {
-				if (rnd->next01() < probability) { // 反射
-					incoming_radiance = radiance_by_fake(reflection_ray, rnd, depth + 1) * Re;
-					weight = now_object->color / (probability * russian_roulette_probability);
-				}
-				else { // 屈折
-					incoming_radiance = radiance_by_fake(refraction_ray, rnd, depth + 1) * Tr;
-					weight = now_object->color / ((1.0 - probability) * russian_roulette_probability);
-				}
-			}
-			else { // 屈折と反射の両方を追跡
-				incoming_radiance =
-					radiance_by_fake(reflection_ray, rnd, depth + 1) * Re +
-					radiance_by_fake(refraction_ray, rnd, depth + 1) * Tr;
-				weight = now_object->color / (russian_roulette_probability);
-			}
+			// 屈折と反射の両方を追跡
+			incoming_radiance =
+				radiance_by_fake(reflection_ray, rnd, depth + 1) * Re +
+				radiance_by_fake(refraction_ray, rnd, depth + 1) * Tr;
+			weight = now_object->color;
 		} break;
-
 		}
-
 		return now_object->emission + multiply(weight, incoming_radiance);
 	}
 };
