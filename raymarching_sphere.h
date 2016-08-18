@@ -13,11 +13,12 @@ namespace tukihi {
 
 struct RaymarchingSphere : public RaymarchingObject {
 public:
-	RaymarchingSphere(const Color &emission, const Color &color, const ReflectionType reflection_type) : RaymarchingObject(emission, color, reflection_type) {
+	RaymarchingSphere(const Vec3 &position, const double scale, const Color &emission, const Color &color, const ReflectionType reflection_type) : 
+		RaymarchingObject(position, scale, emission, color, reflection_type) {
 	}
 
-	double distanceFunction(const Vec3 &position) const {
-		return (position - Vec3(77, 16.5, 78)).length() - 16.5;
+	double distanceFunction(const Vec3 &p) const {
+		return length(p - position) - scale;
 	}
 };
 }

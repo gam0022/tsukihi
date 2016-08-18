@@ -54,7 +54,8 @@ void setup_sponge() {
 	//objects.push_back(new Sphere(15,Vec(73, 15, 100),       Color(),      Color(0.99, 0.99, 0.99), REFLECTION_TYPE_REFRACTION)); //ガラス
 	//objects.push_back(new RaymarchingSphere(Color(), Color(0.75, 0.25, 0.25), REFLECTION_TYPE_SPECULAR));
 
-	auto sponge = new RaymarchingMengerSponge(Color(), Color(0.25, 0.75, 0.25), REFLECTION_TYPE_DIFFUSE);
+	double scale = 22;
+	auto sponge = new RaymarchingMengerSponge(Vec3(50, scale, 70), scale, Color(), Color(0.25, 0.75, 0.25), REFLECTION_TYPE_DIFFUSE);
 	objects.push_back(sponge);
 	cast_shadow_objects.push_back(sponge);
 	
@@ -67,7 +68,7 @@ void setup_mbox() {
 	camera_dir = normalize(Vec3(-0.8, -0.5, 0.001));
 	camera_up = Vec3(0.0, 1.0, 0.0);
 
-	auto mbox = new RaymarchingMbox(Color(), Color(0.25, 0.75, 0.25), REFLECTION_TYPE_DIFFUSE);
+	auto mbox = new RaymarchingMbox(Vec3(0.0, 0.0, 0.0), 1.0, Color(), Color(0.25, 0.75, 0.25), REFLECTION_TYPE_DIFFUSE);
 	objects.push_back(mbox);
 	cast_shadow_objects.push_back(mbox);
 

@@ -29,7 +29,7 @@ public:
 		return false;
 	}
 
-	virtual double distanceFunction(const Vec3 &position) const {
+	virtual double distanceFunction(const Vec3 &p) const {
 		return 0.0;
 	}
 };
