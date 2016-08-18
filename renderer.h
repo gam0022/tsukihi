@@ -41,9 +41,7 @@ namespace tukihi {
 			samples = 1;
 		}
 
-		//setup_mbox();
-		//setup_sponge();
-		setup_sponge_inside();
+		setup();
 
 		// ワールド座標系でのスクリーンの大きさ
 		const double screen_width = 30.0 * width / height;

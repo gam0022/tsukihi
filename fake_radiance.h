@@ -29,7 +29,7 @@ namespace tukihi {
 		return min;
 	}
 
-	inline double calcAO(Vec3 pos, Vec3 normal) {
+	inline double calcAO(const Vec3 pos, const Vec3 normal) {
 		double k = 1.0, occluded = 0.0;
 		for (int i = 0; i < 5; i++) {
 			double length = 2.0 * i;
@@ -40,13 +40,14 @@ namespace tukihi {
 		return clamp(1.0 - occluded, 0.0, 1.0);
 	}
 
-	inline double calcSoftShadow(Vec3 origin, Vec3 dir) {
+	inline double calcSoftShadow(const Vec3 origin, const Vec3 dir, const double distance) {
 		double dist;
 		double depth = 0.5;
 		double bright = 1.0;
 		for (int i = 0; i < 30; i++) {
 			dist = cast_shadow_map(origin + dir * depth);
 			if (dist < kEPS) return shadowIntensity;
+			if (depth > distance) break;
 			bright = std::min(bright, shadowSharpness * dist / depth);
 			depth += dist;
 		}
@@ -80,10 +81,11 @@ namespace tukihi {
 
 			for (auto light : lights) {
 				Vec3 light_direction = light->position - hitpoint.position;
-				double length_squared = light_direction.length_squared();
+				double distance_squared = light_direction.length_squared();
+				double distance = sqrt(distance_squared);
 
 				light_direction = normalize(light_direction);
-				incoming_radiance += light->emission * calcSoftShadow(hitpoint.position, light_direction) / length_squared;
+				incoming_radiance += light->emission * calcSoftShadow(hitpoint.position, light_direction, distance) / distance_squared;
 
 				diffuse += std::max(dot(orienting_normal, light_direction), 0.0);
 				specular += pow(clamp(dot(reflect(light_direction, orienting_normal), ray.dir), 0.0, 1.0), 10.0);

@@ -26,7 +26,7 @@ namespace tukihi {
 
 void setup_sponge() {
 	// 全体像
-	camera_position = Vec3(50.0, 52.0, 220.0);
+	camera_position = Vec3(50.0, 52.0, 320.0);
 	camera_dir = normalize(Vec3(0.0, -0.04, -1.0));
 	camera_up = Vec3(0.0, 1.0, 0.0);
 
@@ -43,7 +43,7 @@ void setup_sponge() {
 	objects.push_back(new Sphere(1e5, Vec3(-1e5 + 1, 40.8, 81.6), Color(), Color(0.75, 0.25, 0.25), REFLECTION_TYPE_DIFFUSE)); // 左
 	objects.push_back(new Sphere(1e5, Vec3(1e5 + 99, 40.8, 81.6), Color(), Color(0.25, 0.25, 0.75), REFLECTION_TYPE_DIFFUSE)); // 右
 	objects.push_back(new Sphere(1e5, Vec3(50, 40.8, -1e5), Color(), Color(0.75, 0.75, 0.75), REFLECTION_TYPE_DIFFUSE));// 奥
-	objects.push_back(new Sphere(1e5, Vec3(50, 40.8, 1e5 + 250), Color(), Color(), REFLECTION_TYPE_DIFFUSE));// 手前
+	//objects.push_back(new Sphere(1e5, Vec3(50, 40.8, 1e5 + 250), Color(), Color(), REFLECTION_TYPE_DIFFUSE));// 手前
 	objects.push_back(new Sphere(1e5, Vec3(50, -1e5, 81.6), Color(), Color(0.75, 0.75, 0.75), REFLECTION_TYPE_DIFFUSE)); // 床
 	objects.push_back(new Sphere(1e5, Vec3(50, 1e5 + 81.6, 81.6), Color(), Color(0.75, 0.75, 0.75), REFLECTION_TYPE_DIFFUSE)); // 天井
 	
@@ -65,7 +65,7 @@ void setup_sponge() {
 }
 
 void setup_sponge_inside() {
-	camera_position = Vec3(3, 3, 60);
+	camera_position = Vec3(30, 3, 60);
 	camera_dir      = normalize(Vec3(-1, -1, -10));
 	camera_up       = Vec3(0.0, 1.0, 0.0);
 
@@ -89,6 +89,12 @@ void setup_mbox() {
 
 	lights.push_back(new PointLight(1.0, camera_position - camera_dir * 1 + Vec3(0, -2.0, 0), Color(5, 5, 5)));
 	//lights.push_back(new PointLight(1.0, Vec3(50.0, 20, 120.0), Color(255, 255, 255)));
+}
+
+void setup() {
+	//setup_mbox();
+	setup_sponge();
+	//setup_sponge_inside();
 }
 
 // シーンとの交差判定関数
