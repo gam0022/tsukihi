@@ -136,6 +136,7 @@
     <ClInclude Include="ray.h" />
     <ClInclude Include="raymarching_mbox.h" />
     <ClInclude Include="raymarching_menger_sponge.h" />
+    <ClInclude Include="raymarching_menger_sponge_loop.h" />
     <ClInclude Include="raymarching_object.h" />
     <ClInclude Include="raymarching_sphere.h" />
     <ClInclude Include="renderer.h" />

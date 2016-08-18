@@ -11,6 +11,7 @@
 #include "sphere.h"
 #include "raymarching_sphere.h"
 #include "raymarching_menger_sponge.h"
+#include "raymarching_menger_sponge_loop.h"
 #include "raymarching_mbox.h"
 #include "point_light.h"
 
@@ -69,7 +70,7 @@ void setup_sponge_inside() {
 	camera_up       = Vec3(0.0, 1.0, 0.0);
 
 	double scale = 22;
-	auto sponge = new RaymarchingMengerSponge(Vec3(0, 0, 0), scale, Color(), Color(0.25, 0.75, 0.25), REFLECTION_TYPE_DIFFUSE);
+	auto sponge = new RaymarchingMengerSpongeLoop(Vec3(0, 0, 0), scale, Color(), Color(0.25, 0.75, 0.25), REFLECTION_TYPE_DIFFUSE);
 	objects.push_back(sponge);
 	cast_shadow_objects.push_back(sponge);
 
