@@ -88,7 +88,7 @@ namespace tukihi {
 				incoming_radiance += light->emission * calcSoftShadow(hitpoint.position, light_direction, distance) / distance_squared;
 
 				diffuse += std::max(dot(orienting_normal, light_direction), 0.0);
-				specular += pow(clamp(dot(reflect(light_direction, orienting_normal), ray.dir), 0.0, 1.0), 10.0);
+				//specular += pow(clamp(dot(reflect(light_direction, orienting_normal), ray.dir), 0.0, 1.0), 10.0);
 			}
 			weight = (ambient + diffuse) * now_object->color + specular;
 		} break;
