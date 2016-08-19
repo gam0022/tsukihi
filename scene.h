@@ -74,8 +74,8 @@ void setup_sponge_inside() {
 	objects.push_back(sponge);
 	cast_shadow_objects.push_back(sponge);
 
-	double r = 3.0;
-	auto mirror = new Sphere(r, Vec3(-4, -10 + r, 45), Color(), Color(1.0, 1.0, 1.0), REFLECTION_TYPE_SPECULAR);
+	double r = 2.0;
+	auto mirror = new Sphere(r, Vec3(-4, -10 + r, 42), Color(), Color(1.0, 1.0, 1.0), REFLECTION_TYPE_REFRACTION/*REFLECTION_TYPE_SPECULAR*/);
 	objects.push_back(mirror);
 	cast_shadow_objects.push_back(mirror);
 
@@ -83,9 +83,9 @@ void setup_sponge_inside() {
 	objects.push_back(glass);
 	cast_shadow_objects.push_back(glass);
 
-	lights.push_back(new PointLight(1.0, Vec3(1, 10, -30), Color(35, 0, 0)));
-	lights.push_back(new PointLight(1.0, Vec3(1, 10, 30), Color(50, 50, 50)));
-	lights.push_back(new PointLight(1.0, Vec3(0, 0, 82), Color(0, 0, 45)));
+	lights.push_back(new PointLight(1.0, Vec3(0, 10, -30), Color(35, 0, 0)));
+	lights.push_back(new PointLight(1.0, Vec3(0, 10, 30), Color(60, 60, 60)));
+	lights.push_back(new PointLight(1.0, Vec3(0, 10, 90), Color(35, 35, 35)));
 }
 
 void setup_mbox() {

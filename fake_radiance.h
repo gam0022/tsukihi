@@ -10,8 +10,8 @@
 #include "random.h"
 
 namespace tukihi {
-	const double shadowIntensity = 0.3;
-	const double shadowSharpness = 8.0;
+	const double shadowIntensity = 0.01;
+	const double shadowSharpness = 20.0;
 
 	inline double map(const Vec3 &position) {
 		double min = std::numeric_limits<double>::max();
@@ -41,14 +41,16 @@ namespace tukihi {
 	}
 
 	inline double calcSoftShadow(const Vec3 origin, const Vec3 dir, const double distance) {
+		//return 1.0;
+
 		double dist;
-		double depth = 0.5;
+		double depth = 1e-3;
 		double bright = 1.0;
-		for (int i = 0; i < 30; i++) {
+		for (int i = 0; i < 10; i++) {
 			dist = cast_shadow_map(origin + dir * depth);
-			if (dist < kEPS) return shadowIntensity;
-			if (depth > distance) break;
-			bright = std::min(bright, shadowSharpness * dist / depth);
+			if (std::abs(distance - depth) < kEPS) break;
+			if (std::abs(dist) < kEPS) return shadowIntensity;
+			bright = std::min(bright, shadowSharpness * std::abs(dist) / depth);
 			depth += dist;
 		}
 		return shadowIntensity + (1.0 - shadowIntensity) * bright;
@@ -65,7 +67,7 @@ namespace tukihi {
 		const Hitpoint &hitpoint = intersection.hitpoint;
 		const Vec3 orienting_normal = dot(hitpoint.normal, ray.dir) < 0.0 ? hitpoint.normal : (-1.0 * hitpoint.normal); // 交差位置の法線（物体からのレイの入出を考慮）
 
-		if (depth > 5) return now_object->emission;
+		if (depth > 10) return now_object->emission;
 
 		Color incoming_radiance;
 		Color weight = 1.0;
@@ -75,24 +77,22 @@ namespace tukihi {
 			// 古典的なPhongの反射モデル
 		case REFLECTION_TYPE_DIFFUSE: {
 			incoming_radiance = Vec3(0, 0, 0);
-			double ambient = calcAO(hitpoint.position, orienting_normal) + 0.5;
-			double diffuse = 0.0;
+			double ambient = calcAO(hitpoint.position, orienting_normal) + 0.2;
+			
 			//double specular = 0.0;
 
 			for (auto light : lights) {
 				if (light != now_object) {
 					Vec3 light_direction = light->position - hitpoint.position;
-					double distance_squared = light_direction.length_squared();
-					double distance = sqrt(distance_squared);
-
+					double distance = std::max(light_direction.length() - light->radius, 0.0);
 					light_direction = normalize(light_direction);
-					incoming_radiance += light->emission * calcSoftShadow(hitpoint.position, light_direction, distance) / distance_squared;
-
-					diffuse += std::max(dot(orienting_normal, light_direction), 0.0);
+					double diffuse = std::max(dot(orienting_normal, light_direction), 1e-1);
+					incoming_radiance += light->emission * diffuse * calcSoftShadow(hitpoint.position, light_direction, distance) / (distance * distance);
 					//specular += pow(clamp(dot(reflect(light_direction, orienting_normal), ray.dir), 0.0, 1.0), 10.0);
 				}
 			}
-			incoming_radiance *= ambient * diffuse;// +specular;
+			incoming_radiance *= ambient;
+			//incoming_radiance *= ambient + diffuse;
 			weight = now_object->color;
 		} break;
 
