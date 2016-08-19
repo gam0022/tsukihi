@@ -27,13 +27,14 @@ namespace tukihi {
 	};
 
 	inline bool Renderer::saveProgressImage(Color *image, int width, int height, int y) {
-		if (y % KProgressImageInterval == 0) {
-			char buffer[100];
-			snprintf(buffer, 100, "%03d.png", progres_image_count);
-			std::string filename(buffer);
-			save_png_file(filename, image, width, height);
-			++progres_image_count;
-		}
+		if (y % KProgressImageInterval != 0) return false;
+
+		char buffer[100];
+		snprintf(buffer, 100, "%03d.png", progres_image_count);
+		std::string filename(buffer);
+		save_png_file(filename, image, width, height);
+		++progres_image_count;
+		return true;
 	}
 
 	int Renderer::render(const int width, const int height, const RenderMode render_mode, int samples, const int supersamples) {

@@ -80,15 +80,17 @@ namespace tukihi {
 			double specular = 0.0;
 
 			for (auto light : lights) {
-				Vec3 light_direction = light->position - hitpoint.position;
-				double distance_squared = light_direction.length_squared();
-				double distance = sqrt(distance_squared);
+				if (light != now_object) {
+					Vec3 light_direction = light->position - hitpoint.position;
+					double distance_squared = light_direction.length_squared();
+					double distance = sqrt(distance_squared);
 
-				light_direction = normalize(light_direction);
-				incoming_radiance += light->emission * calcSoftShadow(hitpoint.position, light_direction, distance) / distance_squared;
+					light_direction = normalize(light_direction);
+					incoming_radiance += light->emission * calcSoftShadow(hitpoint.position, light_direction, distance) / distance_squared;
 
-				diffuse += std::max(dot(orienting_normal, light_direction), 0.0);
-				//specular += pow(clamp(dot(reflect(light_direction, orienting_normal), ray.dir), 0.0, 1.0), 10.0);
+					diffuse += std::max(dot(orienting_normal, light_direction), 0.0);
+					//specular += pow(clamp(dot(reflect(light_direction, orienting_normal), ray.dir), 0.0, 1.0), 10.0);
+				}
 			}
 			weight = (ambient + diffuse) * now_object->color + specular;
 		} break;

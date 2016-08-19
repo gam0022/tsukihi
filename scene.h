@@ -74,9 +74,9 @@ void setup_sponge_inside() {
 	objects.push_back(sponge);
 	cast_shadow_objects.push_back(sponge);
 
-	lights.push_back(new PointLight(1.0, Vec3(0, 0, 82), Color(35, 35, 35)));
+	lights.push_back(new PointLight(1.0, Vec3(1, 10, -30), Color(35, 0, 0)));
 	lights.push_back(new PointLight(1.0, Vec3(1, 10, 30), Color(35, 35, 35)));
-	lights.push_back(new PointLight(1.0, Vec3(1, 10, -30), Color(95, 35, 35)));
+	lights.push_back(new PointLight(1.0, Vec3(0, 0, 82), Color(35, 35, 35)));
 }
 
 void setup_mbox() {
