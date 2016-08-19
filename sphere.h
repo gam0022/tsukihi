@@ -18,13 +18,10 @@ public:
 	Vec3 position;
 
 	Sphere(const double radius, const Vec3 &position, const Color &emission, const Color &color, const ReflectionType reflection_type) : 
-			Object(emission, color, reflection_type) {
-		this->radius = radius;
-		this->position = position;
-	}
+			radius(radius), position(position), Object(emission, color, reflection_type) {}
 
 	bool intersect(const Ray &ray, Hitpoint *hitpoint) const;
-	double distanceFunction(const Vec3 &position) const;
+	double distanceFunction(const Vec3& p) const;
 };
 
 bool Sphere::intersect(const Ray &ray, Hitpoint *hitpoint) const {
@@ -53,8 +50,8 @@ bool Sphere::intersect(const Ray &ray, Hitpoint *hitpoint) const {
 	return true;
 }
 
-double Sphere::distanceFunction(const Vec3 &position) const {
-	return length(position - this->position) - radius;
+double Sphere::distanceFunction(const Vec3& p) const {
+	return length(p - position) - radius;
 }
 
 };

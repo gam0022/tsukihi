@@ -92,7 +92,7 @@ namespace tukihi {
 					//specular += pow(clamp(dot(reflect(light_direction, orienting_normal), ray.dir), 0.0, 1.0), 10.0);
 				}
 			}
-			incoming_radiance *= ambient + diffuse;// +specular;
+			incoming_radiance *= ambient * diffuse;// +specular;
 			weight = now_object->color;
 		} break;
 

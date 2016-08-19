@@ -17,7 +17,7 @@ namespace tukihi {
 		const double mengerSpongeLoop(const Vec3& p) const {
 			double d = 0.0;
 			const double one_third = 1.0 / 3.0;
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 6; i++) {
 				double k = pow(one_third, i);
 				double kh = k * 0.5;
 				d = std::max(d, -crossBar(mod(p + kh, k * 2.0) - kh, k * one_third));
