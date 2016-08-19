@@ -65,17 +65,18 @@ void setup_sponge() {
 }
 
 void setup_sponge_inside() {
-	camera_position = Vec3(5, 0, 60);
+	camera_position = Vec3(0, 0, 80);
 	camera_dir      = normalize(Vec3(-3, -1, -10));
 	camera_up       = Vec3(0.0, 1.0, 0.0);
 
-	double scale = 22;
+	double scale = 30;
 	auto sponge = new RaymarchingMengerSpongeLoop(Vec3(0, 0, 0), scale, Color(), Color(0.25, 0.75, 0.25), REFLECTION_TYPE_DIFFUSE);
 	objects.push_back(sponge);
 	cast_shadow_objects.push_back(sponge);
 
-	lights.push_back(new PointLight(1.0, Vec3(0, 5, 0), Color(35, 35, 35)));
-	lights.push_back(new PointLight(1.0, Vec3(5, 3, 40), Color(35, 35, 35)));
+	lights.push_back(new PointLight(1.0, Vec3(0, 0, 82), Color(35, 35, 35)));
+	lights.push_back(new PointLight(1.0, Vec3(1, 10, 30), Color(35, 35, 35)));
+	lights.push_back(new PointLight(1.0, Vec3(1, 10, -30), Color(95, 35, 35)));
 }
 
 void setup_mbox() {
