@@ -77,7 +77,7 @@ namespace tukihi {
 			incoming_radiance = Vec3(0, 0, 0);
 			double ambient = calcAO(hitpoint.position, orienting_normal) + 0.5;
 			double diffuse = 0.0;
-			double specular = 0.0;
+			//double specular = 0.0;
 
 			for (auto light : lights) {
 				if (light != now_object) {
@@ -92,7 +92,8 @@ namespace tukihi {
 					//specular += pow(clamp(dot(reflect(light_direction, orienting_normal), ray.dir), 0.0, 1.0), 10.0);
 				}
 			}
-			weight = (ambient + diffuse) * now_object->color + specular;
+			incoming_radiance *= ambient + diffuse;// +specular;
+			weight = now_object->color;
 		} break;
 
 			// Š®‘S‹¾–Ê
