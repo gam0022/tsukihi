@@ -18,7 +18,7 @@ namespace tukihi {
 	class Renderer {
 	public:
 		Renderer() {}
-		const int KProgressImageInterval = 100;
+		int progressImageInterval;
 		int render(const int width, const int height, const RenderMode render_mode, int samples, const int supersamples);
 
 	private:
@@ -27,7 +27,7 @@ namespace tukihi {
 	};
 
 	inline bool Renderer::saveProgressImage(Color *image, int width, int height, int y) {
-		if (y % KProgressImageInterval != 0) return false;
+		if (y % progressImageInterval != 0) return false;
 
 		char buffer[100];
 		snprintf(buffer, 100, "%03d.png", progres_image_count);
@@ -41,6 +41,8 @@ namespace tukihi {
 		if (render_mode == RENDER_MODE_FAKE) {
 			samples = 1;
 		}
+
+		progressImageInterval = height / 6;
 
 		setup();
 
