@@ -10,7 +10,7 @@
 #include "random.h"
 
 namespace tukihi {
-	const double shadowIntensity = 0.01;
+	const double shadowIntensity = 0.3;
 	const double shadowSharpness = 20.0;
 
 	inline double map(const Vec3 &position) {
@@ -77,7 +77,7 @@ namespace tukihi {
 			// ŒÃ“T“I‚ÈPhong‚Ì”½ŽËƒ‚ƒfƒ‹
 		case REFLECTION_TYPE_DIFFUSE: {
 			incoming_radiance = Vec3(0, 0, 0);
-			double ambient = calcAO(hitpoint.position, orienting_normal) + 0.2;
+			double ambient = pow(calcAO(hitpoint.position, orienting_normal), 1.5) + 0.2;
 			
 			//double specular = 0.0;
 
