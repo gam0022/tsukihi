@@ -23,6 +23,7 @@ namespace tukihi {
 	std::vector<Object*> objects;
 	std::vector<Object*> cast_shadow_objects;
 	std::vector<Object*> refraction_objects;
+	std::vector<Object*> not_refraction_objects;
 	std::vector<PointLight*> lights;
 
 void setup_sponge() {
@@ -108,6 +109,13 @@ void setup() {
 	//setup_mbox();
 	//setup_sponge();
 	setup_sponge_inside();
+
+	for (auto object : objects) {
+		auto itr = std::find(refraction_objects.begin(), refraction_objects.end(), object);
+		if (itr == refraction_objects.end()) {
+			not_refraction_objects.push_back(object);
+		}
+	}
 }
 
 // シーンとの交差判定関数

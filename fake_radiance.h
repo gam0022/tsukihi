@@ -37,6 +37,14 @@ namespace tukihi {
 		return min;
 	}
 
+	inline double not_refraction_map(const Vec3 &position) {
+		double min = std::numeric_limits<double>::max();
+		for (auto object : not_refraction_objects) {
+			min = std::min(min, std::abs(object->distanceFunction(position)));
+		}
+		return min;
+	}
+
 	inline Vec3 calcRefractionNormal(const Vec3 &p) {
 		return normalize(Vec3(
 			refraction_map(p + Vec3(kEPS, 0.0, 0.0)) - refraction_map(p + Vec3(-kEPS, 0.0, 0.0)),
@@ -73,17 +81,26 @@ namespace tukihi {
 	}
 
 	inline double calcCaustics(const Vec3 pos, const Vec3 light_dir, const double distance) {
-		double d_to_refraction, depth = 0.05;
+		double d_to_refraction, d_to_other, depth_to_refraction, depth_to_other;
+		depth_to_refraction = depth_to_other = 0.05;
+
 		Vec3 p;
 		for (int i = 0; i < 20; i++) {
-			p = pos + light_dir * depth;
+			p = pos + light_dir * depth_to_other;
+			d_to_other = not_refraction_map(p);
+			if (std::abs(d_to_other) < kEPS) break;
+			depth_to_other += d_to_other;
+		}
+
+		for (int i = 0; i < 20; i++) {
+			p = pos + light_dir * depth_to_refraction;
 			d_to_refraction = refraction_map(p);
-			if (std::abs(distance - depth) < kEPS) break;
+			if (std::abs(distance - depth_to_refraction) < kEPS || depth_to_refraction > depth_to_other) break;
 			if (std::abs(d_to_refraction) < kEPS) {
 				Vec3 n = calcRefractionNormal(p);
 				return 1.0 + 1000.0 * pow(std::max(dot(n, -light_dir), 0.0), 70.0);
 			}
-			depth += d_to_refraction;
+			depth_to_refraction += d_to_refraction;
 		}
 		return 1.0;
 	}
