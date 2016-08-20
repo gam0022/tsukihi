@@ -22,6 +22,7 @@ namespace tukihi {
 
 	std::vector<Object*> objects;
 	std::vector<Object*> cast_shadow_objects;
+	std::vector<Object*> refraction_objects;
 	std::vector<PointLight*> lights;
 
 void setup_sponge() {
@@ -72,12 +73,13 @@ void setup_sponge_inside() {
 	double scale = 30;
 	auto sponge = new RaymarchingMengerSpongeLoop(Vec3(0, 0, 0), scale, Color(), Color(0.25, 0.75, 0.25), REFLECTION_TYPE_DIFFUSE);
 	objects.push_back(sponge);
-	cast_shadow_objects.push_back(sponge);
+	//cast_shadow_objects.push_back(sponge);
 
 	double r = 2.5;
-	auto glass_ = new Sphere(r, Vec3(-4, -10 + r, 42), Color(), Color(1.0, 1.0, 1.0), REFLECTION_TYPE_REFRACTION);
-	objects.push_back(glass_);
-	cast_shadow_objects.push_back(glass_);
+	auto glass = new Sphere(r, Vec3(-4, -10 + r, 42), Color(), Color(1.0, 1.0, 1.0), REFLECTION_TYPE_REFRACTION);
+	objects.push_back(glass);
+	cast_shadow_objects.push_back(glass);
+	refraction_objects.push_back(glass);
 
 	r = 2.0;
 	auto mirror = new Sphere(r, Vec3(-12, -10 + r, 60), Color(), Color(1.0, 1.0, 1.0), REFLECTION_TYPE_SPECULAR);

@@ -10,8 +10,8 @@
 #include "random.h"
 
 namespace tukihi {
-	const double shadowIntensity = 0.3;
-	const double shadowSharpness = 20.0;
+	const double shadowIntensity = 0.1;
+	const double shadowSharpness = 10.0;
 
 	inline double map(const Vec3 &position) {
 		double min = std::numeric_limits<double>::max();
@@ -29,6 +29,22 @@ namespace tukihi {
 		return min;
 	}
 
+	inline double refraction_map(const Vec3 &position) {
+		double min = std::numeric_limits<double>::max();
+		for (auto object : refraction_objects) {
+			min = std::min(min, std::abs(object->distanceFunction(position)));
+		}
+		return min;
+	}
+
+	inline Vec3 calcRefractionNormal(const Vec3 &p) {
+		return normalize(Vec3(
+			refraction_map(p + Vec3(kEPS, 0.0, 0.0)) - refraction_map(p + Vec3(-kEPS, 0.0, 0.0)),
+			refraction_map(p + Vec3(0.0, kEPS, 0.0)) - refraction_map(p + Vec3(0.0, -kEPS, 0.0)),
+			refraction_map(p + Vec3(0.0, 0.0, kEPS)) - refraction_map(p + Vec3(0.0, 0.0, -kEPS))
+		));
+	}
+
 	inline double calcAO(const Vec3 pos, const Vec3 normal) {
 		double k = 1.0, occluded = 0.0;
 		for (int i = 0; i < 5; i++) {
@@ -40,20 +56,36 @@ namespace tukihi {
 		return clamp(1.0 - occluded, 0.0, 1.0);
 	}
 
-	inline double calcSoftShadow(const Vec3 origin, const Vec3 dir, const double distance) {
+	inline double calcSoftShadow(const Vec3 pos, const Vec3 light_dir, const double distance) {
 		//return 1.0;
 
-		double dist;
-		double depth = 1e-3;
+		double d;
+		double depth = 0.05;
 		double bright = 1.0;
-		for (int i = 0; i < 10; i++) {
-			dist = cast_shadow_map(origin + dir * depth);
+		for (int i = 0; i < 30; i++) {
+			d = cast_shadow_map(pos + light_dir * depth);
 			if (std::abs(distance - depth) < kEPS) break;
-			if (std::abs(dist) < kEPS) return shadowIntensity;
-			bright = std::min(bright, shadowSharpness * std::abs(dist) / depth);
-			depth += dist;
+			if (std::abs(d) < kEPS) return shadowIntensity;
+			bright = std::min(bright, shadowSharpness * std::abs(d) / depth);
+			depth += d;
 		}
 		return shadowIntensity + (1.0 - shadowIntensity) * bright;
+	}
+
+	inline double calcCaustics(const Vec3 pos, const Vec3 light_dir, const double distance) {
+		double d_to_refraction, depth = 0.05;
+		Vec3 p;
+		for (int i = 0; i < 20; i++) {
+			p = pos + light_dir * depth;
+			d_to_refraction = refraction_map(p);
+			if (std::abs(distance - depth) < kEPS) break;
+			if (std::abs(d_to_refraction) < kEPS) {
+				Vec3 n = calcRefractionNormal(p);
+				return 1.0 + 1000.0 * pow(std::max(dot(n, -light_dir), 0.0), 70.0);
+			}
+			depth += d_to_refraction;
+		}
+		return 1.0;
 	}
 
 	// ray•ûŒü‚©‚ç‚Ì•úŽË‹P“x‚ð‹‚ß‚é
@@ -87,7 +119,8 @@ namespace tukihi {
 					double distance = std::max(light_direction.length() - light->radius, 0.0);
 					light_direction = normalize(light_direction);
 					double diffuse = std::max(dot(orienting_normal, light_direction), 1e-1);
-					incoming_radiance += light->emission * diffuse * calcSoftShadow(hitpoint.position, light_direction, distance) / (distance * distance);
+					double shadow = calcSoftShadow(hitpoint.position, light_direction, distance) * calcCaustics(hitpoint.position, light_direction, distance);
+					incoming_radiance += light->emission * diffuse * shadow / (distance * distance);
 					//specular += pow(clamp(dot(reflect(light_direction, orienting_normal), ray.dir), 0.0, 1.0), 10.0);
 				}
 			}
