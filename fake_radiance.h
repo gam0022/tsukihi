@@ -16,7 +16,7 @@ namespace tukihi {
 	inline double map(const Vec3 &position) {
 		double min = std::numeric_limits<double>::max();
 		for (auto object : objects) {
-			min = std::min(min, std::abs(object->distanceFunction(position)));
+			min = std::min(min, object->distanceFunction(position));
 		}
 		return min;
 	}
@@ -24,7 +24,7 @@ namespace tukihi {
 	inline double cast_shadow_map(const Vec3 &position) {
 		double min = std::numeric_limits<double>::max();
 		for (auto object : cast_shadow_objects) {
-			min = std::min(min, std::abs(object->distanceFunction(position)));
+			min = std::min(min, object->distanceFunction(position));
 		}
 		return min;
 	}
@@ -32,7 +32,7 @@ namespace tukihi {
 	inline double refraction_map(const Vec3 &position) {
 		double min = std::numeric_limits<double>::max();
 		for (auto object : refraction_objects) {
-			min = std::min(min, std::abs(object->distanceFunction(position)));
+			min = std::min(min, object->distanceFunction(position));
 		}
 		return min;
 	}
@@ -40,19 +40,16 @@ namespace tukihi {
 	inline double not_refraction_map(const Vec3 &position) {
 		double min = std::numeric_limits<double>::max();
 		for (auto object : not_refraction_objects) {
-			min = std::min(min, std::abs(object->distanceFunction(position)));
+			min = std::min(min, object->distanceFunction(position));
 		}
 		return min;
 	}
 
 	inline Vec3 calcRefractionNormal(const Vec3 &p) {
-		double r = 2.5;
-		return normalize(p - Vec3(-4, -10 + r, 42));
-
 		return normalize(Vec3(
-			refraction_map(p + Vec3(kEPS2, 0.0, 0.0)) - refraction_map(p + Vec3(-kEPS2, 0.0, 0.0)),
-			refraction_map(p + Vec3(0.0, kEPS2, 0.0)) - refraction_map(p + Vec3(0.0, -kEPS2, 0.0)),
-			refraction_map(p + Vec3(0.0, 0.0, kEPS2)) - refraction_map(p + Vec3(0.0, 0.0, -kEPS2))
+			refraction_map(p + Vec3(kEPS, 0.0, 0.0)) - refraction_map(p + Vec3(-kEPS, 0.0, 0.0)),
+			refraction_map(p + Vec3(0.0, kEPS, 0.0)) - refraction_map(p + Vec3(0.0, -kEPS, 0.0)),
+			refraction_map(p + Vec3(0.0, 0.0, kEPS)) - refraction_map(p + Vec3(0.0, 0.0, -kEPS))
 		));
 	}
 
@@ -91,15 +88,15 @@ namespace tukihi {
 		for (int i = 0; i < 20; i++) {
 			p = pos + light_dir * depth_to_other;
 			d_to_other = not_refraction_map(p);
-			if (std::abs(d_to_other) < kEPS2) break;
+			if (std::abs(d_to_other) < kEPS) break;
 			depth_to_other += d_to_other;
 		}
 
 		for (int i = 0; i < 20; i++) {
 			p = pos + light_dir * depth_to_refraction;
 			d_to_refraction = refraction_map(p);
-			if (std::abs(distance - depth_to_refraction) < kEPS2 || depth_to_refraction > depth_to_other) break;
-			if (std::abs(d_to_refraction) < kEPS2) {
+			if (std::abs(distance - depth_to_refraction) < kEPS || depth_to_refraction > depth_to_other) break;
+			if (std::abs(d_to_refraction) < kEPS) {
 				Vec3 n = calcRefractionNormal(p);
 				return 1.0 + pow(1.1 * std::max(dot(n, -light_dir), 0.0), 80.0);
 			}
