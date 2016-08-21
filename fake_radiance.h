@@ -126,7 +126,7 @@ namespace tukihi {
 			// ŒÃ“T“I‚ÈPhong‚Ì”½ŽËƒ‚ƒfƒ‹
 		case REFLECTION_TYPE_DIFFUSE: {
 			incoming_radiance = Vec3(0, 0, 0);
-			double ambient = pow(calcAO(hitpoint.position, orienting_normal), 1.5) + 0.3;
+			double ambient = pow(calcAO(hitpoint.position, orienting_normal), 1.5) + 0.2;
 			
 			//double specular = 0.0;
 
