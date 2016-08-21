@@ -10,7 +10,7 @@
 #include "random.h"
 
 namespace tukihi {
-	const double shadowIntensity = 0.1;
+	const double shadowIntensity = 0.2;
 	const double shadowSharpness = 10.0;
 
 	inline double map(const Vec3 &position) {
@@ -98,7 +98,7 @@ namespace tukihi {
 			if (std::abs(distance - depth_to_refraction) < kEPS || depth_to_refraction > depth_to_other) break;
 			if (std::abs(d_to_refraction) < kEPS) {
 				Vec3 n = calcRefractionNormal(p);
-				return 1.0 + pow(1.1 * std::max(dot(n, -light_dir), 0.0), 80.0);
+				return 1.0 + pow(1.09 * std::max(dot(n, -light_dir), 0.0), 80.0);
 			}
 			depth_to_refraction += d_to_refraction;
 		}
