@@ -74,24 +74,27 @@ void setup_sponge_inside() {
 	double scale = 30;
 	auto sponge = new RaymarchingMengerSpongeLoop(Vec3(0, 0, 0), scale, Color(), Color(0.25, 0.75, 0.25), REFLECTION_TYPE_DIFFUSE);
 	objects.push_back(sponge);
-	//cast_shadow_objects.push_back(sponge);
+	cast_shadow_objects.push_back(sponge);
 
 	double r = 2.5;
-	auto glass = new Sphere(r, Vec3(-4, -10 + r, 42), Color(), Color(1.0, 1.0, 1.0), REFLECTION_TYPE_REFRACTION);
+	auto glass = new Sphere(r, Vec3(-5, -10 + r, 42), Color(), Color(1.0, 1.0, 1.0), REFLECTION_TYPE_REFRACTION);
 	//auto glass = new RaymarchingSphere(Vec3(-4, -10 + r, 42), r, Color(), Color(1.0, 1.0, 1.0), REFLECTION_TYPE_REFRACTION);
 	objects.push_back(glass);
 	cast_shadow_objects.push_back(glass);
 	refraction_objects.push_back(glass);
 
-	r = 2.0;
-	auto mirror = new Sphere(r, Vec3(-12, -10 + r, 60), Color(), Color(1.0, 1.0, 1.0), REFLECTION_TYPE_SPECULAR);
+	//r = 2.0;
+	auto mirror = new Sphere(r, Vec3(-12, -10 + r, 62.5), Color(), Color(1.0, 1.0, 1.0), REFLECTION_TYPE_SPECULAR);
 	objects.push_back(mirror);
 	cast_shadow_objects.push_back(mirror);
 
 	double s = 2.5;
+	s = 1.0;
 	double inv_pow_s = 1.0 / (s*s);
+	//lights.push_back(new PointLight(1.0*s, Vec3(0, 10, -150), Color(0, 0, 35) * inv_pow_s));
+	//lights.push_back(new PointLight(1.0*s, Vec3(0, 10, -90), Color(35, 35, 35) * inv_pow_s));
 	lights.push_back(new PointLight(1.0*s, Vec3(0, 10, -30), Color(35, 0, 0) * inv_pow_s));
-	lights.push_back(new PointLight(1.0*s, Vec3(1, 10, 30), Color(50, 50, 50) * inv_pow_s));
+	lights.push_back(new PointLight(1.0*s, Vec3(0, 10, 30), Color(50, 50, 50) * inv_pow_s));
 	lights.push_back(new PointLight(1.0*s, Vec3(-2, 0, 82), Color(35, 35, 35) * inv_pow_s));
 }
 

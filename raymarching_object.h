@@ -51,7 +51,7 @@ namespace tukihi {
 
 		if (std::abs(d) < kREPS) {
 			hitpoint->normal = calcNormal(p);
-			hitpoint->position = p + hitpoint->normal * kREPS * 100;
+			hitpoint->position = p + hitpoint->normal * kREPS * 50;
 			hitpoint->distance = distance;
 			return true;
 		}

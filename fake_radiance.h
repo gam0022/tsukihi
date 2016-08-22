@@ -10,8 +10,8 @@
 #include "random.h"
 
 namespace tukihi {
-	const double shadowIntensity = 0.2;
-	const double shadowSharpness = 10.0;
+	const double shadowIntensity = 0.1;
+	const double shadowSharpness = 30.0;
 
 	inline double map(const Vec3 &position) {
 		double min = std::numeric_limits<double>::max();
@@ -56,7 +56,7 @@ namespace tukihi {
 	inline double calcAO(const Vec3 pos, const Vec3 normal) {
 		double k = 1.0, occluded = 0.0;
 		for (int i = 0; i < 5; i++) {
-			double length = 2.0 * i;
+			double length = 1.5 * i;
 			double distance = map(normal * length + pos);
 			occluded += (length - distance) * k;
 			k *= 0.3;
@@ -68,9 +68,9 @@ namespace tukihi {
 		//return 1.0;
 
 		double d;
-		double depth = 0.05;
+		double depth = 0.1;
 		double bright = 1.0;
-		for (int i = 0; i < 30; i++) {
+		for (int i = 0; i < 7; i++) {
 			d = cast_shadow_map(pos + light_dir * depth);
 			if (std::abs(distance - depth) < kEPS) break;
 			if (std::abs(d) < kEPS) return shadowIntensity;
@@ -137,7 +137,7 @@ namespace tukihi {
 					incoming_radiance += light->emission * diffuse * caustics * shadow / (distance * distance);
 				}
 			}
-			double ambient = pow(calcAO(hitpoint.position, orienting_normal), 1.0) + 0.2;
+			double ambient = pow(calcAO(hitpoint.position, orienting_normal), 1.0) + 0.1;
 			incoming_radiance *= ambient;
 			weight = now_object->color;
 		} break;
