@@ -137,7 +137,7 @@ namespace tukihi {
 					incoming_radiance += light->emission * diffuse * caustics * shadow / (distance * distance);
 				}
 			}
-			double ambient = pow(calcAO(hitpoint.position, orienting_normal), 1.5) + 0.2;
+			double ambient = pow(calcAO(hitpoint.position, orienting_normal), 1.0) + 0.2;
 			incoming_radiance *= ambient;
 			weight = now_object->color;
 		} break;
