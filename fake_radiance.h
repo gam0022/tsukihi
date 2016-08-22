@@ -118,31 +118,27 @@ namespace tukihi {
 
 		if (depth > 10) return now_object->emission;
 
-		Color incoming_radiance;
-		Color weight = 1.0;
+		Color incoming_radiance = Color(0, 0, 0);
+		Color weight = Color(0, 0, 0);
 
 		switch (now_object->reflection_type) {
 
 			// ŒÃ“T“I‚ÈPhong‚Ì”½ŽËƒ‚ƒfƒ‹
 		case REFLECTION_TYPE_DIFFUSE: {
-			incoming_radiance = Vec3(0, 0, 0);
-			double ambient = pow(calcAO(hitpoint.position, orienting_normal), 1.5) + 0.2;
-			
-			//double specular = 0.0;
-
 			for (auto light : lights) {
 				if (light != now_object) {
 					Vec3 light_direction = light->position - hitpoint.position;
 					double distance = std::max(light_direction.length() - light->radius, 0.0);
 					light_direction = normalize(light_direction);
 					double diffuse = std::max(dot(orienting_normal, light_direction), 1e-1);
-					double shadow = calcSoftShadow(hitpoint.position, light_direction, distance) * calcCaustics(hitpoint.position, light_direction, distance);
-					incoming_radiance += light->emission * diffuse * shadow / (distance * distance);
-					//specular += pow(clamp(dot(reflect(light_direction, orienting_normal), ray.dir), 0.0, 1.0), 10.0);
+					double shadow = calcSoftShadow(hitpoint.position, light_direction, distance);
+					double caustics = calcCaustics(hitpoint.position, light_direction, distance);
+					//double specular = pow(std::max(dot(reflect(light_direction, orienting_normal), ray.dir), 0.0), 10.0);
+					incoming_radiance += light->emission * diffuse * caustics * shadow / (distance * distance);
 				}
 			}
+			double ambient = pow(calcAO(hitpoint.position, orienting_normal), 1.5) + 0.2;
 			incoming_radiance *= ambient;
-			//incoming_radiance *= ambient + diffuse;
 			weight = now_object->color;
 		} break;
 
