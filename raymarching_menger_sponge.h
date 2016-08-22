@@ -27,7 +27,7 @@ namespace tukihi {
 
 		inline double bar(const Vec2 p, double x) const {
 			Vec2 d = abs(p) - x;
-			return std::min(std::max(d.x, d.y), 0.0) + max(d, 0.0).length();
+			return std::min(std::max(d.x, d.y), 0.0) + max(d, 0.0).length() + 0.01 * x;
 			//return max(abs(p) - x, 0.0).length();
 		}
 
