@@ -11,7 +11,6 @@
 
 namespace tukihi {
 
-const Color kBackgroundColor = Color(0.0, 0.0, 0.0);
 const int kDepth = 5; // ロシアンルーレットで打ち切らない最大深度
 const int kDpethLimit = 64;
 
@@ -20,7 +19,7 @@ Color radiance_by_pathtracing(const Ray &ray, Random *rnd, const int depth) {
 	Intersection intersection;
 	// シーンと交差判定
 	if (!intersect_scene(ray, &intersection))
-		return kBackgroundColor;
+		return backgroundColor;
 
 	const Object* now_object = intersection.object;
 	const Hitpoint &hitpoint = intersection.hitpoint;

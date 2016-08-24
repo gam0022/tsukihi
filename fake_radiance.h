@@ -110,7 +110,7 @@ namespace tukihi {
 		Intersection intersection;
 		// ƒV[ƒ“‚ÆŒğ·”»’è
 		if (!intersect_scene(ray, &intersection))
-			return kBackgroundColor;
+			return backgroundColor;
 
 		const Object* now_object = intersection.object;
 		const Hitpoint &hitpoint = intersection.hitpoint;

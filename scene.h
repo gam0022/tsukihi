@@ -16,6 +16,8 @@
 #include "point_light.h"
 
 namespace tukihi {
+	Color backgroundColor = Color(0.0, 0.0, 0.0);
+
 	Vec3 camera_position;
 	Vec3 camera_dir;
 	Vec3 camera_up;
@@ -66,6 +68,41 @@ void setup_sponge() {
 	lights.push_back(new PointLight(1.0, Vec3(50.0, 20, 120.0), Color(255, 255, 255)));
 }
 
+void setup_sponge2() {
+	// 全体を覆う光源
+	backgroundColor = Color(1, 1, 1);
+
+	// 全体像
+	//camera_position = Vec3(50.0, 52.0, 220.0);
+	//camera_dir = normalize(Vec3(0.0, -0.04, -1.0));
+	//camera_up = Vec3(0.0, 1.0, 0.0);
+
+	// 中身
+	//camera_position = Vec3(50, 60, 80);
+	//camera_dir      = normalize(Vec3(-0.1, -1.0, -0.01));
+	//camera_up       = Vec3(0.0, -1.0, 0.0);
+
+	// 斜め視点
+	camera_position = Vec3(90.0, 78.0, 130.0);
+	camera_dir = normalize(Vec3(-0.4, -0.5, -0.5));
+	camera_up = Vec3(0.0, 1.0, 0.0);
+
+	//objects.push_back(new Sphere(1e5, Vec3(-1e5 + 1, 40.8, 81.6), Color(), Color(0.75, 0.25, 0.25), REFLECTION_TYPE_DIFFUSE)); // 左
+	//objects.push_back(new Sphere(1e5, Vec3(1e5 + 99, 40.8, 81.6), Color(), Color(0.25, 0.25, 0.75), REFLECTION_TYPE_DIFFUSE)); // 右
+	//objects.push_back(new Sphere(1e5, Vec3(50, 40.8, -1e5), Color(), Color(0.75, 0.75, 0.75), REFLECTION_TYPE_DIFFUSE));// 奥
+	//objects.push_back(new Sphere(1e5, Vec3(50, 40.8, 1e5 + 250), Color(), Color(), REFLECTION_TYPE_DIFFUSE));// 手前
+	objects.push_back(new Sphere(1e5, Vec3(50, -1e5, 81.6), Color(), Color(0.75, 0.75, 0.75), REFLECTION_TYPE_DIFFUSE)); // 床
+	//objects.push_back(new Sphere(1e5, Vec3(50, 1e5 + 81.6, 81.6), Color(), Color(0.75, 0.75, 0.75), REFLECTION_TYPE_DIFFUSE)); // 天井
+
+	double scale = 22;
+	auto sponge = new RaymarchingMengerSponge(Vec3(50, scale, 70), scale, Color(), Color(0.25, 0.75, 0.25), REFLECTION_TYPE_DIFFUSE);
+	objects.push_back(sponge);
+	cast_shadow_objects.push_back(sponge);
+
+	lights.push_back(new PointLight(1.0, Vec3(50.0, 90.0 - 10, 81.6), Color(255, 255, 255)));
+	//lights.push_back(new PointLight(1.0, Vec3(50.0, 20, 120.0), Color(255, 255, 255)));
+}
+
 void setup_sponge_inside() {
 	camera_position = Vec3(0, 0, 80);
 	camera_dir      = normalize(Vec3(-3, -1, -10));
@@ -114,7 +151,8 @@ void setup_mbox() {
 void setup() {
 	//setup_mbox();
 	//setup_sponge();
-	setup_sponge_inside();
+	setup_sponge2();
+	//setup_sponge_inside();
 
 	for (auto object : objects) {
 		auto itr = std::find(refraction_objects.begin(), refraction_objects.end(), object);
