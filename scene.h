@@ -109,7 +109,7 @@ void setup_sponge_inside() {
 	camera_up       = Vec3(0.0, 1.0, 0.0);
 
 	double scale = 30;
-	auto sponge = new RaymarchingMengerSpongeLoop(Vec3(0, 0, 0), scale, Color(), Color(0.25, 0.75, 0.25), REFLECTION_TYPE_DIFFUSE);
+	auto sponge = new RaymarchingMengerSpongeLoop(Vec3(0, 0, 0), scale, Color(), Color(0.25, 0.75, 0.3), REFLECTION_TYPE_DIFFUSE);
 	objects.push_back(sponge);
 	cast_shadow_objects.push_back(sponge);
 
@@ -125,13 +125,13 @@ void setup_sponge_inside() {
 	objects.push_back(mirror);
 	cast_shadow_objects.push_back(mirror);
 
-	double s = 2.5;
-	s = 1.0;
+	double s = 1.0;
+	//s = 2.5;
 	double inv_pow_s = 1.0 / (s*s);
 	//lights.push_back(new PointLight(1.0*s, Vec3(0, 10, -150), Color(0, 0, 35) * inv_pow_s));
 	//lights.push_back(new PointLight(1.0*s, Vec3(0, 10, -90), Color(35, 35, 35) * inv_pow_s));
-	lights.push_back(new PointLight(1.0*s, Vec3(0, 10, -30), Color(35, 0, 0) * inv_pow_s));
-	lights.push_back(new PointLight(1.0*s, Vec3(0, 10, 30), Color(50, 50, 50) * inv_pow_s));
+	lights.push_back(new PointLight(1.0*s, Vec3(0, 9.7, -30), Color(35, 0, 0) * inv_pow_s));
+	lights.push_back(new PointLight(1.0*s, Vec3(0, 9.7, 30), Color(70, 70, 70) * inv_pow_s));
 	lights.push_back(new PointLight(1.0*s, Vec3(-2, 0, 82), Color(35, 35, 35) * inv_pow_s));
 }
 
@@ -151,8 +151,8 @@ void setup_mbox() {
 void setup() {
 	//setup_mbox();
 	//setup_sponge();
-	setup_sponge2();
-	//setup_sponge_inside();
+	//setup_sponge2();
+	setup_sponge_inside();
 
 	for (auto object : objects) {
 		auto itr = std::find(refraction_objects.begin(), refraction_objects.end(), object);

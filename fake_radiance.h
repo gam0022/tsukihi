@@ -13,6 +13,9 @@ namespace tukihi {
 	const double shadowIntensity = 0.1;
 	const double shadowSharpness = 30.0;
 
+	const double minDiffuse = 0.1;
+	const double minAmbient = 0.1;
+
 	inline double map(const Vec3 &position) {
 		double min = std::numeric_limits<double>::max();
 		for (auto object : objects) {
@@ -98,7 +101,7 @@ namespace tukihi {
 			if (std::abs(distance - depth_to_refraction) < kEPS || depth_to_refraction > depth_to_other) break;
 			if (std::abs(d_to_refraction) < kEPS) {
 				Vec3 n = calcRefractionNormal(p);
-				return 1.0 + pow(1.09 * std::max(dot(n, -light_dir), 0.0), 80.0);
+				return 1.0 + pow(1.07 * std::max(dot(n, -light_dir), 0.0), 100.0);
 			}
 			depth_to_refraction += d_to_refraction;
 		}
@@ -130,14 +133,14 @@ namespace tukihi {
 					Vec3 light_direction = light->position - hitpoint.position;
 					double distance = std::max(light_direction.length() - light->radius, 0.0);
 					light_direction = normalize(light_direction);
-					double diffuse = std::max(dot(orienting_normal, light_direction), 1e-1);
+					double diffuse = std::max(dot(orienting_normal, light_direction), minDiffuse);
 					double shadow = calcSoftShadow(hitpoint.position, light_direction, distance);
 					double caustics = calcCaustics(hitpoint.position, light_direction, distance);
 					//double specular = pow(std::max(dot(reflect(light_direction, orienting_normal), ray.dir), 0.0), 10.0);
 					incoming_radiance += light->emission * diffuse * caustics * shadow / (distance * distance);
 				}
 			}
-			double ambient = pow(calcAO(hitpoint.position, orienting_normal), 1.0) + 0.1;
+			double ambient = calcAO(hitpoint.position, orienting_normal) + minAmbient;
 			incoming_radiance *= ambient;
 			weight = now_object->color;
 		} break;
