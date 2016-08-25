@@ -151,8 +151,8 @@ void setup_mbox() {
 void setup() {
 	//setup_mbox();
 	//setup_sponge();
-	//setup_sponge2();
-	setup_sponge_inside();
+	setup_sponge2();
+	//setup_sponge_inside();
 
 	for (auto object : objects) {
 		auto itr = std::find(refraction_objects.begin(), refraction_objects.end(), object);
