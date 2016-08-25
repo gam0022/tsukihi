@@ -4,22 +4,16 @@
 #include <iostream>
 #include <omp.h>
 
-#include "pathtracing_radiance.h"
-#include "fake_radiance.h"
 #include "image.h"
 #include "random.h"
 
 namespace tukihi {
-	enum RenderMode {
-		RENDER_MODE_FAKE,
-		RENDER_MODE_PATHTRACING,
-	};
-
 	class Renderer {
 	public:
 		Renderer() {}
 		int progressImageInterval;
-		int render(const int width, const int height, const RenderMode render_mode, int samples, const int supersamples);
+		int render(const int width, const int height, int samples, const int supersamples);
+		virtual Color radiance(const Ray &ray, Random *rnd, const int depth) { return Color(); }
 
 	private:
 		int progres_image_count = 0;
@@ -37,11 +31,7 @@ namespace tukihi {
 		return true;
 	}
 
-	int Renderer::render(const int width, const int height, const RenderMode render_mode, int samples, const int supersamples) {
-		if (render_mode == RENDER_MODE_FAKE) {
-			samples = 1;
-		}
-
+	int Renderer::render(const int width, const int height, int samples, const int supersamples) {
 		progressImageInterval = height / 6;
 
 		setup();
@@ -89,17 +79,7 @@ namespace tukihi {
 								screen_y * ((r2 + y) / height - 0.5);
 							// レイを飛ばす方向
 							const Vec3 dir = normalize(screen_position - camera_position);
-
-							switch (render_mode) {
-							case RENDER_MODE_FAKE:{
-								accumulated_radiance = radiance_by_fake(Ray(camera_position, dir), &rnd, 0) / (supersamples * supersamples);
-							} break;
-
-							case RENDER_MODE_PATHTRACING: {
-								accumulated_radiance +=
-									radiance_by_pathtracing(Ray(camera_position, dir), &rnd, 0) / samples / (supersamples * supersamples);
-							} break;
-							}
+							accumulated_radiance += radiance(Ray(camera_position, dir), &rnd, 0) / samples / (supersamples * supersamples);
 						}
 						image[image_index] = image[image_index] + accumulated_radiance;
 					}

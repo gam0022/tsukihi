@@ -124,14 +124,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constant.h" />
-    <ClInclude Include="fake_radiance.h" />
+    <ClInclude Include="tsukihi_renderer.h" />
     <ClInclude Include="intersection.h" />
     <ClInclude Include="material.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="point_light.h" />
     <ClInclude Include="image.h" />
-    <ClInclude Include="pathtracing_radiance.h" />
+    <ClInclude Include="pathtracing_renderer.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="ray.h" />
     <ClInclude Include="raymarching_mbox.h" />

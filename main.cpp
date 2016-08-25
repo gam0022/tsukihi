@@ -3,7 +3,8 @@
 #include <iostream>
 #include <time.h>
 
-#include "renderer.h"
+#include "pathtracing_renderer.h"
+#include "tsukihi_renderer.h"
 
 int main(int argc, char **argv) {
 	FILE *stream;
@@ -12,10 +13,12 @@ int main(int argc, char **argv) {
 	std::cout << "Raytracing and Raymarching hybrid 'fake' renderer: tukihi" << std::endl << std::endl;
 	clock_t start = clock();
 
-	auto renderer = new tukihi::Renderer();
+    //tukihi::Renderer* renderer = new tukihi::PathtracingRenderer();
+    tukihi::Renderer* renderer = new tukihi::TsukihiRenderer();
+
 	int s = 1;
-	//renderer->render(640 / 2, 480 / 2, tukihi::RENDER_MODE_PATHTRACING, 5, 1);
-	renderer->render(640 * s, 480 * s, tukihi::RENDER_MODE_FAKE, 1, s);
+	renderer->render(640 * s, 480 * s, 1, s);
+
 	delete renderer;
 
 	clock_t end = clock();

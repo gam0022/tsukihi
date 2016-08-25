@@ -255,4 +255,5 @@ paket-files/
 # Ohter
 *.ppm
 *.png
+*.swp
 output.txt
