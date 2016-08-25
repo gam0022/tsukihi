@@ -11,16 +11,16 @@
 
 namespace tsukihi {
 
-struct RaymarchingSphere : public RaymarchingObject {
-public:
-	RaymarchingSphere(const Vec3 &position, const double scale, const Color &emission, const Color &color, const ReflectionType reflection_type) : 
-		RaymarchingObject(position, scale, emission, color, reflection_type) {
-	}
+	struct RaymarchingSphere : public RaymarchingObject {
+	public:
+		RaymarchingSphere(const Vec3 &position, const double scale, const Color &emission, const Color &color, const ReflectionType reflection_type) :
+			RaymarchingObject(position, scale, emission, color, reflection_type) {
+		}
 
-	double distanceFunction(const Vec3 &p) const {
-		return length(p - position) - scale;
-	}
-};
+		double distanceFunction(const Vec3 &p) const {
+			return length(p - position) - scale;
+		}
+	};
 }
 
 #endif

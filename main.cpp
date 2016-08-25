@@ -14,7 +14,7 @@ int main(int argc, char **argv) {
 	clock_t start = clock();
 
 	int s = 2;
-    tsukihi::Renderer* renderer = new tsukihi::TsukihiRenderer();
+	tsukihi::Renderer* renderer = new tsukihi::TsukihiRenderer();
 	renderer->render(640 * s, 480 * s, 1, s);
 
 	//tsukihi::Renderer* renderer = new tsukihi::PathtracingRenderer();
