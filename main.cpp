@@ -13,12 +13,12 @@ int main(int argc, char **argv) {
 	std::cout << "Raytracing and Raymarching hybrid 'fake' renderer: tukihi" << std::endl << std::endl;
 	clock_t start = clock();
 
-	int s = 1;
-    //tukihi::Renderer* renderer = new tukihi::TsukihiRenderer();
-	//renderer->render(640 * s, 480 * s, 1, s);
+	int s = 2;
+    tukihi::Renderer* renderer = new tukihi::TsukihiRenderer();
+	renderer->render(640 * s, 480 * s, 1, s);
 
-	tukihi::Renderer* renderer = new tukihi::PathtracingRenderer();
-	renderer->render(640 /2 , 480 / 2, 5, s);
+	//tukihi::Renderer* renderer = new tukihi::PathtracingRenderer();
+	//renderer->render(640 /2 , 480 / 2, 5, s);
 
 	delete renderer;
 
