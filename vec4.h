@@ -8,7 +8,7 @@
 #include "vec2.h"
 #include "vec3.h"
 
-namespace tukihi {
+namespace tsukihi {
 
 	struct Vec4 {
 		double x, y, z, w;

@@ -3,7 +3,7 @@
 
 #include "vec3.h"
 
-namespace tukihi {
+namespace tsukihi {
 
 typedef Vec3 Color;
 

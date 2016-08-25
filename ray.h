@@ -3,7 +3,7 @@
 
 #include "vec3.h"
 
-namespace tukihi {
+namespace tsukihi {
 
 struct Ray {
 	Vec3 org, dir;

@@ -10,7 +10,7 @@
 #include "random.h"
 #include "renderer.h"
 
-namespace tukihi {
+namespace tsukihi {
 	class TsukihiRenderer : public Renderer {
 	public:
 		TsukihiRenderer(double shadowIntensity = 0.1, double shadowSharpness = 30.0, double minDiffuse = 0.1, double minAmbient = 0.1) :

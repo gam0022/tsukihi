@@ -6,7 +6,7 @@
 
 #include "raymarching_menger_sponge.h"
 
-namespace tukihi {
+namespace tsukihi {
 
 	struct RaymarchingMengerSpongeLoop : public RaymarchingMengerSponge {
 	public:

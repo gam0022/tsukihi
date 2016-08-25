@@ -11,7 +11,7 @@
 #include "intersection.h"
 #include "raymarching_object.h"
 
-namespace tukihi {
+namespace tsukihi {
 
 	struct RaymarchingMengerSponge : public RaymarchingObject {
 	public:

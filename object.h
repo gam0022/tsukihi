@@ -9,7 +9,7 @@
 #include "constant.h"
 #include "intersection.h"
 
-namespace tukihi {
+namespace tsukihi {
 
 struct Object {
 public:

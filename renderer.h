@@ -7,7 +7,7 @@
 #include "image.h"
 #include "random.h"
 
-namespace tukihi {
+namespace tsukihi {
 	class Renderer {
 	public:
 		Renderer() {}

@@ -10,7 +10,7 @@
 #include "random.h"
 #include "renderer.h"
 
-namespace tukihi {
+namespace tsukihi {
 	class PathtracingRenderer : public Renderer {
 	public:
 		PathtracingRenderer() : Renderer() {}

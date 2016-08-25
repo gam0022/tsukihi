@@ -10,7 +10,7 @@
 #include "intersection.h"
 #include "object.h"
 
-namespace tukihi {
+namespace tsukihi {
 	typedef double(*DistanceFunctionPtr)(const Vec3& p);
 
 	struct RaymarchingObject : public Object {

@@ -11,7 +11,7 @@
 #include "intersection.h"
 #include "raymarching_object.h"
 
-namespace tukihi {
+namespace tsukihi {
 	struct RaymarchingMbox : public RaymarchingObject {
 	public:
 		RaymarchingMbox(const Vec3 &position, const double scale, const Color &emission, const Color &color, const ReflectionType reflection_type) :

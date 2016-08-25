@@ -3,7 +3,7 @@
 
 #include <climits>
 
-namespace tukihi {
+namespace tsukihi {
 
 // Xor-Shiftによる乱数ジェネレータ
 class XorShift {

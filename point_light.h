@@ -8,7 +8,7 @@
 #include "material.h"
 #include "object.h"
 
-namespace tukihi {
+namespace tsukihi {
 
 	struct PointLight : public Sphere {
 	public:

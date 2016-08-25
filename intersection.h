@@ -4,7 +4,7 @@
 #include "vec3.h"
 #include "constant.h"
 
-namespace tukihi {
+namespace tsukihi {
 	struct Object;
 
 	struct Hitpoint {

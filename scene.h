@@ -15,7 +15,7 @@
 #include "raymarching_mbox.h"
 #include "point_light.h"
 
-namespace tukihi {
+namespace tsukihi {
 	Color backgroundColor = Color(0.0, 0.0, 0.0);
 
 	Vec3 camera_position;
