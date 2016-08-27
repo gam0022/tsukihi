@@ -4,22 +4,16 @@
 #include <iostream>
 #include <omp.h>
 
-#include "pathtracing_radiance.h"
-#include "fake_radiance.h"
 #include "image.h"
 #include "random.h"
 
-namespace tukihi {
-	enum RenderMode {
-		RENDER_MODE_FAKE,
-		RENDER_MODE_PATHTRACING,
-	};
-
+namespace tsukihi {
 	class Renderer {
 	public:
 		Renderer() {}
-		const int KProgressImageInterval = 100;
-		int render(const int width, const int height, const RenderMode render_mode, int samples, const int supersamples);
+		int progressImageInterval;
+		int render(const int width, const int height, int samples, const int supersamples);
+		virtual Color radiance(const Ray &ray, Random *rnd, const int depth) { return Color(); }
 
 	private:
 		int progres_image_count = 0;
@@ -27,19 +21,18 @@ namespace tukihi {
 	};
 
 	inline bool Renderer::saveProgressImage(Color *image, int width, int height, int y) {
-		if (y % KProgressImageInterval == 0) {
-			char buffer[100];
-			snprintf(buffer, 100, "%03d.png", progres_image_count);
-			std::string filename(buffer);
-			save_png_file(filename, image, width, height);
-			++progres_image_count;
-		}
+		if (y % progressImageInterval != 0) return false;
+
+		char buffer[100];
+		snprintf(buffer, 100, "%03d.png", progres_image_count);
+		std::string filename(buffer);
+		save_png_file(filename, image, width, height);
+		++progres_image_count;
+		return true;
 	}
 
-	int Renderer::render(const int width, const int height, const RenderMode render_mode, int samples, const int supersamples) {
-		if (render_mode == RENDER_MODE_FAKE) {
-			samples = 1;
-		}
+	int Renderer::render(const int width, const int height, int samples, const int supersamples) {
+		progressImageInterval = height / 6;
 
 		setup();
 
@@ -47,7 +40,7 @@ namespace tukihi {
 		const double screen_width = 30.0 * width / height;
 		const double screen_height = 30.0;
 		// スクリーンまでの距離
-		const double screen_dist = 40.0;
+		const double screen_dist = 40.0;// *0.3;
 		// スクリーンを張るベクトル
 		const Vec3 screen_x = normalize(cross(camera_dir, camera_up)) * screen_width;
 		const Vec3 screen_y = normalize(cross(screen_x, camera_dir)) * screen_height;
@@ -86,17 +79,7 @@ namespace tukihi {
 								screen_y * ((r2 + y) / height - 0.5);
 							// レイを飛ばす方向
 							const Vec3 dir = normalize(screen_position - camera_position);
-
-							switch (render_mode) {
-							case RENDER_MODE_FAKE:{
-								accumulated_radiance = radiance_by_fake(Ray(camera_position, dir), &rnd, 0) / (supersamples * supersamples);
-							} break;
-
-							case RENDER_MODE_PATHTRACING: {
-								accumulated_radiance +=
-									radiance_by_pathtracing(Ray(camera_position, dir), &rnd, 0) / samples / (supersamples * supersamples);
-							} break;
-							}
+							accumulated_radiance += radiance(Ray(camera_position, dir), &rnd, 0) / samples / (supersamples * supersamples);
 						}
 						image[image_index] = image[image_index] + accumulated_radiance;
 					}

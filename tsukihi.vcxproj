@@ -22,7 +22,7 @@
     <ProjectGuid>{4F5207EE-2E09-4DA3-9456-DD8085F64F3D}</ProjectGuid>
     <RootNamespace>tukihi</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
-    <ProjectName>tukihi</ProjectName>
+    <ProjectName>tsukihi</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -124,17 +124,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constant.h" />
-    <ClInclude Include="fake_radiance.h" />
+    <ClInclude Include="tsukihi_renderer.h" />
     <ClInclude Include="intersection.h" />
     <ClInclude Include="material.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="point_light.h" />
     <ClInclude Include="image.h" />
-    <ClInclude Include="pathtracing_radiance.h" />
+    <ClInclude Include="pathtracing_renderer.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="ray.h" />
+    <ClInclude Include="raymarching_mbox.h" />
     <ClInclude Include="raymarching_menger_sponge.h" />
+    <ClInclude Include="raymarching_menger_sponge_loop.h" />
     <ClInclude Include="raymarching_object.h" />
     <ClInclude Include="raymarching_sphere.h" />
     <ClInclude Include="renderer.h" />
@@ -144,6 +146,7 @@
     <ClInclude Include="stb_image_write.h" />
     <ClInclude Include="vec3.h" />
     <ClInclude Include="vec2.h" />
+    <ClInclude Include="vec4.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

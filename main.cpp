@@ -3,17 +3,23 @@
 #include <iostream>
 #include <time.h>
 
-#include "renderer.h"
+#include "pathtracing_renderer.h"
+#include "tsukihi_renderer.h"
 
 int main(int argc, char **argv) {
 	FILE *stream;
 	freopen_s(&stream, "output.txt", "w", stdout);
 
-	std::cout << "Raytracing and Raymarching hybrid 'fake' renderer: tukihi" << std::endl << std::endl;
+	std::cout << "Raytracing and Raymarching hybrid 'fake' renderer: tsukihi" << std::endl << std::endl;
 	clock_t start = clock();
 
-	auto renderer = new tukihi::Renderer();
-	renderer->render(640, 480, tukihi::RENDER_MODE_FAKE, 1, 1);
+	int s = 2;
+	tsukihi::Renderer* renderer = new tsukihi::TsukihiRenderer();
+	renderer->render(640 * s, 480 * s, 1, s);
+
+	//tsukihi::Renderer* renderer = new tsukihi::PathtracingRenderer();
+	//renderer->render(640 /2 , 480 / 2, 5, s);
+
 	delete renderer;
 
 	clock_t end = clock();

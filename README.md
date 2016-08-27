@@ -1,4 +1,4 @@
-# tukihi
+# 月灯(tsukihi)
 レイマーチングとレイトレーシングをハイブリッドに組み合わせてレンダリングするレンダラーです（予定）。
 
 [レイトレ合宿4](https://sites.google.com/site/raytracingcamp4/)参加用です。

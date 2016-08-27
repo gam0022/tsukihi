@@ -11,49 +11,50 @@
 #include "intersection.h"
 #include "raymarching_object.h"
 
-namespace tukihi {
+namespace tsukihi {
 
 	struct RaymarchingMengerSponge : public RaymarchingObject {
 	public:
-		RaymarchingMengerSponge(const Color &emission, const Color &color, const ReflectionType reflection_type) : RaymarchingObject(emission, color, reflection_type) {
+		RaymarchingMengerSponge(const Vec3 &position, const double scale, const Color &emission, const Color &color, const ReflectionType reflection_type) :
+			RaymarchingObject(position, scale, emission, color, reflection_type) {
 		}
 
-		inline double box(Vec3 p, double b) const{
-			//Vec d = abs(p) - b;
+		inline double box(const Vec3 p, double x) const {
+			//Vec d = abs(p) - x;
 			//return std::min(std::max(d.x, std::max(d.y, d.z)), 0.0) + max(d, 0.0).length();
-			return max(abs(p) - b, 0.0).length();
+			return max(abs(p) - x, 0.0).length();
 		}
 
-		inline double bar(Vec2 p, double b) const {
-			Vec2 d = abs(p) - b;
-			return std::min(std::max(d.x, d.y), 0.0) + max(d, 0.0).length();
-			//return max(abs(p) - b, 0.0).length();
+		inline double bar(const Vec2 p, double x) const {
+			Vec2 d = abs(p) - x;
+			return std::min(std::max(d.x, d.y), 0.0) + max(d, 0.0).length() + 0.01 * x;
+			//return max(abs(p) - x, 0.0).length();
 		}
 
-		inline double crossBar(Vec3 p, double b) const {
-			double da = bar(p.xy(), b),
-				db = bar(p.yz(), b),
-				dc = bar(p.zx(), b);
-			return std::min(da, std::min(db, dc));
+		inline double crossBar(const Vec3 p, double x) const {
+			double bar_x = bar(p.yz(), x);
+			double bar_y = bar(p.zx(), x);
+			double bar_z = bar(p.xy(), x);
+			return std::min(bar_z, std::min(bar_x, bar_y));
 		}
 
-		inline Vec3 opRep(Vec3 p, double interval) const {
+		inline Vec3 opRep(const Vec3 p, double interval) const {
 			return mod(p, interval) - interval * 0.5;
 		}
 
-		inline double distFunc(Vec3 p) const {
-			double ret = box(p, 0.3);
-			for (int c = 0; c < 4; c++){
-				double pw = pow(3.0, c);
-				ret = std::max(ret, -crossBar(mod(p + 0.15 / pw, 0.6 / pw) - 0.15 / pw, 0.1 / pw));
+		const double mengerSponge(const Vec3& p) const {
+			double d = box(p, 1.0);
+			const double one_third = 1.0 / 3.0;
+			for (int i = 0; i < 4; i++) {
+				double k = pow(one_third, i);
+				double kh = k * 0.5;
+				d = std::max(d, -crossBar(mod(p + kh, k * 2.0) - kh, k * one_third));
 			}
-			return ret;
+			return d;
 		}
 
-		double distanceFunction(const Vec3 &position) const {
-			double scale = 70.0;
-			auto center = Vec3(50, scale * 0.3, 70);
-			return distFunc((position - center) / scale ) * scale;
+		double distanceFunction(const Vec3 &p) const {
+			return mengerSponge((p - position) / scale) * scale;
 		}
 	};
 }

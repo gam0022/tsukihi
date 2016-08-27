@@ -4,23 +4,23 @@
 #include "vec3.h"
 #include "constant.h"
 
-namespace tukihi {
+namespace tsukihi {
+	struct Object;
 
-struct Hitpoint {
-	double distance;
-	Vec3 normal;
-	Vec3 position;
+	struct Hitpoint {
+		double distance;
+		Vec3 normal;
+		Vec3 position;
 
-	Hitpoint() : distance(kINF), normal(), position() {}
-};
+		Hitpoint() : distance(kINF), normal(), position() {}
+	};
 
-struct Intersection {
-	Hitpoint hitpoint;
-	int object_id;
+	struct Intersection {
+		Hitpoint hitpoint;
+		Object* object;
 
-	Intersection() : object_id(-1) {}
-};
-
+		Intersection() : object(nullptr) {}
+	};
 };
 
 #endif

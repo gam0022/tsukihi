@@ -8,12 +8,12 @@
 #include "material.h"
 #include "object.h"
 
-namespace tukihi {
+namespace tsukihi {
 
 	struct PointLight : public Sphere {
 	public:
 		PointLight(const double radius, const Vec3 &position, const Color &emission) :
-			Sphere(radius, position, emission, Vec3(), REFLECTION_TYPE_DIFFUSE) {}
+			Sphere(radius, position, emission, emission, REFLECTION_TYPE_DIFFUSE) {}
 	};
 
 };
