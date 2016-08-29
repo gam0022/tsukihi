@@ -8,6 +8,9 @@
 
 ![サンプル出力画像](output_example.png)
 
+## 紹介スライド
+[tsukihiができるまで #レイトレ合宿4](https://speakerdeck.com/gam0022/tsukihigadekirumade-number-reitorehe-su-4)
+
 ## License
 Copyright (c) 2016 gam0022
 
