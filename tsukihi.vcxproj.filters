@@ -13,26 +13,11 @@
     <ClInclude Include="material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="random.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scene.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="vec2.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="vec3.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="math.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="vec4.h">
-      <Filter>Header Files\math</Filter>
     </ClInclude>
     <ClInclude Include="renderer.h">
       <Filter>Header Files\renderer</Filter>
@@ -72,6 +57,21 @@
     </ClInclude>
     <ClInclude Include="object\sphere.h">
       <Filter>Header Files\object</Filter>
+    </ClInclude>
+    <ClInclude Include="math\vec2.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="math\vec3.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="math\vec4.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="math\random.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="math\math.h">
+      <Filter>Header Files\math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -5,7 +5,7 @@
 #include <omp.h>
 
 #include "image.h"
-#include "random.h"
+#include "math/random.h"
 
 namespace tsukihi {
 	class Renderer {

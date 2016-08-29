@@ -127,12 +127,12 @@
     <ClInclude Include="tsukihi_renderer.h" />
     <ClInclude Include="intersection.h" />
     <ClInclude Include="material.h" />
-    <ClInclude Include="math.h" />
+    <ClInclude Include="math\math.h" />
     <ClInclude Include="object\object.h" />
     <ClInclude Include="object\point_light.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="pathtracing_renderer.h" />
-    <ClInclude Include="random.h" />
+    <ClInclude Include="math\random.h" />
     <ClInclude Include="ray.h" />
     <ClInclude Include="object\raymarching_mbox.h" />
     <ClInclude Include="object\raymarching_menger_sponge.h" />
@@ -144,9 +144,9 @@
     <ClInclude Include="object\sphere.h" />
     <ClInclude Include="lib\stb_image.h" />
     <ClInclude Include="lib\stb_image_write.h" />
-    <ClInclude Include="vec3.h" />
-    <ClInclude Include="vec2.h" />
-    <ClInclude Include="vec4.h" />
+    <ClInclude Include="math\vec3.h" />
+    <ClInclude Include="math\vec2.h" />
+    <ClInclude Include="math\vec4.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

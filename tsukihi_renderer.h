@@ -7,7 +7,7 @@
 #include "scene.h"
 #include "object/sphere.h"
 #include "intersection.h"
-#include "random.h"
+#include "math/random.h"
 #include "renderer.h"
 
 namespace tsukihi {

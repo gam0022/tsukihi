@@ -4,8 +4,8 @@
 #include <cmath>
 #include <algorithm>
 
-#include "math.h"
-#include "vec2.h"
+#include "math/math.h"
+#include "math/vec2.h"
 
 namespace tsukihi {
 
