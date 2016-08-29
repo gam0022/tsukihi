@@ -49,12 +49,6 @@
     <ClInclude Include="object.h">
       <Filter>Header Files\object</Filter>
     </ClInclude>
-    <ClInclude Include="stb_image.h">
-      <Filter>Header Files\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="stb_image_write.h">
-      <Filter>Header Files\lib</Filter>
-    </ClInclude>
     <ClInclude Include="vec4.h">
       <Filter>Header Files\math</Filter>
     </ClInclude>
@@ -72,6 +66,12 @@
     </ClInclude>
     <ClInclude Include="pathtracing_renderer.h">
       <Filter>Header Files\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\stb_image_write.h">
+      <Filter>Header Files\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\stb_image.h">
+      <Filter>Header Files\lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
