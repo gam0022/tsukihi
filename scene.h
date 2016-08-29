@@ -7,13 +7,13 @@
 #include "constant.h"
 #include "intersection.h"
 
-#include "object.h"
-#include "sphere.h"
-#include "raymarching_sphere.h"
-#include "raymarching_menger_sponge.h"
-#include "raymarching_menger_sponge_loop.h"
-#include "raymarching_mbox.h"
-#include "point_light.h"
+#include "object/object.h"
+#include "object/sphere.h"
+#include "object/raymarching_sphere.h"
+#include "object/raymarching_menger_sponge.h"
+#include "object/raymarching_menger_sponge_loop.h"
+#include "object/raymarching_mbox.h"
+#include "object/point_light.h"
 
 namespace tsukihi {
 	Color backgroundColor = Color(0.0, 0.0, 0.0);

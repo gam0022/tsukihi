@@ -5,7 +5,7 @@
 
 #include "ray.h"
 #include "scene.h"
-#include "sphere.h"
+#include "object/sphere.h"
 #include "intersection.h"
 #include "random.h"
 #include "renderer.h"

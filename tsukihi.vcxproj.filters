@@ -22,18 +22,6 @@
     <ClInclude Include="scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="raymarching_menger_sponge.h">
-      <Filter>Header Files\object</Filter>
-    </ClInclude>
-    <ClInclude Include="raymarching_object.h">
-      <Filter>Header Files\object</Filter>
-    </ClInclude>
-    <ClInclude Include="raymarching_sphere.h">
-      <Filter>Header Files\object</Filter>
-    </ClInclude>
-    <ClInclude Include="sphere.h">
-      <Filter>Header Files\object</Filter>
-    </ClInclude>
     <ClInclude Include="vec2.h">
       <Filter>Header Files\math</Filter>
     </ClInclude>
@@ -43,20 +31,8 @@
     <ClInclude Include="math.h">
       <Filter>Header Files\math</Filter>
     </ClInclude>
-    <ClInclude Include="point_light.h">
-      <Filter>Header Files\object</Filter>
-    </ClInclude>
-    <ClInclude Include="object.h">
-      <Filter>Header Files\object</Filter>
-    </ClInclude>
     <ClInclude Include="vec4.h">
       <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="raymarching_mbox.h">
-      <Filter>Header Files\object</Filter>
-    </ClInclude>
-    <ClInclude Include="raymarching_menger_sponge_loop.h">
-      <Filter>Header Files\object</Filter>
     </ClInclude>
     <ClInclude Include="renderer.h">
       <Filter>Header Files\renderer</Filter>
@@ -72,6 +48,30 @@
     </ClInclude>
     <ClInclude Include="lib\stb_image.h">
       <Filter>Header Files\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="object\object.h">
+      <Filter>Header Files\object</Filter>
+    </ClInclude>
+    <ClInclude Include="object\point_light.h">
+      <Filter>Header Files\object</Filter>
+    </ClInclude>
+    <ClInclude Include="object\raymarching_mbox.h">
+      <Filter>Header Files\object</Filter>
+    </ClInclude>
+    <ClInclude Include="object\raymarching_menger_sponge.h">
+      <Filter>Header Files\object</Filter>
+    </ClInclude>
+    <ClInclude Include="object\raymarching_menger_sponge_loop.h">
+      <Filter>Header Files\object</Filter>
+    </ClInclude>
+    <ClInclude Include="object\raymarching_object.h">
+      <Filter>Header Files\object</Filter>
+    </ClInclude>
+    <ClInclude Include="object\raymarching_sphere.h">
+      <Filter>Header Files\object</Filter>
+    </ClInclude>
+    <ClInclude Include="object\sphere.h">
+      <Filter>Header Files\object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
