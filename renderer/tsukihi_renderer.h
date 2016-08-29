@@ -8,7 +8,7 @@
 #include "object/sphere.h"
 #include "intersection.h"
 #include "math/random.h"
-#include "renderer.h"
+#include "renderer/renderer.h"
 
 namespace tsukihi {
 	class TsukihiRenderer : public Renderer {
