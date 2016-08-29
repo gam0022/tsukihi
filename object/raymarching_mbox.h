@@ -4,12 +4,12 @@
 #include <cmath>
 #include <algorithm>
 
-#include "vec3.h"
-#include "vec4.h"
+#include "math/vec3.h"
+#include "math/vec4.h"
 #include "material.h"
 #include "constant.h"
 #include "intersection.h"
-#include "raymarching_object.h"
+#include "object/raymarching_object.h"
 
 namespace tsukihi {
 	struct RaymarchingMbox : public RaymarchingObject {

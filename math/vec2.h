@@ -4,7 +4,7 @@
 #include <cmath>
 #include <algorithm>
 
-#include "math.h"
+#include "math/math.h"
 
 namespace tsukihi {
 

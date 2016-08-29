@@ -3,10 +3,10 @@
 
 #include <cmath>
 
-#include "vec3.h"
+#include "math/vec3.h"
 #include "ray.h"
 #include "material.h"
-#include "object.h"
+#include "object/object.h"
 
 namespace tsukihi {
 

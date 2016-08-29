@@ -4,7 +4,7 @@
 #include <cmath>
 #include <algorithm>
 
-#include "raymarching_menger_sponge.h"
+#include "object/raymarching_menger_sponge.h"
 
 namespace tsukihi {
 

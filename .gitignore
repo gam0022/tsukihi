@@ -254,6 +254,11 @@ paket-files/
 
 # Ohter
 *.ppm
-*.png
 *.swp
+*.swn
+*.swm
+*.swo
 output.txt
+
+image.png
+0*.png

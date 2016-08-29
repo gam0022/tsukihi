@@ -3,11 +3,11 @@
 
 #include <cmath>
 
-#include "vec3.h"
+#include "math/vec3.h"
 #include "material.h"
 #include "constant.h"
 #include "intersection.h"
-#include "raymarching_object.h"
+#include "object/raymarching_object.h"
 
 namespace tsukihi {
 

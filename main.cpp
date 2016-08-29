@@ -3,8 +3,8 @@
 #include <iostream>
 #include <time.h>
 
-#include "pathtracing_renderer.h"
-#include "tsukihi_renderer.h"
+#include "renderer/pathtracing_renderer.h"
+#include "renderer/tsukihi_renderer.h"
 
 int main(int argc, char **argv) {
 	FILE *stream;

@@ -1,7 +1,7 @@
 #ifndef _RAY_H_
 #define _RAY_H_
 
-#include "vec3.h"
+#include "math/vec3.h"
 
 namespace tsukihi {
 
