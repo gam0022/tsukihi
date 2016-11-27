@@ -2,7 +2,10 @@
 #define _RENDERER_H_
 
 #include <iostream>
+
+#ifdef _OMP_
 #include <omp.h>
+#endif
 
 #include "image.h"
 #include "math/random.h"
@@ -53,9 +56,11 @@ namespace tsukihi {
 		// OpenMP
 #pragma omp parallel for schedule(dynamic, 1)// num_threads(8)
 		for (int y = 0; y < height; y++) {
+#ifdef _OMP_
 			if (y == 0) {
 				std::cout << "threads: " << omp_get_num_threads() << std::endl;
 			}
+#endif
 			std::cerr << "Rendering (y = " << y << ") " << (100.0 * y / (height - 1)) << "%" << std::endl;
 
 			saveProgressImage(image, width, height, y);
