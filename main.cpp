@@ -6,14 +6,16 @@
 #include "renderer/pathtracing_renderer.h"
 #include "renderer/tsukihi_renderer.h"
 
+//#define _OMP_
+
 int main(int argc, char **argv) {
 	FILE *stream;
-	freopen_s(&stream, "output.txt", "w", stdout);
+	stream = freopen("output.txt", "w", stdout);
 
 	std::cout << "Raytracing and Raymarching hybrid 'fake' renderer: tsukihi" << std::endl << std::endl;
 	clock_t start = clock();
 
-	int s = 2;
+	int s = 1;
 	tsukihi::Renderer* renderer = new tsukihi::TsukihiRenderer();
 	renderer->render(640 * s, 480 * s, 1, s);
 

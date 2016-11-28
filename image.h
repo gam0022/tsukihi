@@ -35,7 +35,7 @@ namespace tsukihi {
 
 	int save_ppm_file(const std::string &filename, const Color *image, const int width, const int height) {
 		FILE *f;
-		if (auto error = fopen_s(&f, filename.c_str(), "wb")) {
+		if ((f = fopen(filename.c_str(), "wb")) == NULL) {
 			return 0;
 		}
 		fprintf(f, "P3\n%d %d\n%d\n", width, height, 255);

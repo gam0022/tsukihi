@@ -27,7 +27,7 @@ namespace tsukihi {
 
 		Vec3 calcNormal(const Vec3 &p) const;
 		bool intersect(const Ray &ray, Hitpoint *hitpoint) const;
-		double RaymarchingObject::transform(const Vec3 &p, DistanceFunctionPtr f) const;
+		double transform(const Vec3 &p, DistanceFunctionPtr f) const;
 	};
 
 	Vec3 RaymarchingObject::calcNormal(const Vec3 &p) const {
