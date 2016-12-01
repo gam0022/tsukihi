@@ -1,14 +1,7 @@
 #ifndef _GL_WINDOW_
 #define _GL_WINDOW_
 
-#ifdef EMSCRIPTEN
-#define	GL_GLEXT_PROTOTYPES
-#define	EGL_EGLEXT_PROTOTYPES
-#include <GL/glut.h>
-#else
-#include <OpenGL/OpenGL.h>
-#include <GLUT/GLUT.h>
-#endif
+#include <GLFW/glfw3.h>
 
 #include <string>
 #include <cstdlib>
@@ -62,6 +55,7 @@ namespace tsukihi {
 	class GLWindow {
     public:
 
+		GLFWwindow* window;
 		GLuint	programObject;
 		GLuint	vertexShader, fragmentShader;
 		GLuint	textureId;
@@ -115,7 +109,7 @@ namespace tsukihi {
 			glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, s_indexObject );
 		}
 
-		static void display(const Color *image) {
+		void display(const Color *image) {
 			if (image != NULL) {
 				store_image_to_pixels(image, SCREEN_WIDTH, SCREEN_HEIGHT, pixels);
 			}
@@ -123,22 +117,22 @@ namespace tsukihi {
 
 			glClear(GL_COLOR_BUFFER_BIT);
 			glDrawElements( GL_TRIANGLE_STRIP, sizeof(s_indices)/sizeof(s_indices[0]), GL_UNSIGNED_SHORT, 0 );
-			glutSwapBuffers();
-		}
 
-		static void DisplayFunc() {
-			display(NULL);
+			glfwSwapBuffers(window);
 		}
 
 		GLWindow() {
 			GLuint	positionLoc, texCoordLoc, samplerLoc;
 
-			int argc = 0;
-			glutInit( &argc, NULL );
-			glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-			glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-			glutCreateWindow("hello, world");
+			// init GLFW
+			glfwInit();
+			window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "tsukihi", nullptr, nullptr);
+			if (!window) {
+				glfwTerminate();
+			}
+			glfwMakeContextCurrent(window);
 
+			// init scene
 			vertexShader = load_shader( GL_VERTEX_SHADER, s_vShaderStr );
 			fragmentShader = load_shader( GL_FRAGMENT_SHADER, s_fShaderStr );
 
@@ -154,9 +148,6 @@ namespace tsukihi {
 
 			textureId = setup_tex();
 			setup_vtx( positionLoc, texCoordLoc, samplerLoc );
-
-			glutDisplayFunc(DisplayFunc);
-			//glutMainLoop();
 		}
 
 		~GLWindow() {
