@@ -14,33 +14,28 @@
 #define SCREEN_WIDTH  (256)
 #define SCREEN_HEIGHT (256)
 
-
-
 namespace tsukihi {
-	static constexpr char s_vShaderStr[] =  
-		"attribute vec4 a_position;   \n"
-		"attribute vec2 a_texCoord;   \n"
-		"varying vec2 v_texCoord;     \n"
-		"void main()                  \n"
-		"{                            \n"
-		"   gl_Position = a_position; \n"
-		"   v_texCoord = a_texCoord;  \n"
-		"}                            \n";
+	static constexpr char quadVertexShader[] = R"##(
+		attribute vec4 position;
+		attribute vec2 uv;
+		varying vec2 vUv;
+		void main() {
+			gl_Position = position;
+			vUv = uv;
+		}
+	)##";
 
-	static constexpr char s_fShaderStr[] =  
-		"#ifdef GL_ES\n"
-		"precision mediump float;                            \n"
-		"#endif\n"
-		"varying vec2 v_texCoord;                            \n"
-		"uniform sampler2D s_texture;                        \n"
-		"void main()                                         \n"
-		"{                                                   \n"
-		"  gl_FragColor = texture2D( s_texture, v_texCoord );\n"
-		"}                                                   \n";
+	static constexpr char quaduFragmentShader[] =  R"##(
+		varying vec2 vUv;
+		uniform sampler2D texture;
+		void main() {
+			gl_FragColor = texture2D( texture, vUv );
+		}
+	)##";
 
-	static constexpr GLfloat	s_vertices[] = {
-		-1.0f,  1.0f, 0.0f,		// Position 0
-		0.0f,  0.0f,			// TexCoord 0
+	static constexpr GLfloat planeVertices[] = {
+		-1.0f,  1.0f, 0.0f,	// position
+		0.0f,  0.0f,		// uv
 		-1.0f, -1.0f, 0.0f,
 		0.0f,  1.0f,
 		1.0f, -1.0f, 0.0f,
@@ -49,20 +44,18 @@ namespace tsukihi {
 		1.0f,  0.0f,
 	};
 
-	static constexpr GLushort	s_indices[] = { 0, 1, 3, 2 };
-	static GLubyte pixels[ SCREEN_WIDTH * SCREEN_HEIGHT * 3 ];
+	static constexpr GLushort planeIndices[] = {0, 1, 3, 2};
 
 	class GLWindow {
     public:
-
 		GLFWwindow* window;
-		GLuint	programObject;
-		GLuint	vertexShader, fragmentShader;
-		GLuint	textureId;
+		GLuint programObject;
+		GLuint vertexShader, fragmentShader;
+		GLuint textureId;
+		GLubyte pixels[SCREEN_WIDTH * SCREEN_HEIGHT * 3];
 
-		GLuint load_shader( GLenum type, const char *src )
-		{
-			GLuint	shader;
+		GLuint loadShader( GLenum type, const char *src ) {
+			GLuint shader;
 
 			shader = glCreateShader( type );
 			glShaderSource( shader, 1, &src, 0 );
@@ -71,60 +64,57 @@ namespace tsukihi {
 			return shader;
 		}
 
-		GLuint setup_tex()
-		{
-			int		i, j, k;
-			GLuint		textureId;
+		GLuint setupTex() {
+			GLuint textureId;
 
-			glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
-			glGenTextures( 1, &textureId );
-			glBindTexture( GL_TEXTURE_2D, textureId );
-			glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, SCREEN_WIDTH, SCREEN_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, pixels );
-			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-			glActiveTexture( GL_TEXTURE0 );
-			glBindTexture( GL_TEXTURE_2D, textureId );
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+			glGenTextures(1, &textureId);
+			glBindTexture(GL_TEXTURE_2D, textureId);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, SCREEN_WIDTH, SCREEN_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, textureId);
 
 			return textureId;
 		}
 
-		void setup_vtx( GLuint positionLoc, GLuint texCoordLoc, GLuint samplerLoc )
-		{
-			GLuint	s_vertexPosObject, s_indexObject;
-			glGenBuffers(1, &s_vertexPosObject);
-			glBindBuffer(GL_ARRAY_BUFFER, s_vertexPosObject );
-			glBufferData(GL_ARRAY_BUFFER, sizeof(s_vertices), s_vertices, GL_STATIC_DRAW );
+		void setupVtx(GLuint positionLoc, GLuint texCoordLoc, GLuint samplerLoc) {
+			GLuint vertexPosObject, indexObject;
 
-			glGenBuffers(1, &s_indexObject);
-			glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, s_indexObject );
-			glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof(s_indices), s_indices, GL_STATIC_DRAW );
+			glGenBuffers(1, &vertexPosObject);
+			glBindBuffer(GL_ARRAY_BUFFER, vertexPosObject );
+			glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), planeVertices, GL_STATIC_DRAW );
 
-			glBindBuffer(GL_ARRAY_BUFFER, s_vertexPosObject);
-			glVertexAttribPointer( positionLoc, 3, GL_FLOAT, GL_FALSE, 5 * 4, 0 );
-			glVertexAttribPointer( texCoordLoc, 2, GL_FLOAT, GL_FALSE, 5 * 4, (const GLvoid *)(3 * 4) );
-			glEnableVertexAttribArray( positionLoc );
-			glEnableVertexAttribArray( texCoordLoc );
+			glGenBuffers(1, &indexObject);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexObject);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(planeIndices), planeIndices, GL_STATIC_DRAW);
 
-			glUniform1i( samplerLoc, 0 );
-			glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, s_indexObject );
+			glBindBuffer(GL_ARRAY_BUFFER, vertexPosObject);
+			glVertexAttribPointer(positionLoc, 3, GL_FLOAT, GL_FALSE, 5 * 4, 0);
+			glVertexAttribPointer(texCoordLoc, 2, GL_FLOAT, GL_FALSE, 5 * 4, (const GLvoid *)(3 * 4));
+			glEnableVertexAttribArray(positionLoc);
+			glEnableVertexAttribArray(texCoordLoc);
+
+			glUniform1i(samplerLoc, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexObject);
 		}
 
 		void display(const Color *image) {
-			if (image != NULL) {
-				store_image_to_pixels(image, SCREEN_WIDTH, SCREEN_HEIGHT, pixels);
-			}
-			glTexSubImage2D( GL_TEXTURE_2D, 0, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, pixels );
+			// Update Texture
+			store_image_to_pixels(image, SCREEN_WIDTH, SCREEN_HEIGHT, pixels);
+			glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, pixels);
 
+			// Draw
 			glClear(GL_COLOR_BUFFER_BIT);
-			glDrawElements( GL_TRIANGLE_STRIP, sizeof(s_indices)/sizeof(s_indices[0]), GL_UNSIGNED_SHORT, 0 );
+			glDrawElements(GL_TRIANGLE_STRIP, sizeof(planeIndices)/sizeof(planeIndices[0]), GL_UNSIGNED_SHORT, 0);
 
+			// GLFW
 			glfwSwapBuffers(window);
 		}
 
 		GLWindow() {
-			GLuint	positionLoc, texCoordLoc, samplerLoc;
-
-			// init GLFW
+			// GLFW
 			glfwInit();
 			window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "tsukihi", nullptr, nullptr);
 			if (!window) {
@@ -132,29 +122,35 @@ namespace tsukihi {
 			}
 			glfwMakeContextCurrent(window);
 
-			// init scene
-			vertexShader = load_shader( GL_VERTEX_SHADER, s_vShaderStr );
-			fragmentShader = load_shader( GL_FRAGMENT_SHADER, s_fShaderStr );
+			// OpenGL
+			
+			// shader
+			vertexShader = loadShader( GL_VERTEX_SHADER, quadVertexShader );
+			fragmentShader = loadShader( GL_FRAGMENT_SHADER, quaduFragmentShader );
 
 			programObject = glCreateProgram();
-			glAttachShader( programObject, vertexShader );
-			glAttachShader( programObject, fragmentShader );
-			glLinkProgram( programObject );
-			glUseProgram( programObject );
+			glAttachShader(programObject, vertexShader);
+			glAttachShader(programObject, fragmentShader);
+			glLinkProgram(programObject);
+			glUseProgram(programObject);
 
-			positionLoc = glGetAttribLocation( programObject, "a_position" );
-			texCoordLoc = glGetAttribLocation( programObject, "a_texCoord" );
-			samplerLoc = glGetUniformLocation( programObject, "s_texture" );
-
-			textureId = setup_tex();
-			setup_vtx( positionLoc, texCoordLoc, samplerLoc );
+			// texture
+			textureId = setupTex();
+			GLuint positionLoc = glGetAttribLocation(programObject, "position");
+			GLuint texCoordLoc = glGetAttribLocation(programObject, "uv");
+			GLuint samplerLoc  = glGetUniformLocation(programObject, "texture");
+			setupVtx(positionLoc, texCoordLoc, samplerLoc);
 		}
 
 		~GLWindow() {
+			// OpenGL
 			glDeleteTextures(1, &textureId);
 			glDeleteShader(fragmentShader);
 			glDeleteShader(vertexShader);
 			glDeleteProgram(programObject);
+			
+			// GLFW
+			glfwTerminate();
 		}
 	};
 };
