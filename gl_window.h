@@ -1,6 +1,12 @@
 #ifndef _GL_WINDOW_
 #define _GL_WINDOW_
 
+#ifdef EMSCRIPTEN
+    #include <emscripten/emscripten.h>
+    #define GL_GLEXT_PROTOTYPES
+    #define EGL_EGLEXT_PROTOTYPES
+#endif
+
 #include <GLFW/glfw3.h>
 
 #include <string>
@@ -9,7 +15,6 @@
 #include <vector>
 
 #include "math.h"
-#include "material.h"
 
 #define SCREEN_WIDTH  (256)
 #define SCREEN_HEIGHT (256)
@@ -111,6 +116,7 @@ namespace tsukihi {
 
 			// GLFW
 			glfwSwapBuffers(window);
+			glfwPollEvents();
 		}
 
 		GLWindow() {
@@ -121,6 +127,8 @@ namespace tsukihi {
 				glfwTerminate();
 			}
 			glfwMakeContextCurrent(window);
+			glClearColor(0.0, 0.0, 0.0, 1.0);
+
 
 			// OpenGL
 			

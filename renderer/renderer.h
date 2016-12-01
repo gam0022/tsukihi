@@ -54,7 +54,7 @@ namespace tsukihi {
 	}
 
 	int Renderer::render(const int width, const int height, int samples, const int supersamples) {
-		progressImageInterval = height / 6;
+		progressImageInterval = 5;
 
 		setup();
 #ifdef _OPEN_GL_
@@ -83,7 +83,10 @@ namespace tsukihi {
 				std::cout << "threads: " << omp_get_num_threads() << std::endl;
 			}
 #endif
-			std::cerr << "Rendering (y = " << y << ") " << (100.0 * y / (height - 1)) << "%" << std::endl;
+			std::cout << "Rendering (y = " << y << ") " << (100.0 * y / (height - 1)) << "%" << std::endl;
+#ifdef EMSCRIPTEN
+			emscripten_sleep(1);
+#endif
 
 			saveProgressImage(image, width, height, y);
 
@@ -118,7 +121,9 @@ namespace tsukihi {
 		saveResultImage(image, width, height);
 
 #ifdef _OPEN_GL_
+#ifndef EMSCRIPTEN
 		delete glWindow;
+#endif
 #endif
 		return 0;
 	}

@@ -9,8 +9,10 @@
 #include "renderer/tsukihi_renderer.h"
 
 int main(int argc, char **argv) {
+#ifndef EMSCRIPTEN
 	FILE *stream;
 	stream = freopen("output.txt", "w", stdout);
+#endif
 
 	std::cout << "Raytracing and Raymarching hybrid 'fake' renderer: tsukihi" << std::endl << std::endl;
 	clock_t start = clock();
@@ -27,5 +29,7 @@ int main(int argc, char **argv) {
 
 	clock_t end = clock();
 	std::cout << "Total time: " << (double)(end - start) / CLOCKS_PER_SEC << "sec." << std::endl;
+#ifndef EMSCRIPTEN
 	fclose(stream);
+#endif
 }
