@@ -8,6 +8,7 @@
 #endif
 
 #include "image.h"
+#include "gl_window.h"
 #include "math/random.h"
 
 namespace tsukihi {
@@ -21,6 +22,10 @@ namespace tsukihi {
 	private:
 		int progres_image_count = 0;
 		inline bool saveProgressImage(Color *image, int width, int height, int y);
+		inline void saveResultImage(Color *image, int width, int height);
+#ifdef _OPEN_GL_
+		GLWindow* glWindow;
+#endif
 	};
 
 	inline bool Renderer::saveProgressImage(Color *image, int width, int height, int y) {
@@ -29,15 +34,32 @@ namespace tsukihi {
 		char buffer[100];
 		snprintf(buffer, 100, "%03d.png", progres_image_count);
 		std::string filename(buffer);
+#ifdef _OPEN_GL_
+		glWindow->display(image);
+#else
 		save_png_file(filename, image, width, height);
+#endif
 		++progres_image_count;
 		return true;
+	}
+
+	inline void Renderer::saveResultImage(Color *image, int width, int height) {
+#ifdef _OPEN_GL_
+		glWindow->display(image);
+#else
+		//hdr_correction(image, width, height);
+		save_png_file(std::string("image.png"), image, width, height);
+		//save_ppm_file(std::string("image.ppm"), image, width, height);
+#endif
 	}
 
 	int Renderer::render(const int width, const int height, int samples, const int supersamples) {
 		progressImageInterval = height / 6;
 
 		setup();
+#ifdef _OPEN_GL_
+		glWindow = new GLWindow();
+#endif
 
 		// ワールド座標系でのスクリーンの大きさ
 		const double screen_width = 30.0 * width / height;
@@ -93,9 +115,11 @@ namespace tsukihi {
 		}
 
 		// 出力
-		//hdr_correction(image, width, height);
-		save_png_file(std::string("image.png"), image, width, height);
-		//save_ppm_file(std::string("image.ppm"), image, width, height);
+		saveResultImage(image, width, height);
+
+#ifdef _OPEN_GL_
+		delete glWindow;
+#endif
 		return 0;
 	}
 };

@@ -1,4 +1,4 @@
-CFLAGS = -std=c++11 -I .
+CFLAGS = -std=c++11 -I . -framework GLUT -framework OpenGL
 
 main: main.cpp
 	g++ $(CFLAGS) -o tsukihi main.cpp

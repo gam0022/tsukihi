@@ -1,12 +1,12 @@
 ﻿#define _CRT_SECURE_NO_DEPRECATE
+//#define _OMP_
+#define _OPEN_GL_
 
 #include <iostream>
 #include <time.h>
 
 #include "renderer/pathtracing_renderer.h"
 #include "renderer/tsukihi_renderer.h"
-
-//#define _OMP_
 
 int main(int argc, char **argv) {
 	FILE *stream;
@@ -17,7 +17,8 @@ int main(int argc, char **argv) {
 
 	int s = 1;
 	tsukihi::Renderer* renderer = new tsukihi::TsukihiRenderer();
-	renderer->render(640 * s / 4, 480 * s / 4, 1, s);
+	//renderer->render(640 * s / 4, 480 * s / 4, 1, s);
+	renderer->render(256, 256, 1, s);
 
 	//tsukihi::Renderer* renderer = new tsukihi::PathtracingRenderer();
 	//renderer->render(640 /2 , 480 / 2, 5, s);
