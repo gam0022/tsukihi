@@ -14,7 +14,7 @@
 #include <cstdio>
 #include <vector>
 
-#include "math.h"
+#include "material.h"
 
 #define SCREEN_WIDTH  (256)
 #define SCREEN_HEIGHT (256)

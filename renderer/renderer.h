@@ -54,7 +54,7 @@ namespace tsukihi {
 	}
 
 	int Renderer::render(const int width, const int height, int samples, const int supersamples) {
-		progressImageInterval = 5;
+		progressImageInterval = height / 64;
 
 		setup();
 #ifdef _OPEN_GL_
@@ -83,8 +83,17 @@ namespace tsukihi {
 				std::cout << "threads: " << omp_get_num_threads() << std::endl;
 			}
 #endif
-			std::cout << "Rendering (y = " << y << ") " << (100.0 * y / (height - 1)) << "%" << std::endl;
+
 #ifdef EMSCRIPTEN
+			std::cout
+#else
+			std::cerr
+#endif
+				<< "Rendering (y = " << y << ") " << (100.0 * y / (height - 1)) << "%" << std::endl;
+
+
+#ifdef EMSCRIPTEN
+			// Emscripten 上で動作させる場合、sleep を挟まないと標準出力や描画結果が反映されない
 			emscripten_sleep(1);
 #endif
 
@@ -122,9 +131,11 @@ namespace tsukihi {
 
 #ifdef _OPEN_GL_
 #ifndef EMSCRIPTEN
+		// Emscripten 版では、終了後でも WebGL による画像の表示を残しておく
 		delete glWindow;
 #endif
 #endif
+
 		return 0;
 	}
 };
