@@ -49,60 +49,8 @@ namespace tsukihi {
 	static constexpr GLushort planeIndices[] = {0, 1, 3, 2};
 
 	class GLWindow {
-    public:
+	public:
 		int width, height;
-
-		GLFWwindow* window;
-		GLuint programObject;
-		GLuint vertexShader, fragmentShader;
-		GLuint textureId;
-		GLubyte *pixels;
-
-		GLuint loadShader( GLenum type, const char *src ) {
-			GLuint shader;
-
-			shader = glCreateShader( type );
-			glShaderSource( shader, 1, &src, 0 );
-			glCompileShader( shader );
-
-			return shader;
-		}
-
-		GLuint setupTex() {
-			GLuint textureId;
-
-			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-			glGenTextures(1, &textureId);
-			glBindTexture(GL_TEXTURE_2D, textureId);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, pixels);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, textureId);
-
-			return textureId;
-		}
-
-		void setupVtx(GLuint positionLoc, GLuint texCoordLoc, GLuint samplerLoc) {
-			GLuint vertexPosObject, indexObject;
-
-			glGenBuffers(1, &vertexPosObject);
-			glBindBuffer(GL_ARRAY_BUFFER, vertexPosObject );
-			glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), planeVertices, GL_STATIC_DRAW );
-
-			glGenBuffers(1, &indexObject);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexObject);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(planeIndices), planeIndices, GL_STATIC_DRAW);
-
-			glBindBuffer(GL_ARRAY_BUFFER, vertexPosObject);
-			glVertexAttribPointer(positionLoc, 3, GL_FLOAT, GL_FALSE, 5 * 4, 0);
-			glVertexAttribPointer(texCoordLoc, 2, GL_FLOAT, GL_FALSE, 5 * 4, (const GLvoid *)(3 * 4));
-			glEnableVertexAttribArray(positionLoc);
-			glEnableVertexAttribArray(texCoordLoc);
-
-			glUniform1i(samplerLoc, 0);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexObject);
-		}
 
 		void display(const Color *image) {
 			// Update Texture
@@ -161,6 +109,59 @@ namespace tsukihi {
 			
 			// GLFW
 			glfwTerminate();
+		}
+
+	private:
+		GLFWwindow *window;
+		GLuint programObject;
+		GLuint vertexShader, fragmentShader;
+		GLuint textureId;
+		GLubyte *pixels;
+
+		GLuint loadShader(GLenum type, const char *src) {
+			GLuint shader;
+
+			shader = glCreateShader(type);
+			glShaderSource(shader, 1, &src, 0);
+			glCompileShader(shader);
+
+			return shader;
+		}
+
+		GLuint setupTex() {
+			GLuint textureId;
+
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+			glGenTextures(1, &textureId);
+			glBindTexture(GL_TEXTURE_2D, textureId);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, textureId);
+
+			return textureId;
+		}
+
+		void setupVtx(GLuint positionLoc, GLuint texCoordLoc, GLuint samplerLoc) {
+			GLuint vertexPosObject, indexObject;
+
+			glGenBuffers(1, &vertexPosObject);
+			glBindBuffer(GL_ARRAY_BUFFER, vertexPosObject );
+			glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), planeVertices, GL_STATIC_DRAW );
+
+			glGenBuffers(1, &indexObject);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexObject);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(planeIndices), planeIndices, GL_STATIC_DRAW);
+
+			glBindBuffer(GL_ARRAY_BUFFER, vertexPosObject);
+			glVertexAttribPointer(positionLoc, 3, GL_FLOAT, GL_FALSE, 5 * 4, 0);
+			glVertexAttribPointer(texCoordLoc, 2, GL_FLOAT, GL_FALSE, 5 * 4, (const GLvoid *)(3 * 4));
+			glEnableVertexAttribArray(positionLoc);
+			glEnableVertexAttribArray(texCoordLoc);
+
+			glUniform1i(samplerLoc, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexObject);
 		}
 	};
 };
