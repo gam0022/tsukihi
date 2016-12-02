@@ -5,7 +5,7 @@
 
 namespace tsukihi {
 
-	// Xor-Shiftによる乱数ジェネレータ
+	// Xor-Shift縺ｫ繧医ｋ荵ｱ謨ｰ繧ｸ繧ｧ繝阪Ξ繝ｼ繧ｿ
 	class XorShift {
 		unsigned int seed_[4];
 	public:

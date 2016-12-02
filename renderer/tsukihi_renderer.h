@@ -114,16 +114,16 @@ namespace tsukihi {
 		}
 	};
 
-	// ray•ûŒü‚©‚ç‚Ì•úË‹P“x‚ğ‹‚ß‚é
+	// rayæ–¹å‘ã‹ã‚‰ã®æ”¾å°„è¼åº¦ã‚’æ±‚ã‚ã‚‹
 	Color TsukihiRenderer::radiance(const Ray &ray, Random *rnd, const int depth) {
 		Intersection intersection;
-		// ƒV[ƒ“‚ÆŒğ·”»’è
+		// ã‚·ãƒ¼ãƒ³ã¨äº¤å·®åˆ¤å®š
 		if (!intersect_scene(ray, &intersection))
 			return backgroundColor;
 
 		const Object* now_object = intersection.object;
 		const Hitpoint &hitpoint = intersection.hitpoint;
-		const Vec3 orienting_normal = dot(hitpoint.normal, ray.dir) < 0.0 ? hitpoint.normal : (-1.0 * hitpoint.normal); // Œğ·ˆÊ’u‚Ì–@üi•¨‘Ì‚©‚ç‚ÌƒŒƒC‚Ì“üo‚ğl—¶j
+		const Vec3 orienting_normal = dot(hitpoint.normal, ray.dir) < 0.0 ? hitpoint.normal : (-1.0 * hitpoint.normal); // äº¤å·®ä½ç½®ã®æ³•ç·šï¼ˆç‰©ä½“ã‹ã‚‰ã®ãƒ¬ã‚¤ã®å…¥å‡ºã‚’è€ƒæ…®ï¼‰
 
 		if (depth > 10) return now_object->emission;
 
@@ -132,7 +132,7 @@ namespace tsukihi {
 
 		switch (now_object->reflection_type) {
 
-			// ŒÃ“T“I‚ÈPhong‚Ì”½Ëƒ‚ƒfƒ‹
+			// å¤å…¸çš„ãªPhongã®åå°„ãƒ¢ãƒ‡ãƒ«
 		case REFLECTION_TYPE_DIFFUSE: {
 			for (auto light : lights) {
 				if (light != now_object) {
@@ -151,45 +151,45 @@ namespace tsukihi {
 			weight = now_object->color;
 		} break;
 
-			// Š®‘S‹¾–Ê
+			// å®Œå…¨é¡é¢
 		case REFLECTION_TYPE_SPECULAR: {
-			// Š®‘S‹¾–Ê‚È‚Ì‚ÅƒŒƒC‚Ì”½Ë•ûŒü‚ÍŒˆ’è“IB
-			// ƒƒVƒAƒ“ƒ‹[ƒŒƒbƒg‚ÌŠm—¦‚ÅœZ‚·‚é‚Ì‚Íã‚Æ“¯‚¶B
+			// å®Œå…¨é¡é¢ãªã®ã§ãƒ¬ã‚¤ã®åå°„æ–¹å‘ã¯æ±ºå®šçš„ã€‚
+			// ãƒ­ã‚·ã‚¢ãƒ³ãƒ«ãƒ¼ãƒ¬ãƒƒãƒˆã®ç¢ºç‡ã§é™¤ç®—ã™ã‚‹ã®ã¯ä¸Šã¨åŒã˜ã€‚
 			incoming_radiance = radiance(Ray(hitpoint.position, ray.dir - hitpoint.normal * 2.0 * dot(hitpoint.normal, ray.dir)), rnd, depth + 1);
 			weight = now_object->color;
 		} break;
 
-			// ‹üÜ—¦kIor‚ÌƒKƒ‰ƒX
+			// å±ˆæŠ˜ç‡kIorã®ã‚¬ãƒ©ã‚¹
 		case REFLECTION_TYPE_REFRACTION: {
 			const Ray reflection_ray = Ray(hitpoint.position, ray.dir - hitpoint.normal * 2.0 * dot(hitpoint.normal, ray.dir));
-			const bool into = dot(hitpoint.normal, orienting_normal) > 0.0; // ƒŒƒC‚ªƒIƒuƒWƒFƒNƒg‚©‚ço‚é‚Ì‚©A“ü‚é‚Ì‚©
+			const bool into = dot(hitpoint.normal, orienting_normal) > 0.0; // ãƒ¬ã‚¤ãŒã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‹ã‚‰å‡ºã‚‹ã®ã‹ã€å…¥ã‚‹ã®ã‹
 
-																			// Snell‚Ì–@‘¥
-			const double nc = 1.0; // ^‹ó‚Ì‹üÜ—¦
-			const double nt = kIor; // ƒIƒuƒWƒFƒNƒg‚Ì‹üÜ—¦
+																			// Snellã®æ³•å‰‡
+			const double nc = 1.0; // çœŸç©ºã®å±ˆæŠ˜ç‡
+			const double nt = kIor; // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å±ˆæŠ˜ç‡
 			const double nnt = into ? nc / nt : nt / nc;
 			const double ddn = dot(ray.dir, orienting_normal);
 			const double cos2t = 1.0 - nnt * nnt * (1.0 - ddn * ddn);
 
-			if (cos2t < 0.0) { // ‘S”½Ë
+			if (cos2t < 0.0) { // å…¨åå°„
 				incoming_radiance = radiance(reflection_ray, rnd, depth + 1);
 				weight = now_object->color;
 				break;
 			}
-			// ‹üÜ‚Ì•ûŒü
+			// å±ˆæŠ˜ã®æ–¹å‘
 			const Ray refraction_ray = Ray(hitpoint.position,
 				normalize(ray.dir * nnt - hitpoint.normal * (into ? 1.0 : -1.0) * (ddn * nnt + sqrt(cos2t))));
 
-			// Schlick‚É‚æ‚éFresnel‚Ì”½ËŒW”‚Ì‹ß—‚ğg‚¤
+			// Schlickã«ã‚ˆã‚‹Fresnelã®åå°„ä¿‚æ•°ã®è¿‘ä¼¼ã‚’ä½¿ã†
 			const double a = nt - nc, b = nt + nc;
 			const double R0 = (a * a) / (b * b);
 
 			const double c = 1.0 - (into ? -ddn : dot(refraction_ray.dir, -1.0 * orienting_normal));
-			const double Re = R0 + (1.0 - R0) * pow(c, 5.0); // ”½Ë•ûŒü‚ÌŒõ‚ª”½Ë‚µ‚Äray.dir‚Ì•ûŒü‚É‰^‚ÔŠ„‡B“¯‚É‹üÜ•ûŒü‚ÌŒõ‚ª”½Ë‚·‚é•ûŒü‚É‰^‚ÔŠ„‡B
-			const double nnt2 = pow(into ? nc / nt : nt / nc, 2.0); // ƒŒƒC‚Ì‰^‚Ô•úË‹P“x‚Í‹üÜ—¦‚ÌˆÙ‚È‚é•¨‘ÌŠÔ‚ğˆÚ“®‚·‚é‚Æ‚«A‹üÜ—¦‚Ì”ä‚Ì“ñæ‚Ì•ª‚¾‚¯•Ï‰»‚·‚éB
-			const double Tr = (1.0 - Re) * nnt2; // ‹üÜ•ûŒü‚ÌŒõ‚ª‹üÜ‚µ‚Äray.dir‚Ì•ûŒü‚É‰^‚ÔŠ„‡
+			const double Re = R0 + (1.0 - R0) * pow(c, 5.0); // åå°„æ–¹å‘ã®å…‰ãŒåå°„ã—ã¦ray.dirã®æ–¹å‘ã«é‹ã¶å‰²åˆã€‚åŒæ™‚ã«å±ˆæŠ˜æ–¹å‘ã®å…‰ãŒåå°„ã™ã‚‹æ–¹å‘ã«é‹ã¶å‰²åˆã€‚
+			const double nnt2 = pow(into ? nc / nt : nt / nc, 2.0); // ãƒ¬ã‚¤ã®é‹ã¶æ”¾å°„è¼åº¦ã¯å±ˆæŠ˜ç‡ã®ç•°ãªã‚‹ç‰©ä½“é–“ã‚’ç§»å‹•ã™ã‚‹ã¨ãã€å±ˆæŠ˜ç‡ã®æ¯”ã®äºŒä¹—ã®åˆ†ã ã‘å¤‰åŒ–ã™ã‚‹ã€‚
+			const double Tr = (1.0 - Re) * nnt2; // å±ˆæŠ˜æ–¹å‘ã®å…‰ãŒå±ˆæŠ˜ã—ã¦ray.dirã®æ–¹å‘ã«é‹ã¶å‰²åˆ
 
-												 // ‹üÜ‚Æ”½Ë‚Ì—¼•û‚ğ’ÇÕ
+												 // å±ˆæŠ˜ã¨åå°„ã®ä¸¡æ–¹ã‚’è¿½è·¡
 			incoming_radiance =
 				radiance(reflection_ray, rnd, depth + 1) * Re +
 				radiance(refraction_ray, rnd, depth + 1) * Tr;
