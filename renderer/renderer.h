@@ -43,7 +43,7 @@ namespace tsukihi {
 		return true;
 	}
 
-	inline void Renderer::saveResultImage(Color *image, int width, int height) {
+	inline void Renderer::saveResultImage(Color *image, const int width, const int height) {
 #ifdef _OPEN_GL_
 		glWindow->display(image);
 #else
@@ -53,12 +53,12 @@ namespace tsukihi {
 #endif
 	}
 
-	int Renderer::render(const int width, const int height, int samples, const int supersamples) {
+	int Renderer::render(const int width, const int height, const int samples, const int supersamples) {
 		progressImageInterval = height / 64;
 
 		setup();
 #ifdef _OPEN_GL_
-		glWindow = new GLWindow();
+		glWindow = new GLWindow(width, height);
 #endif
 
 		// ワールド座標系でのスクリーンの大きさ

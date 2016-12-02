@@ -16,9 +16,6 @@
 
 #include "material.h"
 
-#define SCREEN_WIDTH  (256)
-#define SCREEN_HEIGHT (256)
-
 namespace tsukihi {
 	static constexpr char quadVertexShader[] = R"##(
 		attribute vec4 position;
@@ -53,11 +50,13 @@ namespace tsukihi {
 
 	class GLWindow {
     public:
+		int width, height;
+
 		GLFWwindow* window;
 		GLuint programObject;
 		GLuint vertexShader, fragmentShader;
 		GLuint textureId;
-		GLubyte pixels[SCREEN_WIDTH * SCREEN_HEIGHT * 3];
+		GLubyte *pixels;
 
 		GLuint loadShader( GLenum type, const char *src ) {
 			GLuint shader;
@@ -75,7 +74,7 @@ namespace tsukihi {
 			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 			glGenTextures(1, &textureId);
 			glBindTexture(GL_TEXTURE_2D, textureId);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, SCREEN_WIDTH, SCREEN_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, pixels);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 			glActiveTexture(GL_TEXTURE0);
@@ -107,8 +106,8 @@ namespace tsukihi {
 
 		void display(const Color *image) {
 			// Update Texture
-			store_image_to_pixels(image, SCREEN_WIDTH, SCREEN_HEIGHT, pixels);
-			glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+			store_image_to_pixels(image, width, height, pixels);
+			glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixels);
 
 			// Draw
 			glClear(GL_COLOR_BUFFER_BIT);
@@ -119,10 +118,10 @@ namespace tsukihi {
 			glfwPollEvents();
 		}
 
-		GLWindow() {
+		GLWindow(const int width, const int height) : width(width), height(height) {
 			// GLFW
 			glfwInit();
-			window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "tsukihi", nullptr, nullptr);
+			window = glfwCreateWindow(width, height, "tsukihi", nullptr, nullptr);
 			if (!window) {
 				glfwTerminate();
 			}
@@ -131,6 +130,7 @@ namespace tsukihi {
 
 
 			// OpenGL
+			pixels = new GLubyte[width * height * 3];
 			
 			// shader
 			vertexShader = loadShader( GL_VERTEX_SHADER, quadVertexShader );
@@ -156,6 +156,8 @@ namespace tsukihi {
 			glDeleteShader(fragmentShader);
 			glDeleteShader(vertexShader);
 			glDeleteProgram(programObject);
+
+			delete pixels;
 			
 			// GLFW
 			glfwTerminate();
