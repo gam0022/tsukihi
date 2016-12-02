@@ -45,13 +45,13 @@ namespace tsukihi {
 		return 1;
 	}
 
-    void store_image_to_pixels(const Color *image, const int width, const int height, unsigned char* pixels) {
+	void store_image_to_pixels(const Color *image, const int width, const int height, unsigned char* pixels) {
 		for (int i = 0; i < width * height; i++) {
 			pixels[i * 3] = to_int(image[i].x);
 			pixels[i * 3 + 1] = to_int(image[i].y);
 			pixels[i * 3 + 2] = to_int(image[i].z);
 		}
-    }
+	}
 
 	int save_png_file(const std::string &filename, const Color *image, const int width, const int height) {
 		int bpp = 3;
