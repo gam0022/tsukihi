@@ -8,6 +8,7 @@
 #endif
 
 #include "image.h"
+#include "gl_window.h"
 #include "math/random.h"
 
 namespace tsukihi {
@@ -21,6 +22,10 @@ namespace tsukihi {
 	private:
 		int progres_image_count = 0;
 		inline bool saveProgressImage(Color *image, int width, int height, int y);
+		inline void saveResultImage(Color *image, int width, int height);
+#ifdef _OPEN_GL_
+		GLWindow* glWindow;
+#endif
 	};
 
 	inline bool Renderer::saveProgressImage(Color *image, int width, int height, int y) {
@@ -29,15 +34,32 @@ namespace tsukihi {
 		char buffer[100];
 		snprintf(buffer, 100, "%03d.png", progres_image_count);
 		std::string filename(buffer);
+#ifdef _OPEN_GL_
+		glWindow->display(image);
+#else
 		save_png_file(filename, image, width, height);
+#endif
 		++progres_image_count;
 		return true;
 	}
 
-	int Renderer::render(const int width, const int height, int samples, const int supersamples) {
-		progressImageInterval = height / 6;
+	inline void Renderer::saveResultImage(Color *image, const int width, const int height) {
+#ifdef _OPEN_GL_
+		glWindow->display(image);
+#else
+		//hdr_correction(image, width, height);
+		save_png_file(std::string("image.png"), image, width, height);
+		//save_ppm_file(std::string("image.ppm"), image, width, height);
+#endif
+	}
+
+	int Renderer::render(const int width, const int height, const int samples, const int supersamples) {
+		progressImageInterval = height / 64;
 
 		setup();
+#ifdef _OPEN_GL_
+		glWindow = new GLWindow(width, height);
+#endif
 
 		// ワールド座標系でのスクリーンの大きさ
 		const double screen_width = 30.0 * width / height;
@@ -61,7 +83,19 @@ namespace tsukihi {
 				std::cout << "threads: " << omp_get_num_threads() << std::endl;
 			}
 #endif
-			std::cerr << "Rendering (y = " << y << ") " << (100.0 * y / (height - 1)) << "%" << std::endl;
+
+#ifdef EMSCRIPTEN
+			std::cout
+#else
+			std::cerr
+#endif
+				<< "Rendering (y = " << y << ") " << (100.0 * y / (height - 1)) << "%" << std::endl;
+
+
+#ifdef EMSCRIPTEN
+			// Emscripten 上で動作させる場合、sleep を挟まないと標準出力や描画結果が反映されない
+			emscripten_sleep(1);
+#endif
 
 			saveProgressImage(image, width, height, y);
 
@@ -93,9 +127,15 @@ namespace tsukihi {
 		}
 
 		// 出力
-		//hdr_correction(image, width, height);
-		save_png_file(std::string("image.png"), image, width, height);
-		//save_ppm_file(std::string("image.ppm"), image, width, height);
+		saveResultImage(image, width, height);
+
+#ifdef _OPEN_GL_
+#ifndef EMSCRIPTEN
+		// Emscripten 版では、終了後でも WebGL による画像の表示を残しておく
+		delete glWindow;
+#endif
+#endif
+
 		return 0;
 	}
 };
